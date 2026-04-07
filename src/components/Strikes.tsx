@@ -24,26 +24,26 @@ export default function Strikes() {
       <div className="grid md:grid-cols-2 gap-4">
         {facilities.map((f, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-            className={`rounded-2xl border-r-4 ${f.c === 'red' ? 'border-r-red-600' : 'border-r-amber-600'} border border-slate-200 bg-white backdrop-blur-sm p-5 hover:bg-slate-800/90 transition-all`}>
+            className={`rounded-2xl border-r-4 ${f.c === 'red' ? 'border-r-red-600' : 'border-r-amber-600'} border border-slate-700/50 bg-slate-800/70 backdrop-blur-sm p-5 hover:bg-slate-800/90 transition-all`}>
             <div className="flex justify-between items-start mb-2 flex-wrap gap-2">
-              <h4 className="font-black text-slate-800">{g(f.name)}</h4>
-              <span className={`px-3 py-1 rounded-full text-xs font-bold border ${f.c === 'red' ? 'bg-red-100 text-red-600 border-red-300' : 'bg-amber-100 text-amber-600 border-amber-300'}`}>{g(f.status)}</span>
+              <h4 className="font-black text-slate-100">{g(f.name)}</h4>
+              <span className={`px-3 py-1 rounded-full text-xs font-bold border ${f.c === 'red' ? 'bg-red-900/60 text-red-300 border-red-700/50' : 'bg-amber-900/60 text-amber-300 border-amber-700/50'}`}>{g(f.status)}</span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed mb-3">{g(f.desc)}</p>
             <a href={f.map} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-600 transition-colors bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-800/30 hover:border-blue-600/40">
+              className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 transition-colors bg-blue-950/30 px-3 py-1.5 rounded-lg border border-blue-800/30 hover:border-blue-600/40">
               📍 {h ? 'פתח במפות Google' : 'Open in Google Maps'}
             </a>
           </motion.div>
         ))}
       </div>
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="mt-8 rounded-2xl border border-amber-700/40 bg-amber-50 p-6">
-        <h3 className="font-bold text-amber-600 mb-4 text-lg">📦 {h?'יבוא מסין — תלות אסטרטגית':'Chinese Imports — Strategic Dependency'}</h3>
+        className="mt-8 rounded-2xl border border-amber-700/40 bg-amber-950/20 p-6">
+        <h3 className="font-bold text-amber-300 mb-4 text-lg">📦 {h?'יבוא מסין — תלות אסטרטגית':'Chinese Imports — Strategic Dependency'}</h3>
         
         <div className="mb-5">
-          <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">{h?'עובדות':'Facts'}</h4>
-          <div className="space-y-3 text-sm text-slate-500">
+          <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">{h?'עובדות':'Facts'}</h4>
+          <div className="space-y-3 text-sm text-slate-400">
             <p>{h?'חברת הקש האיראנית Pishgaman Tejarat Rafi Novin רכשה אלפי טונות של נתרן פרכלורט — חומר גלם קריטי לייצור דלק מוצק.':'Iranian front company Pishgaman Tejarat Rafi Novin purchased thousands of tons of sodium perchlorate — a critical solid fuel precursor.'}</p>
             <p>{h?'הספק: חברת Lion Commodities מהונג קונג. החומר שונע בספינות דגל איראניות מנמל ג\'והאי (Zhuhai) שבדרום סין.':'Supplier: Lion Commodities, Hong Kong. Material shipped on Iranian-flagged vessels from Zhuhai port, southern China.'}</p>
             <p>{h?'הכמות שזוהתה מספיקה לייצור דלק מוצק לכ-800 טילים בליסטיים.':'Quantity identified is sufficient to produce solid fuel for approximately 800 ballistic missiles.'}</p>
@@ -52,8 +52,8 @@ export default function Strikes() {
         </div>
         
         <div className="pt-4 border-t border-amber-800/30">
-          <h4 className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-3">{h?'משמעות אסטרטגית':'Strategic Significance'}</h4>
-          <p className="text-sm text-slate-500 leading-relaxed">{h?'איראן אינה מסוגלת לייצר פרכלורטים בכמויות מספיקות באופן עצמאי. התלות ביבוא סיני דרך נתיב ימי יחיד (מצר הורמוז) חושפת חולשה אסטרטגית קריטית. סגירת ערוץ ההברחה או תקיפת מתקני הקצה עלולה להשבית את ייצור הדלק המוצק לשנים.':'Iran cannot produce sufficient perchlorate quantities domestically. Dependence on Chinese imports through a single maritime route (Strait of Hormuz) exposes a critical strategic vulnerability. Closing the smuggling channel or striking end-use facilities could halt solid fuel production for years.'}</p>
+          <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider mb-3">{h?'משמעות אסטרטגית':'Strategic Significance'}</h4>
+          <p className="text-sm text-slate-300 leading-relaxed">{h?'איראן אינה מסוגלת לייצר פרכלורטים בכמויות מספיקות באופן עצמאי. התלות ביבוא סיני דרך נתיב ימי יחיד (מצר הורמוז) חושפת חולשה אסטרטגית קריטית. סגירת ערוץ ההברחה או תקיפת מתקני הקצה עלולה להשבית את ייצור הדלק המוצק לשנים.':'Iran cannot produce sufficient perchlorate quantities domestically. Dependence on Chinese imports through a single maritime route (Strait of Hormuz) exposes a critical strategic vulnerability. Closing the smuggling channel or striking end-use facilities could halt solid fuel production for years.'}</p>
         </div>
       </motion.div>
     </section>

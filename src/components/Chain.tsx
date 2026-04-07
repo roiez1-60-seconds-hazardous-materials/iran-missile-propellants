@@ -110,8 +110,8 @@ export default function ProcessDiagrams() {
         {PROCS.map((p, i) => (
           <button key={i} onClick={() => { setPi(i); setActive(null); }}
             className={`px-5 py-3 rounded-2xl text-sm font-bold border-2 transition-all duration-300 ${pi === i
-              ? 'bg-blue-900/40 text-blue-200 border-blue-500/60 '
-              : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300/50'}`}>
+              ? 'bg-blue-900/40 text-blue-200 border-blue-500/60 shadow-[0_0_25px_rgba(59,130,246,0.2)]'
+              : 'bg-slate-800/30 text-slate-500 border-slate-700/30 hover:border-slate-600/50'}`}>
             {p.icon} {h ? p.he : p.en}
           </button>
         ))}
@@ -119,11 +119,11 @@ export default function ProcessDiagrams() {
 
       <AnimatePresence mode="wait">
         <motion.div key={pi} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-          <div className="rounded-3xl bg-gradient-to-b from-slate-100 to-white p-4 md:p-6 overflow-hidden">
+          <div className="rounded-3xl bg-gradient-to-b from-[#0c1425] to-[#0a0f1e] p-4 md:p-6 overflow-hidden">
             <p className="text-sm text-slate-400 text-center mb-4">{h ? proc.descHe : proc.descEn}</p>
 
             {/* P&ID SVG */}
-            <svg viewBox="0 0 100 55" className="w-full" style={{ filter:'drop-shadow(0 1px 4px rgba(0,0,0,0.1))' }}>
+            <svg viewBox="0 0 100 55" className="w-full" style={{ filter:'drop-shadow(0 2px 10px rgba(0,0,0,0.3))' }}>
               {/* Background grid */}
               <defs>
                 <pattern id="factoryGrid" width="5" height="5" patternUnits="userSpaceOnUse">
@@ -211,12 +211,12 @@ export default function ProcessDiagrams() {
             <AnimatePresence mode="wait">
               {info ? (
                 <motion.div key={info.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                  className="mt-6 rounded-2xl p-5 border border-blue-600/30 bg-blue-50 ">
-                  <h4 className="font-black text-lg text-slate-800 mb-2">{h ? info.he : info.en}</h4>
-                  <p className="text-sm text-slate-500 leading-relaxed">{h ? info.desc_he : info.desc_en}</p>
+                  className="mt-6 rounded-2xl p-5 border border-blue-600/30 bg-blue-950/20 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+                  <h4 className="font-black text-lg text-slate-100 mb-2">{h ? info.he : info.en}</h4>
+                  <p className="text-sm text-slate-300 leading-relaxed">{h ? info.desc_he : info.desc_en}</p>
                 </motion.div>
               ) : (
-                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 text-center text-slate-500 text-sm py-3">
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 text-center text-slate-600 text-sm py-3">
                   {h ? '👆 לחצו על מתקן בתרשים כדי לראות מידע מפורט' : '👆 Click equipment in the diagram for details'}
                 </motion.p>
               )}
@@ -226,7 +226,7 @@ export default function ProcessDiagrams() {
       </AnimatePresence>
 
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="mt-6 rounded-2xl border-r-4 border-amber-600 bg-amber-50 p-5 text-sm text-amber-200 border border-amber-700/30">
+        className="mt-6 rounded-2xl border-r-4 border-amber-600 bg-amber-950/20 p-5 text-sm text-amber-200 border border-amber-700/30">
         ⚡ <b>{h ? 'מערבלים פלנטריים:' : 'Planetary Mixers:'}</b> {h ? 'מכונות ענק לערבוב דלק מוצק. איראן לא מייצרת — הברחות מסין. השמדתם = ואקום ייצורי.' : 'Giant machines for solid fuel mixing. Iran cannot produce — smuggled from China. Destruction = production vacuum.'}
       </motion.div>
     </section>

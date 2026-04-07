@@ -35,28 +35,28 @@ export default function Platforms() {
       </motion.div>
       <div className="flex gap-2 justify-center mb-6">
         {[['all',h?'הכל':'All'],['l',h?'🔵 נוזלי':'🔵 Liquid'],['s',h?'🟠 מוצק':'🟠 Solid']].map(([v,l]) => (
-          <button key={v} onClick={() => setFilter(v)} className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${filter===v?'bg-blue-800/60 text-blue-200 border-blue-600/50':'bg-white text-slate-400 border-slate-200'}`}>{l}</button>
+          <button key={v} onClick={() => setFilter(v)} className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${filter===v?'bg-blue-800/60 text-blue-200 border-blue-600/50':'bg-slate-800/50 text-slate-400 border-slate-700/30'}`}>{l}</button>
         ))}
       </div>
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="rounded-2xl bg-slate-50 overflow-hidden">
+        className="rounded-2xl bg-slate-900/40 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="bg-slate-50/80">
+            <thead><tr className="bg-slate-900/30">
               {[h?'שם':'Name',h?'טווח (ק״מ)':'Range (km)',h?'ראש קרב (ק״ג)':'Warhead (kg)',h?'הנעה':'Propulsion',h?'דלק / מחמצן':'Fuel / Oxidizer','CEP (m)',h?'מצב':'Status',h?'הערות':'Notes'].map(hd => (
                 <th key={hd} className="py-3 px-3 text-right text-xs font-bold text-slate-400 whitespace-nowrap">{hd}</th>
               ))}
             </tr></thead>
             <tbody>{fm.map((m,i) => (
-              <tr key={i} className={`hover:bg-white shadow-sm transition-colors ${m.t==='l'?'bg-blue-950/5':'bg-amber-950/5'}`}>
-                <td className="py-2.5 px-3 font-bold text-slate-800 whitespace-nowrap">{h?m.n:m.ne}</td>
-                <td className="py-2.5 px-3 text-slate-500 font-mono text-xs" dir="ltr">{m.r}</td>
-                <td className="py-2.5 px-3 text-slate-500 font-mono text-xs" dir="ltr">{m.w}</td>
-                <td className="py-2.5 px-3"><span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${m.t==='l'?'bg-blue-100 text-blue-600 border-blue-300':'bg-amber-100 text-amber-600 border-amber-300'}`}>{h?m.p:m.pe}</span></td>
-                <td className={`py-2.5 px-3 text-xs font-semibold ${m.t==='l'?'text-cyan-700':'text-amber-600'}`}>{m.f}</td>
+              <tr key={i} className={`hover:bg-slate-800/40 transition-colors ${m.t==='l'?'bg-blue-950/5':'bg-amber-950/5'}`}>
+                <td className="py-2.5 px-3 font-bold text-slate-100 whitespace-nowrap">{h?m.n:m.ne}</td>
+                <td className="py-2.5 px-3 text-slate-300 font-mono text-xs" dir="ltr">{m.r}</td>
+                <td className="py-2.5 px-3 text-slate-300 font-mono text-xs" dir="ltr">{m.w}</td>
+                <td className="py-2.5 px-3"><span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${m.t==='l'?'bg-blue-900/60 text-blue-300 border-blue-700/50':'bg-amber-900/60 text-amber-300 border-amber-700/50'}`}>{h?m.p:m.pe}</span></td>
+                <td className={`py-2.5 px-3 text-xs font-semibold ${m.t==='l'?'text-cyan-300':'text-amber-300'}`}>{m.f}</td>
                 <td className="py-2.5 px-3 text-slate-400 text-xs font-mono" dir="ltr">{m.c}</td>
                 <td className="py-2.5 px-3"><span className={`inline-block w-2 h-2 rounded-full ${m.s?'bg-green-400':'bg-yellow-400'} ml-1`}/><span className="text-xs text-slate-400 mr-1">{m.s?(h?'פעיל':'Active'):(h?'טרום':'Pre-op')}</span></td>
-                <td className="py-2.5 px-3 text-slate-400 text-xs">{h?m.note:m.notee}</td>
+                <td className="py-2.5 px-3 text-slate-500 text-xs">{h?m.note:m.notee}</td>
               </tr>
             ))}</tbody>
           </table>

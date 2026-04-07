@@ -18,20 +18,16 @@ import Glossary from '@/components/Glossary';
 import Sources from '@/components/Sources';
 import Insights from '@/components/Insights';
 import Footer from '@/components/Footer';
-import { ProgressBar, BackToTop } from '@/components/ReadingProgress';
+import { BackToTop } from '@/components/ReadingProgress';
 
-const Divider = () => (
-  <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-blue-500/40 to-transparent mx-auto my-4" />
-);
+const Divider = () => <div className="border-t border-gray-100 my-2" />;
 
 export default function Home() {
   return (
     <LangProvider>
-      <ParticleBackground />
       <Navbar />
-      <ProgressBar />
       <BackToTop />
-      <main className="relative z-10 pt-16">
+      <main>
         <Hero />
         <Divider />
         <Timeline />
