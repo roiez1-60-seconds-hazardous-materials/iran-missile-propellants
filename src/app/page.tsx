@@ -307,18 +307,18 @@ return<Sec id="medical" num="08" title={he?"פרוטוקול רפואי":"Medica
 
 /* ═══ STRATEGIC — expanded explanation ═══ */
 function Strategic({lang}:{lang:string}){const he=lang==="he";
-return<Sec id="strategic" num="09" title={he?"למה HNO₃ הוא חומר מפתח בייצור טילים?":"Why is HNO₃ a Key Material in Missile Production?"} sidebar={<SB color="red" title={he?"🔑 המשמעות":"🔑 Significance"}><p>{he?"פגיעה במתקן אחד לייצור חומצה חנקתית משתקת בו-זמנית ארבע יכולות נשק שונות. לאיראן אין חומר גלם אחר עם השפעה כה רחבה.":"Hitting a single nitric acid plant simultaneously paralyzes four different weapon capabilities. Iran has no other raw material with such broad impact."}</p></SB>}>
-  <div style={{padding:24,marginBottom:20,background:"#ffffff",borderRadius:10,border:"1px solid #e5e5e5"}}>
-    <p style={{fontSize:15,color:"#000000",lineHeight:2,marginBottom:20,fontWeight:600}}>{he?"חומצה חנקתית (HNO₃) מיוצרת בתהליך אוסטוולד מאמוניה. זהו חומר הגלם הבסיסי ביותר בשרשרת הנשק האיראנית. ממנו מייצרים ארבעה מוצרים קריטיים שונים — ולכן פגיעה במתקן ייצור אחד של חומצה חנקתית משתקת ארבע מערכות נשק בו-זמנית:":"Nitric acid (HNO₃) is produced via the Ostwald process from ammonia. It is the most fundamental precursor in Iran's weapons chain. Four different critical products are derived from it — which is why hitting a single nitric acid production facility paralyzes four weapon systems simultaneously:"}</p>
+return<Sec id="strategic" num="09" title={he?"למה HNO₃ הוא חומר מפתח בייצור טילים?":"Why is HNO₃ a Key Material in Missile Production?"} dark sidebar={<SB color="red" title={he?"🔑 המשמעות":"🔑 Significance"}><p>{he?"פגיעה במתקן אחד לייצור חומצה חנקתית משתקת בו-זמנית ארבע יכולות נשק שונות. לאיראן אין חומר גלם אחר עם השפעה כה רחבה.":"Hitting a single nitric acid plant simultaneously paralyzes four different weapon capabilities. Iran has no other raw material with such broad impact."}</p></SB>}>
+  <div style={{padding:24,marginBottom:20,background:P.ink,borderRadius:10,border:`1px solid ${P.gold}30`}}>
+    <p style={{fontSize:15,color:"#ffffff",lineHeight:2,marginBottom:20,fontWeight:500}}>{he?"חומצה חנקתית (HNO₃) מיוצרת בתהליך אוסטוולד מאמוניה. זהו חומר הגלם הבסיסי ביותר בשרשרת הנשק האיראנית. ממנו מייצרים ארבעה מוצרים קריטיים שונים — ולכן פגיעה במתקן ייצור אחד של חומצה חנקתית משתקת ארבע מערכות נשק בו-זמנית:":"Nitric acid (HNO₃) is produced via the Ostwald process from ammonia. It is the most fundamental precursor in Iran's weapons chain. Four different critical products are derived from it — which is why hitting a single nitric acid production facility paralyzes four weapon systems simultaneously:"}</p>
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:12}}>
       {[{ic:"💧",t:he?"מחמצן IRFNA":"IRFNA Oxidizer",d:he?"HNO₃ + N₂O₄ + HF → IRFNA. דלק טילים נוזליים: שהאב, גדר, קיאם, עמאד":"HNO₃ + N₂O₄ + HF → IRFNA. Liquid missiles: Shahab, Ghadr, Qiam, Emad",bg:P.blueS,c:P.blue},
         {ic:"🧊",t:he?"מחמצן NTO":"NTO Oxidizer",d:he?"מ-HNO₃ מופק N₂O₄ — מחמצן לטיל ח׳ורמשהר (המדויק ביותר)":"N₂O₄ derived from HNO₃ — oxidizer for Khorramshahr (most accurate)",bg:P.purpleS,c:P.purple},
         {ic:"💣",t:he?"חומרי נפץ":"Explosives",d:he?"HNO₃ + הקסאמין → RDX/HMX (תהליך בכמן). משמשים בראשי קרב ובדלק מוצק":"HNO₃ + hexamine → RDX/HMX (Bachmann). Used in warheads and solid fuel",bg:P.amberS,c:P.amber},
         {ic:"☢️",t:he?"עדשות גרעיניות":"Nuclear Lenses",d:he?"HMX משמש בעדשות קריסה (Implosion Lenses) — מרכיב קריטי בנשק גרעיני":"HMX used in Implosion Lenses — critical nuclear weapon component",bg:P.redS,c:P.red},
-      ].map((x,i)=><div key={i} style={{padding:16,background:"#ffffff",textAlign:"center",borderRadius:10,border:`2px solid ${x.c}30`,boxShadow:"0 2px 8px rgba(0,0,0,0.05)"}}>
+      ].map((x,i)=><div key={i} style={{padding:16,background:P.navy,textAlign:"center",borderRadius:10,border:`1px solid ${x.c}40`,boxShadow:`0 2px 12px ${x.c}15`}}>
         <div style={{fontSize:28,marginBottom:6}}>{x.ic}</div>
         <div style={{fontSize:13,fontWeight:800,color:x.c,marginBottom:8}}>{x.t}</div>
-        <div style={{fontSize:12,color:"#333333",lineHeight:1.7,fontWeight:500}}>{x.d}</div>
+        <div style={{fontSize:11,color:"#e2e8f0",lineHeight:1.7,fontWeight:400}}>{x.d}</div>
       </div>)}
     </div>
   </div>
@@ -579,12 +579,12 @@ const RxnLabel=({x,y,text}:{x:number;y:number;text:string})=>(
 
 const diagrams=[
   {name:he?"אוסטוולד — HNO₃":"Ostwald — HNO₃",ic:"⚗️",
-   render:()=><svg viewBox="0 0 560 340" style={{width:"100%"}}>
+   render:()=><svg viewBox="0 0 520 420" style={{width:"100%"}}>
     <defs><marker id="pah" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
     <Tank x={10} y={20} label={he?"אמוניה NH₃":"Ammonia NH₃"} color="#3b82f6"/>
     <Tank x={10} y={100} label={he?"אוויר O₂+N₂":"Air O₂+N₂"} color="#64748b"/>
     <Arrow x1={60} y1={62} x2={130} y2={62}/>
-    <Arrow x1={60} y1={130} x2={130} y2={85}/>
+    <Arrow x1={60} y1={170} x2={130} y2={90}/>
     <Reactor x={130} y={30} label={he?"ריאקטור קטליטי":"Catalytic Reactor"} params="850°C, 8 atm" rxn="4NH₃ + 5O₂ → 4NO + 6H₂O"/>
     <text x={165} y={148} textAnchor="middle" fill="#64748b" fontSize="5.5" fontFamily="monospace">{he?"זרז: Pt-Rh 90:10":"Cat: Pt-Rh 90:10"}</text>
     <Arrow x1={200} y1={70} x2={260} y2={70}/>
@@ -611,12 +611,12 @@ const diagrams=[
     <Reactor x={355} y={260} label="IRFNA" params={he?"מחמצן לטילים":"Missile Oxidizer"} rxn="HNO₃ + N₂O₄ + HF"/>
   </svg>},
   {name:he?"רשיג — UDMH":"Raschig — UDMH",ic:"🟣",
-   render:()=><svg viewBox="0 0 560 340" style={{width:"100%"}}>
+   render:()=><svg viewBox="0 0 520 420" style={{width:"100%"}}>
     <defs><marker id="pah" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
     <Tank x={10} y={20} label={he?"אמוניה NH₃":"Ammonia NH₃"} color="#3b82f6"/>
-    <Tank x={10} y={110} label={he?"היפוכלוריט NaOCl":"Hypochlorite NaOCl"} color="#64748b"/>
+    <Tank x={10} y={150} label={he?"היפוכלוריט NaOCl":"Hypochlorite NaOCl"} color="#64748b"/>
     <Arrow x1={60} y1={55} x2={130} y2={55}/>
-    <Arrow x1={60} y1={140} x2={130} y2={80}/>
+    <Arrow x1={60} y1={180} x2={130} y2={85}/>
     <Reactor x={130} y={25} label={he?"ריאקטור 1":"Reactor 1"} params="0°C (!)" rxn="NH₃ + NaOCl → NH₂Cl + NaOH"/>
     <text x={165} y={140} textAnchor="middle" fill="#dc2626" fontSize="6" fontWeight="bold">{he?"⚠️ כלוראמין רעיל":"⚠️ Toxic Chloramine"}</text>
     <Arrow x1={200} y1={65} x2={260} y2={65}/>
@@ -642,14 +642,14 @@ const diagrams=[
     <text x={435} y={312} textAnchor="middle" fill="#9333ea" fontSize="6">{he?"דלק טילים":"Missile Fuel"}</text>
   </svg>},
   {name:he?"בכמן — RDX/HMX":"Bachmann — RDX/HMX",ic:"💣",
-   render:()=><svg viewBox="0 0 560 340" style={{width:"100%"}}>
+   render:()=><svg viewBox="0 0 520 420" style={{width:"100%"}}>
     <defs><marker id="pah" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
     <Tank x={10} y={20} label={he?"הקסאמין":"Hexamine"} color="#3b82f6"/>
     <text x={35} y={75} textAnchor="middle" fill="#3b82f6" fontSize="5.5" fontFamily="monospace">C₆H₁₂N₄</text>
-    <Tank x={10} y={110} label={he?"HNO₃ מרוכזת":"Conc. HNO₃"} color="#dc2626"/>
+    <Tank x={10} y={150} label={he?"HNO₃ מרוכזת":"Conc. HNO₃"} color="#dc2626"/>
     <text x={35} y={165} textAnchor="middle" fill="#dc2626" fontSize="5.5" fontFamily="monospace">{">"}98%</text>
     <Arrow x1={60} y1={55} x2={130} y2={55}/>
-    <Arrow x1={60} y1={140} x2={130} y2={80}/>
+    <Arrow x1={60} y1={180} x2={130} y2={85}/>
     <Reactor x={130} y={25} label={he?"ריאקטור ניטרציה":"Nitration Reactor"} params="45-75°C (!)" rxn={he?"⚠️ מעל 75°C = פיצוץ!":"⚠️ Above 75°C = explosion!"}/>
     <text x={165} y={146} textAnchor="middle" fill="#059669" fontSize="5.5" fontFamily="monospace">C₆H₁₂N₄ + 4HNO₃ → RDX</text>
     <Arrow x1={200} y1={70} x2={260} y2={70}/>
