@@ -78,6 +78,40 @@ section { scroll-margin-top: 56px; }
 @keyframes fu { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 .au { animation: fu .6s ease-out both; }
 
+/* Reactor agitator rotation */
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes spinReverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+
+/* Missile exhaust flame */
+@keyframes flicker { 
+  0%,100% { opacity:0.9; transform:scaleX(1); } 
+  25% { opacity:1; transform:scaleX(1.15); }
+  50% { opacity:0.7; transform:scaleX(0.9); } 
+  75% { opacity:1; transform:scaleX(1.1); }
+}
+@keyframes exhaustPulse {
+  0%,100% { opacity:0.6; transform:translateX(0) scaleX(1); }
+  50% { opacity:0.9; transform:translateX(2px) scaleX(1.2); }
+}
+@keyframes exhaustFlow {
+  0% { transform:translateX(0); opacity:0.8; }
+  100% { transform:translateX(8px); opacity:0; }
+}
+
+/* Bubbling in reactor */
+@keyframes bubble {
+  0% { transform:translateY(0); opacity:0.6; }
+  50% { opacity:0.9; }
+  100% { transform:translateY(-20px); opacity:0; }
+}
+
+/* Flowing dashed arrow */
+@keyframes flowDash {
+  0% { stroke-dashoffset: 12; }
+  100% { stroke-dashoffset: 0; }
+}
+.flow-arrow { animation: flowDash 1s linear infinite; }
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--cream); }

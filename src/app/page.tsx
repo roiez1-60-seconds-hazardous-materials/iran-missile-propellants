@@ -71,6 +71,19 @@ return<Sec id="diagram" num="02" title={he?"אנטומיה של טיל בליס�
       {/* Nozzle exhaust */}
       <path d={mode==="liquid"?"M 98,11 L 100,8 L 100,24 L 98,21":"M 98,11 L 100,9 L 100,23 L 98,21"} fill="#616161" stroke="#424242" strokeWidth="0.2"/>
       {mode==="liquid"&&<><path d="M 90,11 L 87,6 L 94,6 L 98,11" fill="#78909c"/><path d="M 90,21 L 87,26 L 94,26 L 98,21" fill="#78909c"/></>}
+      {/* 🔥 Animated exhaust flame */}
+      <defs>
+        <linearGradient id="flameG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#ff6b00"/><stop offset="40%" stopColor="#ff4500"/><stop offset="70%" stopColor="#ff0000" stopOpacity="0.7"/><stop offset="100%" stopColor="#ff0000" stopOpacity="0"/></linearGradient>
+        <linearGradient id="flameInner" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#ffe066"/><stop offset="50%" stopColor="#ffaa00" stopOpacity="0.8"/><stop offset="100%" stopColor="#ff6600" stopOpacity="0"/></linearGradient>
+      </defs>
+      {/* Outer flame */}
+      <ellipse cx="107" cy="16" rx="8" ry="5" fill="url(#flameG)" style={{animation:"flicker 0.3s ease-in-out infinite",transformOrigin:"100px 16px"}}/>
+      {/* Inner bright core */}
+      <ellipse cx="104" cy="16" rx="5" ry="3" fill="url(#flameInner)" style={{animation:"flicker 0.2s ease-in-out infinite alternate",transformOrigin:"100px 16px"}}/>
+      {/* White-hot center */}
+      <ellipse cx="101.5" cy="16" rx="2" ry="1.8" fill="#fff8e1" opacity="0.9" style={{animation:"flicker 0.15s ease-in-out infinite"}}/>
+      {/* Smoke/exhaust particles */}
+      {[0,1,2,3,4].map(i=><circle key={`smoke${i}`} cx={112+i*3} cy={16+Math.sin(i*1.5)*2} r={0.6+i*0.3} fill="#94a3b8" style={{animation:`exhaustFlow ${0.8+i*0.2}s ease-out infinite`,animationDelay:`${i*0.15}s`,opacity:0.4-i*0.07}}/>)}
       <text x="50" y="30" textAnchor="middle" fill="#9ca3af" fontSize="2.2" fontFamily="monospace">{mode==="liquid"?"~16 m (Shahab-3)":"~17.6 m (Sejjil-2)"}</text>
     </svg>
     <div style={{display:"flex",justifyContent:"space-around",marginTop:8,flexWrap:"wrap",gap:4}}>
@@ -477,21 +490,36 @@ const Reactor=({x,y,label,params,rxn}:{x:number;y:number;label:string;params:str
     <ellipse cx={x+35} cy={y+5} rx={35} ry={5} fill="#dc262615" stroke="#dc2626" strokeWidth="1"/>
     <rect x={x} y={y+5} width={70} height={55} fill="#dc262610" stroke="#dc2626" strokeWidth="1" rx="2"/>
     <ellipse cx={x+35} cy={y+60} rx={35} ry={5} fill="#dc262615" stroke="#dc2626" strokeWidth="1"/>
-    {/* Agitator */}
-    <line x1={x+35} y1={y-8} x2={x+35} y2={y+42} stroke="#dc2626" strokeWidth="1.5"/>
-    <line x1={x+25} y1={y+35} x2={x+45} y2={y+42} stroke="#dc2626" strokeWidth="1.5"/>
-    <line x1={x+45} y1={y+35} x2={x+25} y2={y+42} stroke="#dc2626" strokeWidth="1.5"/>
+    {/* Bubbles inside reactor */}
+    {[0,1,2,3,4,5].map(i=><circle key={`b${i}`} cx={x+15+i*10} cy={y+45-i*3} r={1.5+Math.random()} fill="#dc262630" style={{animation:`bubble ${1.5+i*0.3}s ease-in-out infinite`,animationDelay:`${i*0.25}s`}}/>)}
+    {/* Agitator shaft */}
+    <line x1={x+35} y1={y-8} x2={x+35} y2={y+30} stroke="#dc2626" strokeWidth="1.5"/>
+    {/* Animated agitator paddles */}
+    <g style={{transformOrigin:`${x+35}px ${y+38}px`,animation:"spin 2s linear infinite"}}>
+      <line x1={x+20} y1={y+35} x2={x+50} y2={y+41} stroke="#dc2626" strokeWidth="2" strokeLinecap="round"/>
+      <line x1={x+50} y1={y+35} x2={x+20} y2={y+41} stroke="#dc2626" strokeWidth="2" strokeLinecap="round"/>
+    </g>
+    {/* Motor on top */}
     <rect x={x+25} y={y-14} width={20} height={8} fill="#64748b" stroke="#475569" strokeWidth="0.5" rx="2"/>
+    {/* Motor vibration indicator */}
+    <line x1={x+23} y1={y-10} x2={x+20} y2={y-12} stroke="#64748b" strokeWidth="0.5" style={{animation:"flicker 0.5s infinite"}}/>
+    <line x1={x+47} y1={y-10} x2={x+50} y2={y-12} stroke="#64748b" strokeWidth="0.5" style={{animation:"flicker 0.5s infinite",animationDelay:"0.25s"}}/>
     <text x={x+35} y={y+80} textAnchor="middle" fill="#dc2626" fontSize="8" fontWeight="bold" fontFamily="Heebo,sans-serif">{label}</text>
     <text x={x+35} y={y+90} textAnchor="middle" fill="#c8a44e" fontSize="7" fontWeight="bold" fontFamily="monospace">{params}</text>
-    {rxn&&<text x={x+35} y={y+100} textAnchor="middle" fill="#64748b" fontSize="6" fontFamily="monospace">{rxn}</text>}
+    {rxn&&<text x={x+35} y={y+100} textAnchor="middle" fill="#059669" fontSize="5.5" fontFamily="monospace" fontWeight="600">{rxn}</text>}
   </g>
 );
 const Column=({x,y,label,params,h=80}:{x:number;y:number;label:string;params:string;h?:number})=>(
   <g>
     <rect x={x} y={y} width={40} height={h} fill="#7c3aed10" stroke="#7c3aed" strokeWidth="1" rx="4"/>
-    {/* Internal plates */}
-    {Array.from({length:Math.floor(h/15)}).map((_,i)=><line key={i} x1={x+4} y1={y+12+i*15} x2={x+36} y2={y+12+i*15} stroke="#7c3aed" strokeWidth="0.5" strokeDasharray="2,1"/>)}
+    {/* Internal plates with liquid dripping */}
+    {Array.from({length:Math.floor(h/15)}).map((_,i)=><g key={i}>
+      <line x1={x+4} y1={y+12+i*15} x2={x+36} y2={y+12+i*15} stroke="#7c3aed" strokeWidth="0.5" strokeDasharray="2,1"/>
+      {/* Dripping drops */}
+      <circle cx={x+12+i*8} cy={y+14+i*15} r={0.8} fill="#7c3aed40" style={{animation:`bubble ${2+i*0.4}s ease-in infinite`,animationDelay:`${i*0.5}s`}}/>
+    </g>)}
+    {/* Vapor rising */}
+    {[0,1,2].map(i=><circle key={`v${i}`} cx={x+20+i*5} cy={y+5} r={1} fill="#7c3aed20" style={{animation:`bubble ${1.5+i*0.3}s ease-out infinite reverse`,animationDelay:`${i*0.3}s`}}/>)}
     <text x={x+20} y={y+h+14} textAnchor="middle" fill="#7c3aed" fontSize="7" fontWeight="bold" fontFamily="Heebo,sans-serif">{label}</text>
     <text x={x+20} y={y+h+24} textAnchor="middle" fill="#c8a44e" fontSize="6.5" fontWeight="bold" fontFamily="monospace">{params}</text>
   </g>
@@ -500,11 +528,14 @@ const Tank=({x,y,label,color="#3b82f6"}:{x:number;y:number;label:string;color?:s
   <g>
     <rect x={x} y={y+6} width={50} height={35} fill={`${color}10`} stroke={color} strokeWidth="1" rx="2"/>
     <ellipse cx={x+25} cy={y+6} rx={25} ry={6} fill={`${color}15`} stroke={color} strokeWidth="1"/>
+    {/* Liquid level with wave */}
+    <rect x={x+2} y={y+22} width={46} height={18} fill={`${color}15`} rx="1"/>
+    <path d={`M ${x+2} ${y+22} Q ${x+14} ${y+19} ${x+25} ${y+22} Q ${x+36} ${y+25} ${x+48} ${y+22}`} fill={`${color}20`} stroke={color} strokeWidth="0.3" style={{animation:"flicker 3s ease-in-out infinite"}}/>
     <text x={x+25} y={y+55} textAnchor="middle" fill={color} fontSize="7" fontWeight="bold" fontFamily="Heebo,sans-serif">{label}</text>
   </g>
 );
 const Arrow=({x1,y1,x2,y2}:{x1:number;y1:number;x2:number;y2:number})=>(
-  <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#pah)"/>
+  <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#pah)" strokeDasharray="6,3" className="flow-arrow"/>
 );
 const RxnLabel=({x,y,text}:{x:number;y:number;text:string})=>(
   <text x={x} y={y} textAnchor="middle" fill="#059669" fontSize="6" fontFamily="monospace" fontWeight="600">{text}</text>
