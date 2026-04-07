@@ -38,9 +38,23 @@ export default function Strikes() {
         ))}
       </div>
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="mt-6 rounded-2xl border border-amber-700/40 bg-amber-950/20 p-5">
-        <h3 className="font-bold text-amber-300 mb-2">📦 {h?'יבוא מסין':'Chinese Imports'}</h3>
-        <p className="text-sm text-slate-300">{h?'חברת הקש האיראנית Pishgaman Tejarat Rafi Novin רכשה אלפי טונות של נתרן פרכלורט מהספק הסיני Lion Commodities (הונג קונג). החומר שונע בספינות דגל איראניות מנמל ג\'והאי (Zhuhai) שבדרום סין.</p><p className=\"text-sm text-slate-300 mt-3\">כמות זו מספיקה לייצור דלק מוצק לכ-800 טילים בליסטיים.</p><p className=\"text-sm text-slate-300 mt-3\"><b className=\"text-red-300\">תובנה:</b> התלות ביבוא סיני חשפה חולשה קריטית — באפריל 2026 התפוצצו מכולות דלק טילים בנמל שהיד רג\'אי בבנדר עבאס, ככל הנראה כתוצאה מטיפול רשלני. התלות בנתיב ימי אחד דרך מצר הורמוז הופכת את שרשרת האספקה לפגיעה ביותר.':'The Iranian front company Pishgaman Tejarat Rafi Novin purchased thousands of tons of sodium perchlorate from Chinese supplier Lion Commodities (Hong Kong). The material was shipped on Iranian-flagged vessels from Zhuhai port in southern China.</p><p className=\"text-sm text-slate-300 mt-3\">This quantity is sufficient to produce solid fuel for approximately 800 ballistic missiles.</p><p className=\"text-sm text-slate-300 mt-3\"><b className=\"text-red-300\">Insight:</b> Dependence on Chinese imports exposed a critical vulnerability — in April 2026, missile fuel containers exploded at Shahid Rajaee port in Bandar Abbas, likely due to negligent handling. Reliance on a single maritime route through the Strait of Hormuz makes the supply chain highly vulnerable.'}</p>
+        className="mt-8 rounded-2xl border border-amber-700/40 bg-amber-950/20 p-6">
+        <h3 className="font-bold text-amber-300 mb-4 text-lg">📦 {h?'יבוא מסין — תלות אסטרטגית':'Chinese Imports — Strategic Dependency'}</h3>
+        
+        <div className="mb-5">
+          <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">{h?'עובדות':'Facts'}</h4>
+          <div className="space-y-3 text-sm text-slate-400">
+            <p>{h?'חברת הקש האיראנית Pishgaman Tejarat Rafi Novin רכשה אלפי טונות של נתרן פרכלורט — חומר גלם קריטי לייצור דלק מוצק.':'Iranian front company Pishgaman Tejarat Rafi Novin purchased thousands of tons of sodium perchlorate — a critical solid fuel precursor.'}</p>
+            <p>{h?'הספק: חברת Lion Commodities מהונג קונג. החומר שונע בספינות דגל איראניות מנמל ג\'והאי (Zhuhai) שבדרום סין.':'Supplier: Lion Commodities, Hong Kong. Material shipped on Iranian-flagged vessels from Zhuhai port, southern China.'}</p>
+            <p>{h?'הכמות שזוהתה מספיקה לייצור דלק מוצק לכ-800 טילים בליסטיים.':'Quantity identified is sufficient to produce solid fuel for approximately 800 ballistic missiles.'}</p>
+            <p>{h?'באפריל 2026 התרחש פיצוץ קטלני בנמל שהיד רג\'אי (בנדר עבאס) בעת טיפול במכולות דלק טילים.':'In April 2026, a fatal explosion occurred at Shahid Rajaee port (Bandar Abbas) during handling of missile fuel containers.'}</p>
+          </div>
+        </div>
+        
+        <div className="pt-4 border-t border-amber-800/30">
+          <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider mb-3">{h?'משמעות אסטרטגית':'Strategic Significance'}</h4>
+          <p className="text-sm text-slate-300 leading-relaxed">{h?'איראן אינה מסוגלת לייצר פרכלורטים בכמויות מספיקות באופן עצמאי. התלות ביבוא סיני דרך נתיב ימי יחיד (מצר הורמוז) חושפת חולשה אסטרטגית קריטית. סגירת ערוץ ההברחה או תקיפת מתקני הקצה עלולה להשבית את ייצור הדלק המוצק לשנים.':'Iran cannot produce sufficient perchlorate quantities domestically. Dependence on Chinese imports through a single maritime route (Strait of Hormuz) exposes a critical strategic vulnerability. Closing the smuggling channel or striking end-use facilities could halt solid fuel production for years.'}</p>
+        </div>
       </motion.div>
     </section>
   );
