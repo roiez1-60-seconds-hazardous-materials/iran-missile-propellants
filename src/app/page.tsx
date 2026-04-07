@@ -9,9 +9,9 @@ const P = {
   muted:"#64748b",border:"#e2e0d8",white:"#fff"
 };
 
-const sIDs=["home","timeline","diagram","arsenal","rangemap","propulsion","processes","flowdiagram","chemistry","hazmat","medical","strategic","facilities","infographic","gallery","glossary","sources"];
-const sHe=["ראשי","ציר זמן","אנטומיה","ארסנל","טווחים","הנעה","ייצור","זרימה","דלקים","חומ״ס","רפואי","אסטרטגי","מתקנים","אינפוגרפיקה","מצגת","מקרא","מקורות"];
-const sEn=["Home","Timeline","Anatomy","Arsenal","Ranges","Propulsion","Production","Flow","Fuels","HazMat","Medical","Strategic","Facilities","Infographic","Slides","Glossary","Sources"];
+const sIDs=["home","timeline","facilities","diagram","arsenal","rangemap","propulsion","processes","flowdiagram","chemistry","hazmat","medical","strategic","infographic","gallery","glossary","sources"];
+const sHe=["ראשי","ציר זמן","מתקנים","אנטומיה","ארסנל","טווחים","הנעה","ייצור","זרימה","דלקים","חומ״ס","רפואי","אסטרטגי","אינפוגרפיקה","מצגת","מקרא","מקורות"];
+const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Ranges","Propulsion","Production","Flow","Fuels","HazMat","Medical","Strategic","Infographic","Slides","Glossary","Sources"];
 
 function ProgressBar(){const[p,setP]=useState(0);useEffect(()=>{const fn=()=>{const h=document.documentElement.scrollHeight-window.innerHeight;setP(h>0?(window.scrollY/h)*100:0);};window.addEventListener("scroll",fn,{passive:true});return()=>window.removeEventListener("scroll",fn);},[]);return<div style={{position:"fixed",top:0,left:0,right:0,zIndex:100,height:3,background:P.cream}}><div style={{height:"100%",width:`${p}%`,background:`linear-gradient(90deg,${P.gold},${P.gL})`,transition:"width 120ms"}}/></div>;}
 
@@ -307,7 +307,7 @@ return<Sec id="medical" num="08" title={he?"פרוטוקול רפואי":"Medica
 
 /* ═══ STRATEGIC — expanded explanation ═══ */
 function Strategic({lang}:{lang:string}){const he=lang==="he";
-return<Sec id="strategic" num="09" title={he?"צוואר הבקבוק הכימי — חומצה חנקתית":"Chemical Chokepoint — Nitric Acid"} dark sidebar={<SB color="red" title={he?"🔑 המשמעות":"🔑 Significance"}><p>{he?"פגיעה במתקן אחד לייצור חומצה חנקתית משתקת בו-זמנית ארבע יכולות נשק שונות. לאיראן אין חומר גלם אחר עם השפעה כה רחבה.":"Hitting a single nitric acid plant simultaneously paralyzes four different weapon capabilities. Iran has no other raw material with such broad impact."}</p></SB>}>
+return<Sec id="strategic" num="09" title={he?"למה HNO₃ הוא חומר מפתח בייצור טילים?":"Why is HNO₃ a Key Material in Missile Production?"} dark sidebar={<SB color="red" title={he?"🔑 המשמעות":"🔑 Significance"}><p>{he?"פגיעה במתקן אחד לייצור חומצה חנקתית משתקת בו-זמנית ארבע יכולות נשק שונות. לאיראן אין חומר גלם אחר עם השפעה כה רחבה.":"Hitting a single nitric acid plant simultaneously paralyzes four different weapon capabilities. Iran has no other raw material with such broad impact."}</p></SB>}>
   <div className="cm" style={{padding:24,marginBottom:20}}>
     <h3 className="sf" style={{fontSize:18,fontWeight:800,marginBottom:12}}>{he?"למה HNO₃ הוא המפתח המוחלט?":"Why is HNO₃ the absolute key?"}</h3>
     <p style={{fontSize:13,color:P.steel,lineHeight:1.8,marginBottom:16}}>{he?"חומצה חנקתית (HNO₃) מיוצרת בתהליך אוסטוולד מאמוניה. זהו חומר הגלם הבסיסי ביותר בשרשרת הנשק האיראנית. ממנו מייצרים ארבעה מוצרים קריטיים שונים — ולכן פגיעה במתקן ייצור אחד של חומצה חנקתית משתקת ארבע מערכות נשק בו-זמנית:":"Nitric acid (HNO₃) is produced via the Ostwald process from ammonia. It is the most fundamental precursor in Iran's weapons chain. Four different critical products are derived from it — which is why hitting a single nitric acid production facility paralyzes four weapon systems simultaneously:"}</p>
@@ -325,24 +325,47 @@ return<Sec id="strategic" num="09" title={he?"צוואר הבקבוק הכימי
   </div>
 </Sec>;}
 
-/* ═══ FACILITIES ═══ */
-function Facilities({lang}:{lang:string}){const he=lang==="he";
+/* ═══ FACILITIES — with Google Maps + expandable ═══ */
+function Facilities({lang}:{lang:string}){const he=lang==="he";const[openFac,setOpenFac]=useState<string|null>(null);
 const fs=[
-  {n:he?"פרצ׳ין":"Parchin",d:he?"PCI — ייצור HNO₃, חומרי נפץ. מתקן טאלקאן 2 (קשר גרעיני). 3 מבני ערבוב דלק מוצק":"PCI — HNO₃, explosives. Talaqan-2 (nuclear link). 3 solid fuel mixing buildings",s:he?"אוקטובר 2024":"October 2024"},
-  {n:he?"ח׳וג׳יר":"Khojir",d:he?"SHIG+SBIG. ייצור דלק מוצק, הרכבת טילים. 2 מבני ערבוב נהרסו":"SHIG+SBIG. Solid fuel production, missile assembly. 2 mixing buildings destroyed",s:he?"אוקטובר 2024":"October 2024"},
-  {n:he?"שאהרוד":"Shahrud",d:he?"ייצור מנועי טילים מוצקים. מערבלים פלנטריים ובורות יציקה":"Solid missile engine production. Planetary mixers and casting pits",s:he?"אוקטובר 2024":"October 2024"},
-  {n:he?"פורדו / נתנז / אספהאן":"Fordow / Natanz / Isfahan",d:he?"מתקני העשרת אורניום ומתקני המרה. ארה״ב הצטרפה ב-22/6 עם פצצות GBU-57. נזק כבד למרכזות":"Uranium enrichment & conversion. US joined June 22 with GBU-57 bunker busters. Heavy centrifuge damage",s:he?"יוני 2025 (עם כלביא)":"June 2025 (Im Kalbia)"},
-  {n:he?"אסלויה / South Pars":"Asaluyeh / South Pars",d:he?"פטרוכימיה — ייצור אמוניה + HNO₃. 85% מייצוא הפטרוכימי":"Petrochemicals — ammonia + HNO₃. 85% of petrochemical exports",s:he?"פברואר 2026":"February 2026"},
-  {n:he?"מתקני HNO₃ (כולל שיראז)":"HNO₃ plants (incl. Shiraz)",d:he?"ייצור חומצה חנקתית — צוואר הבקבוק. נתקפים במסגרת המלחמה המתמשכת":"Nitric acid production — chokepoint. Targeted in ongoing war",s:he?"2026 (מתמשך)":"2026 (ongoing)"},
+  {id:"parchin",n:he?"פרצ׳ין":"Parchin",s:he?"אוקטובר 2024":"Oct 2024",coords:"35.5122,51.7714",
+   short:he?"PCI — ייצור HNO₃, חומרי נפץ. מתקן טאלקאן 2. 3 מבני ערבוב דלק מוצק הושמדו":"PCI — HNO₃, explosives. Talaqan-2. 3 solid fuel mixing buildings destroyed",
+   details:he?["מתחם צבאי ענק ~40 ק״מ דרומית-מזרחית לטהרן","Parchin Chemical Industries (PCI) — ייצור חומצה חנקתית וחומרי נפץ","מתקן טאלקאן 2 — קשר ישיר לתוכנית הגרעין: ניסויי חומרי נפץ לעדשות קריסה","סה״כ לפחות 3 מבנים לערבוב דלק מוצק נהרסו בתקיפה","בדיקות IAEA מצאו עקבות אורניום באתר ב-2015","איראן שיפצה וחפתה חלקים מהמתקן לפני פיקוח בינלאומי"]:["Massive military complex ~40 km SE of Tehran","PCI — nitric acid and explosives production","Talaqan-2 facility — direct nuclear link: explosive lens testing","At least 3 solid fuel mixing buildings destroyed in strike","IAEA found uranium traces at site in 2015","Iran renovated/paved over sections before international inspections"]},
+  {id:"khojir",n:he?"ח׳וג׳יר":"Khojir",s:he?"אוקטובר 2024":"Oct 2024",coords:"35.6475,51.5511",
+   short:he?"SHIG+SBIG. דלק מוצק, הרכבת טילים. 2 מבני ערבוב + מערבלים פלנטריים":"SHIG+SBIG. Solid fuel, missile assembly. 2 mixing buildings + planetary mixers",
+   details:he?["~20 ק״מ ממרכז טהרן. מערכת מנהרות תת-קרקעית","SHIG (Shahid Hemmat) — אחראי על טילים נוזליים","SBIG (Shahid Bakeri) — אחראי על טילים מוצקים","12 מערבלים פלנטריים הושמדו — ציוד ייחודי שאיראן אינה מייצרת","מערבלים יובאו מסין דרך חברות קש בהונג קונג","לוויינים הראו הרחבה משמעותית של המתקן לפני התקיפה"]:["~20 km from central Tehran. Underground tunnel system","SHIG (Shahid Hemmat) — liquid missile division","SBIG (Shahid Bakeri) — solid missile division","12 planetary mixers destroyed — unique equipment Iran cannot manufacture","Mixers imported from China via Hong Kong shell companies","Satellite imagery showed major expansion before strike"]},
+  {id:"shahrud",n:he?"שאהרוד":"Shahrud",s:he?"אוקטובר 2024":"Oct 2024",coords:"36.4181,54.9764",
+   short:he?"ייצור מנועי טילים מוצקים. מערבלים ובורות יציקה":"Solid motor production. Mixers and casting pits",
+   details:he?["מרכז ייצור מנועי טילים מוצקים בצפון-מזרח איראן","בורות יציקה תת-קרקעיים ליציקת סוללות דלק גדולות (6-10 ימים)","מערבלים פלנטריים נוספים שהושמדו","אחד משלושת המתקנים שזוהו ע״י IISS כקריטיים לייצור דלק מוצק","התקיפה פגעה בתשתית שלא ניתן לשחזר ללא יבוא חדש מסין"]:["Solid motor manufacturing center in NE Iran","Underground casting pits for large fuel grain casting (6-10 days)","Additional planetary mixers destroyed","One of three facilities identified by IISS as critical for solid fuel","Strike hit infrastructure that cannot be restored without new Chinese imports"]},
+  {id:"fordow",n:he?"פורדו / נתנז / אספהאן":"Fordow / Natanz / Isfahan",s:he?"יוני 2025 (עם כלביא)":"Jun 2025 (Im Kalbia)",coords:"34.1572,51.7258",
+   short:he?"מתקני העשרת אורניום. ארה״ב הפציצה עם GBU-57. נזק כבד למרכזות":"Uranium enrichment. US struck with GBU-57. Heavy centrifuge damage",
+   details:he?["פורדו — מתקן העשרה תת-קרקעי חפור בהר. מוגן ביותר","נתנז — המתקן הגדול ביותר. אלפי מרכזות IR-6 מתקדמות","אספהאן — המרת אורניום (UCF) + מחקר","ארה״ב הצטרפה למבצע ב-22 ביוני והפציצה עם 14 פצצות GBU-57 חודרות בונקר","כל פצצת GBU-57 שוקלת ~14 טון וחודרת עד 60 מטר בסלע","לפי IAEA — 233 ק״ג אורניום ב-60% העשרה היו באתרים לפני התקיפה"]:["Fordow — underground enrichment in mountain. Most protected","Natanz — largest facility. Thousands of advanced IR-6 centrifuges","Isfahan — Uranium Conversion Facility (UCF) + research","US joined June 22, struck with 14 GBU-57 bunker busters","Each GBU-57 weighs ~14 tons, penetrates up to 60m of rock","Per IAEA — 233 kg of 60% enriched uranium at sites before strike"]},
+  {id:"southpars",n:he?"אסלויה / South Pars":"Asaluyeh / South Pars",s:he?"פברואר 2026 (שאגת הארי)":"Feb 2026 (Roaring Lion)",coords:"27.4753,52.6100",
+   short:he?"פטרוכימיה — אמוניה + HNO₃. 85% מהייצוא הפטרוכימי":"Petrochemicals — ammonia + HNO₃. 85% of petrochemical exports",
+   details:he?["שדה הגז הטבעי הגדול ביותר בעולם (משותף עם קטאר)","מכיל מפעלי פטרוכימיה לייצור אמוניה — חומר הגלם לתהליך אוסטוולד","85% מייצוא הפטרוכימי האיראני מגיע מאזור זה","תקיפה באזור זה פוגעת בו-זמנית ביכולת ייצור דלקי טילים וגם בכלכלה","שריפה גדולה במתקן Phase 14 עצרה ייצור 12 מיליון מ״ק גז"]:["World's largest natural gas field (shared with Qatar)","Contains petrochemical plants producing ammonia — Ostwald process feedstock","85% of Iranian petrochemical exports come from this area","Strike simultaneously hits missile fuel production AND economy","Major fire at Phase 14 halted 12 million m³ gas production"]},
+  {id:"shiraz",n:he?"מתקני HNO₃ (כולל שיראז)":"HNO₃ Plants (incl. Shiraz)",s:he?"2026 (מתמשך)":"2026 (ongoing)",coords:"29.5926,52.5836",
+   short:he?"ייצור חומצה חנקתית — צוואר הבקבוק הכימי של תוכנית הטילים":"Nitric acid production — chemical chokepoint of missile program",
+   details:he?["מתקני ייצור חומצה חנקתית (תהליך אוסטוולד) פזורים ברחבי איראן","שיראז — אחד המתקנים האחרונים שנותרו פעילים","חומצה חנקתית = חומר הגלם ל-IRFNA, NTO, RDX/HMX ועדשות גרעיניות","השמדת המתקנים משתקת את כל שרשרת ייצור הנשק","מפעל לייצור טילים בליסטיים בשיראז נפגע כבר במבצע עם כלביא (יוני 2025)"]:["Nitric acid plants (Ostwald process) scattered across Iran","Shiraz — one of last remaining active facilities","Nitric acid = precursor for IRFNA, NTO, RDX/HMX and nuclear lenses","Destroying these plants paralyzes entire weapons production chain","Ballistic missile factory in Shiraz already hit during Im Kalbia (June 2025)"]},
 ];
-return<Sec id="facilities" num="10" title={he?"מתקנים שהותקפו":"Facilities Struck"} subtitle={he?"שלוש גלי תקיפה: 10/2024, 6/2025, 2/2026+":"Three strike waves: 10/2024, 6/2025, 2/2026+"} sidebar={<SB color="amber" title={he?"📦 יבוא מסין":"📦 Chinese Imports"}><p>{he?"חברת הקש Pishgaman Tejarat Rafi Novin רכשה אלפי טונות נתרן פרכלורט (מחמצן לדלק מוצק) מהונג קונג דרך נמל ג׳והאי. כמות מספיקה לייצור ~800 טילים מוצקים. סגירת ערוץ זה = השבתת ייצור דלק מוצק.":"Shell company Pishgaman Tejarat Rafi Novin purchased thousands of tons of sodium perchlorate (solid fuel oxidizer) from Hong Kong via Zhuhai port. Enough for ~800 solid missiles. Closing this channel = solid fuel production shutdown."}</p></SB>}>
-  {fs.map((f,i)=><div key={i} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"14px 0",borderBottom:`1px solid ${P.border}30`}}><div style={{flex:1}}>
-    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4,flexWrap:"wrap"}}>
-      <h4 style={{fontWeight:800,fontSize:15}}>{f.n}</h4>
-      <span className="mn" style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:3,background:P.redS,color:P.red}}>{f.s}</span>
-    </div>
-    <p style={{fontSize:13,color:P.muted,lineHeight:1.6}}>{f.d}</p>
-  </div></div>)}
+return<Sec id="facilities" num="02" title={he?"מתקנים שהותקפו":"Facilities Struck"} subtitle={he?"שלוש גלי תקיפה: 10/2024, 6/2025, 2/2026+":"Three strike waves: 10/2024, 6/2025, 2/2026+"} sidebar={<SB color="amber" title={he?"📦 יבוא מסין":"📦 Chinese Imports"}><p>{he?"חברת הקש Pishgaman Tejarat Rafi Novin רכשה אלפי טונות נתרן פרכלורט מהונג קונג דרך נמל ג׳והאי. כמות ל~800 טילים מוצקים.":"Shell company purchased thousands of tons of sodium perchlorate from HK via Zhuhai. Enough for ~800 solid missiles."}</p></SB>}>
+  <div style={{display:"flex",flexDirection:"column",gap:10}}>
+    {fs.map(f=><div key={f.id} className="cm" style={{padding:0,overflow:"hidden",borderRight:`3px solid ${P.red}`}}>
+      <div style={{padding:"14px 16px",cursor:"pointer"}} onClick={()=>setOpenFac(openFac===f.id?null:f.id)}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",flex:1}}>
+            <h4 style={{fontWeight:800,fontSize:15}}>{f.n}</h4>
+            <span className="mn" style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:3,background:P.redS,color:P.red}}>{f.s}</span>
+            <a href={`https://maps.google.com/?q=${f.coords}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{fontSize:10,color:P.blue,textDecoration:"none",fontWeight:600}}>📍 Google Maps</a>
+          </div>
+          <span style={{fontSize:16,color:P.gold,transition:"transform 0.2s",transform:openFac===f.id?"rotate(180deg)":"rotate(0)"}}>{openFac===f.id?"▲":"▼"}</span>
+        </div>
+        <p style={{fontSize:13,color:P.muted,marginTop:4,lineHeight:1.5}}>{f.short}</p>
+      </div>
+      {openFac===f.id&&<div style={{padding:"0 16px 14px",borderTop:`1px solid ${P.border}40`}}>
+        {f.details.map((d,i)=><p key={i} style={{fontSize:12,color:P.steel,lineHeight:1.7,padding:"4px 0",paddingRight:12,borderRight:`2px solid ${P.red}15`}}>• {d}</p>)}
+      </div>}
+    </div>)}
+  </div>
 </Sec>;}
 
 /* ═══ GLOSSARY — expanded ═══ */
@@ -692,4 +715,4 @@ function Sources({lang}:{lang:string}){const he=lang==="he";const sr=[{n:"CSIS M
 function Footer({lang}:{lang:string}){const he=lang==="he";return<footer style={{borderTop:`1px solid ${P.gold}40`,padding:"36px 20px",background:P.ink,textAlign:"center"}}><div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:10}}><img src="/images/logo-60sec.png" alt="" style={{width:32,height:32,borderRadius:6}}/><span style={{fontSize:14,fontWeight:700,color:P.gold}}>{he?"ניתוח 60 שניות של חומ״ס":"60 Seconds HazMat"}</span></div><p style={{fontSize:13,color:`${P.white}80`,marginBottom:10}}><b style={{color:P.white}}>{he?"רועי צוקרמן":"Roei Zukerman"}</b> — {he?"מומחה לחומ״ס וטב״ק":"HazMat & CBRN Expert"}</p><div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginBottom:14,flexWrap:"wrap"}}><a href="mailto:roiez1@gmail.com" style={{fontSize:12,color:P.gold,textDecoration:"none"}}>✉️ roiez1@gmail.com</a><a href="https://chat.whatsapp.com/K4NzcZucmimKYFOXE3VVtD?mode=gi_t" target="_blank" rel="noopener noreferrer" style={{fontSize:11,fontWeight:700,color:"#22c55e",background:"rgba(34,197,94,0.1)",padding:"5px 14px",borderRadius:6,textDecoration:"none",border:"1px solid rgba(34,197,94,0.25)"}}>💬 WhatsApp</a></div><div style={{height:1,maxWidth:300,margin:"0 auto 10px",background:`linear-gradient(90deg,transparent,${P.gold}60,transparent)`}}/><p style={{fontSize:10,color:`${P.white}25`}}>{he?"מקורות פתוחים | לא מסווג":"Open sources | Unclassified"} | {he?"אפריל 2026":"April 2026"}</p></footer>;}
 
 /* ═══ MAIN ═══ */
-export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><Facilities lang={lang}/><Infographic lang={lang}/><Gallery lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
+export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><Facilities lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><Infographic lang={lang}/><Gallery lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
