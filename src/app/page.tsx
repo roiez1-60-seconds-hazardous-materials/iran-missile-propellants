@@ -9,9 +9,9 @@ const P = {
   muted:"#64748b",border:"#e2e0d8",white:"#fff"
 };
 
-const sIDs=["home","timeline","diagram","arsenal","propulsion","processes","chemistry","hazmat","medical","strategic","facilities","glossary","sources"];
-const sHe=["ראשי","ציר זמן","אנטומיה","ארסנל","הנעה","ייצור","דלקים","חומ״ס","רפואי","אסטרטגי","מתקנים","מקרא","מקורות"];
-const sEn=["Home","Timeline","Anatomy","Arsenal","Propulsion","Production","Fuels","HazMat","Medical","Strategic","Facilities","Glossary","Sources"];
+const sIDs=["home","timeline","diagram","arsenal","rangemap","propulsion","processes","flowdiagram","chemistry","hazmat","medical","strategic","facilities","glossary","sources"];
+const sHe=["ראשי","ציר זמן","אנטומיה","ארסנל","טווחים","הנעה","ייצור","זרימה","דלקים","חומ״ס","רפואי","אסטרטגי","מתקנים","מקרא","מקורות"];
+const sEn=["Home","Timeline","Anatomy","Arsenal","Ranges","Propulsion","Production","Flow","Fuels","HazMat","Medical","Strategic","Facilities","Glossary","Sources"];
 
 function ProgressBar(){const[p,setP]=useState(0);useEffect(()=>{const fn=()=>{const h=document.documentElement.scrollHeight-window.innerHeight;setP(h>0?(window.scrollY/h)*100:0);};window.addEventListener("scroll",fn,{passive:true});return()=>window.removeEventListener("scroll",fn);},[]);return<div style={{position:"fixed",top:0,left:0,right:0,zIndex:100,height:3,background:P.cream}}><div style={{height:"100%",width:`${p}%`,background:`linear-gradient(90deg,${P.gold},${P.gL})`,transition:"width 120ms"}}/></div>;}
 
@@ -358,6 +358,127 @@ return<Sec id="glossary" num="11" title={he?"מקרא מונחים":"Glossary"} 
   <div style={{display:"flex",flexDirection:"column",gap:8}}>{filtered.map((tm,i)=>{const[bg,c]=catC[tm.c]||[P.cream,P.muted];return<div key={i} className="cm" style={{padding:14}}><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{fontWeight:800,color:P.blue,fontSize:14}}>{tm.t}</span><span style={{fontSize:9,fontWeight:700,padding:"1px 6px",borderRadius:3,background:bg,color:c}}>{cats.find(x=>x.k===tm.c)?.l}</span></div><p style={{fontSize:12,color:P.steel,lineHeight:1.7}}>{tm.d}</p></div>;})}</div>
 </Sec>;}
 
+/* ═══ MISSILE RANGE MAP ═══ */
+function RangeMap({lang}:{lang:string}){const he=lang==="he";
+const[hovMissile,setHovMissile]=useState<string|null>(null);
+// Iran center approx: 32.5°N, 53.5°E. SVG centered on Iran.
+// Scale: ~1 degree ≈ 111 km. Map shows ~40° wide (4,400 km radius coverage)
+const cx=250,cy=180; // Iran center in SVG coords
+const scale=0.09; // degrees to SVG pixels (approx)
+const ranges=[
+  {name:he?"פאתח-110":"Fateh-110",r:300,color:"#86efac",dash:""},
+  {name:he?"זולפקאר":"Zolfaghar",r:700,color:"#fde047",dash:""},
+  {name:he?"קיאם":"Qiam",r:1000,color:"#fdba74",dash:""},
+  {name:he?"שהאב-3":"Shahab-3",r:1300,color:"#fb923c",dash:""},
+  {name:he?"ח׳ייבר שכן":"Kheibar Shekan",r:1450,color:"#f87171",dash:""},
+  {name:he?"גדר / עמאד":"Ghadr / Emad",r:1800,color:"#ef4444",dash:""},
+  {name:he?"ח׳ורמשהר / סג׳יל":"Khorramshahr / Sejjil",r:2000,color:"#dc2626",dash:"4,2"},
+];
+const targets=[
+  {name:he?"תל אביב":"Tel Aviv",dist:1550,angle:250},
+  {name:he?"ריאד":"Riyadh",dist:1200,angle:215},
+  {name:he?"אנקרה":"Ankara",dist:1800,angle:300},
+  {name:he?"ניו דלהי":"New Delhi",dist:2400,angle:110},
+  {name:he?"קהיר":"Cairo",dist:2000,angle:245},
+  {name:he?"בגדד":"Baghdad",dist:700,angle:260},
+  {name:he?"דובאי":"Dubai",dist:800,angle:170},
+  {name:he?"דמשק":"Damascus",dist:1200,angle:260},
+  {name:he?"באקו":"Baku",dist:600,angle:345},
+];
+const kmToR=(km:number)=>km*scale;
+const angleToXY=(dist:number,angleDeg:number)=>{const rad=(angleDeg-90)*Math.PI/180;return{x:cx+kmToR(dist)*Math.cos(rad),y:cy+kmToR(dist)*Math.sin(rad)};};
+return<Sec id="rangemap" num="03½" title={he?"מפת טווחי טילים":"Missile Range Map"} subtitle={he?"רדיוס הגעה ממרכז איראן":"Reach radius from central Iran"} dark>
+  <div className="cm" style={{padding:16,overflow:"hidden"}}>
+    <svg viewBox="0 0 500 360" style={{width:"100%",background:"#0f172a",borderRadius:8}}>
+      <defs>
+        <radialGradient id="irG" cx="50%" cy="50%"><stop offset="0%" stopColor="#334155"/><stop offset="100%" stopColor="#0f172a"/></radialGradient>
+      </defs>
+      <rect width="500" height="360" fill="url(#irG)"/>
+      {/* Grid lines */}
+      {[500,1000,1500,2000].map(km=><circle key={km} cx={cx} cy={cy} r={kmToR(km)} fill="none" stroke="#334155" strokeWidth="0.5" strokeDasharray="2,4"/>)}
+      {[500,1000,1500,2000].map(km=><text key={km} x={cx+kmToR(km)+2} y={cy-3} fill="#475569" fontSize="6" fontFamily="monospace">{km} km</text>)}
+      {/* Range circles */}
+      {ranges.slice().reverse().map(rng=><circle key={rng.name} cx={cx} cy={cy} r={kmToR(rng.r)} fill={hovMissile===rng.name?`${rng.color}20`:"none"} stroke={rng.color} strokeWidth={hovMissile===rng.name?1.5:0.8} strokeDasharray={rng.dash} strokeOpacity={hovMissile===rng.name?1:0.5} style={{transition:"all 0.2s",cursor:"pointer"}} onMouseEnter={()=>setHovMissile(rng.name)} onMouseLeave={()=>setHovMissile(null)}/>)}
+      {/* Iran marker */}
+      <circle cx={cx} cy={cy} r={4} fill="#c8a44e" stroke="#fff" strokeWidth="0.5"/>
+      <text x={cx} y={cy-8} textAnchor="middle" fill="#c8a44e" fontSize="7" fontWeight="bold" fontFamily="sans-serif">{he?"איראן":"IRAN"}</text>
+      {/* Target cities */}
+      {targets.map(t=>{const p=angleToXY(t.dist,t.angle);return<g key={t.name}><circle cx={p.x} cy={p.y} r={2} fill="#e2e8f0" stroke="#94a3b8" strokeWidth="0.3"/><text x={p.x} y={p.y-5} textAnchor="middle" fill="#94a3b8" fontSize="5.5" fontFamily="sans-serif">{t.name}</text><text x={p.x} y={p.y+8} textAnchor="middle" fill="#64748b" fontSize="4" fontFamily="monospace">{t.dist} km</text></g>;})}
+    </svg>
+    {/* Legend */}
+    <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:12,justifyContent:"center"}}>
+      {ranges.map(rng=><div key={rng.name} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 8px",borderRadius:4,background:hovMissile===rng.name?`${rng.color}20`:"transparent",cursor:"pointer",transition:"all 0.15s"}} onMouseEnter={()=>setHovMissile(rng.name)} onMouseLeave={()=>setHovMissile(null)}>
+        <div style={{width:10,height:3,background:rng.color,borderRadius:1}}/>
+        <span style={{fontSize:9,color:hovMissile===rng.name?"#e2e8f0":"#94a3b8",fontWeight:hovMissile===rng.name?700:400}}>{rng.name} ({rng.r} km)</span>
+      </div>)}
+    </div>
+  </div>
+</Sec>;}
+
+/* ═══ PRODUCTION FLOW DIAGRAMS ═══ */
+function FlowDiagram({lang}:{lang:string}){const[proc,setProc]=useState(0);const he=lang==="he";
+const diagrams=[
+  {name:he?"אוסטוולד — HNO₃":"Ostwald — HNO₃",ic:"⚗️",nodes:[
+    {id:"nh3",x:30,y:30,w:100,h:50,label:he?"אמוניה":"Ammonia",sub:"NH₃",color:"#3b82f6",params:he?"גז, 25°C":"Gas, 25°C"},
+    {id:"air",x:30,y:110,w:100,h:40,label:he?"אוויר":"Air",sub:"O₂ + N₂",color:"#64748b",params:""},
+    {id:"reactor",x:200,y:50,w:120,h:60,label:he?"כור קטליטי":"Catalytic Reactor",sub:"Pt-Rh 90:10",color:"#dc2626",params:"850°C, 8 atm"},
+    {id:"no",x:390,y:55,w:80,h:40,label:"NO",sub:he?"תחמוצת חנקן":"Nitric Oxide",color:"#f97316",params:he?"גז חם":"Hot gas"},
+    {id:"cool",x:390,y:130,w:80,h:50,label:"NO₂",sub:he?"חמצון + קירור":"Oxidation + Cool",color:"#ea580c",params:he?"גז חום-אדום":"Brown-red gas"},
+    {id:"tower",x:250,y:200,w:120,h:60,label:he?"מגדל ספיגה":"Absorption Tower",sub:"NO₂ + H₂O",color:"#7c3aed",params:"50-80°C"},
+    {id:"hno3",x:250,y:300,w:120,h:50,label:"HNO₃ 68%",sub:he?"חומצה חנקתית":"Nitric Acid",color:"#059669",params:he?"נוזל שקוף":"Clear liquid"},
+    {id:"conc",x:60,y:300,w:120,h:50,label:he?"ריכוז":"Concentration",sub:"+ H₂SO₄",color:"#b91c1c",params:">86%"},
+    {id:"irfna",x:60,y:390,w:120,h:55,label:"IRFNA",sub:"+ N₂O₄ + HF",color:"#dc2626",params:he?"מחמצן לטילים":"Missile Oxidizer"},
+  ],arrows:[
+    [130,55,200,65],[130,130,200,90],[320,75,390,75],[430,95,430,130],[430,180,370,210],[310,260,310,300],[250,325,180,325],[120,350,120,390]
+  ]},
+  {name:he?"רשיג — UDMH":"Raschig — UDMH",ic:"🟣",nodes:[
+    {id:"nh3",x:30,y:30,w:110,h:50,label:he?"אמוניה":"Ammonia",sub:"NH₃",color:"#3b82f6",params:he?"גז / נוזל":"Gas / Liquid"},
+    {id:"naocl",x:30,y:120,w:110,h:50,label:he?"היפוכלוריט":"Hypochlorite",sub:"NaOCl",color:"#64748b",params:he?"אקונומיקה":"Bleach"},
+    {id:"react1",x:220,y:60,w:120,h:60,label:he?"תגובה 1":"Reaction 1",sub:"NH₃ + NaOCl",color:"#7c3aed",params:"0°C (!)"},
+    {id:"cl",x:420,y:65,w:80,h:45,label:he?"כלוראמין":"Chloramine",sub:"NH₂Cl",color:"#dc2626",params:he?"רעיל!":"Toxic!"},
+    {id:"dma",x:420,y:150,w:80,h:45,label:"DMA",sub:"(CH₃)₂NH",color:"#64748b",params:he?"דימתילאמין":"Dimethylamine"},
+    {id:"react2",x:280,y:220,w:130,h:60,label:he?"תגובה 2":"Reaction 2",sub:"NH₂Cl + DMA",color:"#7c3aed",params:he?"לחץ, חום":"Pressure, Heat"},
+    {id:"crude",x:280,y:320,w:130,h:50,label:he?"UDMH גולמי":"Crude UDMH",sub:he?"+ מזהמים":"+ contaminants",color:"#f97316",params:""},
+    {id:"dist",x:120,y:320,w:100,h:50,label:he?"זיקוק":"Distillation",sub:"",color:"#b91c1c",params:"63°C"},
+    {id:"udmh",x:120,y:410,w:100,h:55,label:"UDMH",sub:"H₂NN(CH₃)₂",color:"#9333ea",params:he?"דלק טילים":"Missile Fuel"},
+  ],arrows:[
+    [140,55,220,75],[140,145,220,100],[340,90,420,87],[460,110,460,150],[460,195,410,230],[345,280,345,320],[280,345,220,345],[170,370,170,410]
+  ]},
+  {name:he?"בכמן — RDX":"Bachmann — RDX",ic:"💣",nodes:[
+    {id:"hex",x:30,y:40,w:120,h:50,label:he?"הקסאמין":"Hexamine",sub:"C₆H₁₂N₄",color:"#3b82f6",params:he?"קוביות קמפינג":"Camping cubes"},
+    {id:"hno3",x:30,y:130,w:120,h:50,label:he?"חומצה חנקתית":"Nitric Acid",sub:"HNO₃ (מרוכזת / conc.)",color:"#dc2626",params:">98%"},
+    {id:"react",x:230,y:70,w:140,h:70,label:he?"ניטרציה מבוקרת":"Controlled Nitration",sub:he?"סכנת פיצוץ!":"Explosion risk!",color:"#dc2626",params:"45-75°C (!)"},
+    {id:"wash",x:430,y:75,w:80,h:50,label:he?"שטיפה":"Wash",sub:he?"סינון, ייבוש":"Filter, Dry",color:"#64748b",params:"H₂O"},
+    {id:"rdx",x:430,y:180,w:80,h:55,label:"RDX",sub:he?"הקסוגן":"Hexogen",color:"#f97316",params:"×1.6 TNT"},
+    {id:"hmx",x:430,y:280,w:80,h:55,label:"HMX",sub:he?"אוקטוגן":"Octogen",color:"#dc2626",params:he?"חזק יותר":"Stronger"},
+    {id:"use1",x:220,y:200,w:140,h:40,label:he?"ראשי קרב טילים":"Missile Warheads",sub:"",color:"#b91c1c",params:""},
+    {id:"use2",x:220,y:270,w:140,h:40,label:he?"תוספת לדלק מוצק":"Solid Fuel Additive",sub:"",color:"#b45309",params:""},
+    {id:"use3",x:220,y:340,w:140,h:40,label:he?"עדשות גרעיניות":"Nuclear Lenses",sub:"Implosion",color:"#7c3aed",params:"☢️"},
+  ],arrows:[
+    [150,65,230,90],[150,155,230,120],[370,105,430,100],[470,125,470,180],[470,235,470,280],[430,207,360,220],[430,207,360,290],[470,335,360,360]
+  ]},
+];
+const d=diagrams[proc];
+return<Sec id="flowdiagram" num="05½" title={he?"תרשים זרימת ייצור":"Production Flow Diagram"} subtitle={he?"מחומר גלם ועד מוצר סופי — טמפרטורות, לחצים ותגובות":"From raw material to final product — temperatures, pressures & reactions"}>
+  <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>{diagrams.map((x,i)=><button key={i} onClick={()=>setProc(i)} className={proc===i?"ta":"ti"} style={{padding:"8px 16px",borderRadius:6,fontSize:13,fontWeight:700,cursor:"pointer"}}>{x.ic} {x.name.split("—")[0]}</button>)}</div>
+  <div className="cm" style={{padding:16,overflow:"hidden"}}>
+    <svg viewBox="0 0 540 460" style={{width:"100%",minHeight:300}}>
+      <defs><marker id="ah" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
+      {/* Arrows */}
+      {d.arrows.map((a,i)=><line key={i} x1={a[0]} y1={a[1]} x2={a[2]} y2={a[3]} stroke="#94a3b8" strokeWidth="1.2" markerEnd="url(#ah)" strokeDasharray="4,2"/>)}
+      {/* Nodes */}
+      {d.nodes.map(n=><g key={n.id}>
+        <rect x={n.x} y={n.y} width={n.w} height={n.h} rx="6" fill={`${n.color}15`} stroke={n.color} strokeWidth="1.2"/>
+        <text x={n.x+n.w/2} y={n.y+18} textAnchor="middle" fill={n.color} fontSize="9" fontWeight="bold" fontFamily="'Heebo',sans-serif">{n.label}</text>
+        {n.sub&&<text x={n.x+n.w/2} y={n.y+30} textAnchor="middle" fill="#94a3b8" fontSize="7" fontFamily="monospace">{n.sub}</text>}
+        {n.params&&<text x={n.x+n.w/2} y={n.y+n.h-8} textAnchor="middle" fill={`${n.color}cc`} fontSize="7" fontWeight="600" fontFamily="monospace">{n.params}</text>}
+      </g>)}
+      {/* Title */}
+      <text x="270" y="450" textAnchor="middle" fill="#64748b" fontSize="8" fontFamily="'Heebo',sans-serif">{d.ic} {d.name}</text>
+    </svg>
+  </div>
+</Sec>;}
+
 /* ═══ SOURCES ═══ */
 function Sources({lang}:{lang:string}){const he=lang==="he";const sr=[{n:"CSIS Missile Defense Project",c:he?"מחקרי":"Research"},{n:"Iran Watch — Missile Arsenal",c:he?"מחקרי":"Research"},{n:"USIP — Ballistic Missile Program",c:he?"ממשלתי":"Govt"},{n:"NIOSH/CDC — UDMH Pocket Guide",c:he?"ממשלתי":"Govt"},{n:"PubChem — Chemical Properties",c:he?"ממשלתי":"Govt"},{n:"NOAA CAMEO — IRFNA & NTO",c:he?"ממשלתי":"Govt"},{n:"ERG 2024 — PHMSA/DOT",c:he?"ממשלתי":"Govt"},{n:"NCBI — AEGL Dimethylhydrazine",c:he?"אקדמי":"Academic"},{n:"PMC — Delayed Pulmonary Edema",c:he?"אקדמי":"Academic"},{n:"Alma Center — Iran Missiles",c:he?"מחקרי":"Research"},{n:"IISS Military Balance",c:he?"מחקרי":"Research"},{n:"Critical Threats — Israeli Strikes",c:he?"מחקרי":"Research"}];const cc:Record<string,[string,string]>={[he?"ממשלתי":"Govt"]:[P.greenS,P.green],[he?"מחקרי":"Research"]:[P.blueS,P.blue],[he?"אקדמי":"Academic"]:[P.purpleS,P.purple]};return<Sec id="sources" num="12" title={he?"מקורות":"Sources"}>{sr.map((s,i)=>{const[bg,c]=cc[s.c]||[P.cream,P.muted];return<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:`1px solid ${P.border}30`}}><span style={{color:P.gold}}>🔗</span><span style={{flex:1,fontSize:13,color:P.steel}}>{s.n}</span><span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:3,background:bg,color:c}}>{s.c}</span></div>;})}</Sec>;}
 
@@ -365,4 +486,4 @@ function Sources({lang}:{lang:string}){const he=lang==="he";const sr=[{n:"CSIS M
 function Footer({lang}:{lang:string}){const he=lang==="he";return<footer style={{borderTop:`1px solid ${P.gold}40`,padding:"36px 20px",background:P.ink,textAlign:"center"}}><div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:10}}><div className="mn" style={{width:30,height:30,borderRadius:6,background:P.gold,display:"flex",alignItems:"center",justifyContent:"center",color:P.ink,fontWeight:900,fontSize:11}}>60</div><span style={{fontSize:14,fontWeight:700,color:P.gold}}>{he?"ניתוח 60 שניות של חומ״ס":"60 Seconds HazMat"}</span></div><p style={{fontSize:13,color:`${P.white}80`,marginBottom:10}}><b style={{color:P.white}}>{he?"רועי צוקרמן":"Roei Zukerman"}</b> — {he?"מומחה לחומ״ס וטב״ק":"HazMat & CBRN Expert"}</p><div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginBottom:14}}><span style={{fontSize:12,color:P.gold}}>✉️ roiez1@gmail.com</span></div><div style={{height:1,maxWidth:300,margin:"0 auto 10px",background:`linear-gradient(90deg,transparent,${P.gold}60,transparent)`}}/><p style={{fontSize:10,color:`${P.white}25`}}>{he?"מקורות פתוחים | לא מסווג":"Open sources | Unclassified"} | {he?"אפריל 2026":"April 2026"}</p></footer>;}
 
 /* ═══ MAIN ═══ */
-export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><Facilities lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
+export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><Facilities lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
