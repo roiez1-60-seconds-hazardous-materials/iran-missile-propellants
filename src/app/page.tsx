@@ -62,7 +62,7 @@ const parts=mode==="liquid"?liq:sol;const act=parts.find(p=>p.id===hov);
 return<Sec id="diagram" num="02" title={he?"אנטומיה של טיל בליסטי":"Ballistic Missile Anatomy"} subtitle={he?"עמדו על רכיב בטיל לפרטים מלאים":"Hover over a missile component for full details"} dark sidebar={act?<div className="cm" style={{padding:16,borderRight:`3px solid ${act.c}`}}><h4 className="sf" style={{fontSize:15,fontWeight:800,marginBottom:8}}>{act.lb}</h4><p style={{fontSize:12,color:P.steel,lineHeight:1.8}}>{act.d}</p></div>:<SB color="gold" title={he?"👆 אינטראקטיבי":"👆 Interactive"}><p>{he?"עמדו על רכיב בטיל כדי לראות הסבר מפורט על תפקידו, החומרים ממנו עשוי, והפרמטרים הטכניים.":"Hover on a missile component to see its function, materials, and technical parameters."}</p></SB>}>
   <div style={{display:"flex",gap:8,marginBottom:16}}>{([["liquid","🔵",he?"נוזלי (שהאב-3)":"Liquid (Shahab-3)"],["solid","🟠",he?"מוצק (סג׳יל-2)":"Solid (Sejjil-2)"]] as const).map(([m,ic,lb])=><button key={m} onClick={()=>{setMode(m);setHov(null);}} className={mode===m?"ta":"ti"} style={{padding:"8px 16px",borderRadius:6,fontSize:13,fontWeight:700,cursor:"pointer",transition:"all 0.2s"}}>{ic} {lb}</button>)}</div>
   <div className="cm" style={{padding:20}}>
-    <svg viewBox="0 0 100 32" style={{width:"100%"}}>
+    <svg viewBox="0 0 128 32" style={{width:"100%"}}>
       <defs><linearGradient id="bG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#e0e0e0"/><stop offset="100%" stopColor="#9e9e9e"/></linearGradient></defs>
       {/* Nosecone triangle */}
       <polygon points={`${parts[0].x},16 ${parts[0].x+parts[0].w},11 ${parts[0].x+parts[0].w},21`} fill={hov==="nose"?parts[0].fill:"#bdbdbd"} stroke={hov==="nose"?parts[0].c:"#999"} strokeWidth="0.3" style={{cursor:"pointer",transition:"all 0.2s"}} onMouseEnter={()=>setHov("nose")} onMouseLeave={()=>setHov(null)} onClick={()=>setHov(hov==="nose"?null:"nose")}/>
@@ -84,7 +84,7 @@ return<Sec id="diagram" num="02" title={he?"אנטומיה של טיל בליס�
       <ellipse cx="101.5" cy="16" rx="2" ry="1.8" fill="#fff8e1" opacity="0.9" style={{animation:"flicker 0.15s ease-in-out infinite"}}/>
       {/* Smoke/exhaust particles */}
       {[0,1,2,3,4].map(i=><circle key={`smoke${i}`} cx={112+i*3} cy={16+Math.sin(i*1.5)*2} r={0.6+i*0.3} fill="#94a3b8" style={{animation:`exhaustFlow ${0.8+i*0.2}s ease-out infinite`,animationDelay:`${i*0.15}s`,opacity:0.4-i*0.07}}/>)}
-      <text x="50" y="30" textAnchor="middle" fill="#9ca3af" fontSize="2.2" fontFamily="monospace">{mode==="liquid"?"~16 m (Shahab-3)":"~17.6 m (Sejjil-2)"}</text>
+      <text x="55" y="30" textAnchor="middle" fill="#9ca3af" fontSize="2.2" fontFamily="monospace">{mode==="liquid"?"~16 m (Shahab-3)":"~17.6 m (Sejjil-2)"}</text>
     </svg>
     <div style={{display:"flex",justifyContent:"space-around",marginTop:8,flexWrap:"wrap",gap:4}}>
       {parts.map(p=><span key={p.id} style={{fontSize:9,color:hov===p.id?p.c:P.muted,fontWeight:hov===p.id?800:400,cursor:"pointer",transition:"all 0.15s",borderBottom:hov===p.id?`2px solid ${p.c}`:"2px solid transparent",padding:"2px 4px"}} onMouseEnter={()=>setHov(p.id)} onMouseLeave={()=>setHov(null)}>{p.lb}</span>)}
