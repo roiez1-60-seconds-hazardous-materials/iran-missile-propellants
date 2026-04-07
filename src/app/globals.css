@@ -8,24 +8,16 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Heebo', 'Segoe UI', sans-serif;
-  background: #0a0f1e;
-  color: #f1f5f9;
+  background: #f8fafc;
+  color: #1e293b;
   -webkit-font-smoothing: antialiased;
   line-height: 1.7;
-  letter-spacing: 0.01em;
 }
 
-/* Better spacing for readability */
-p { margin-bottom: 0.75rem; }
 section { scroll-margin-top: 80px; }
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0f172a; }
-::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+::-webkit-scrollbar-track { background: #e2e8f0; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
 
-/* Clean table styling */
 table { border-collapse: separate; border-spacing: 0; }
-th { border-bottom: 1px solid rgba(51,65,85,0.3) !important; }
-tr { border: none !important; }
-td { border-bottom: 1px solid rgba(30,41,59,0.3) !important; }
-tr:last-child td { border-bottom: none !important; }

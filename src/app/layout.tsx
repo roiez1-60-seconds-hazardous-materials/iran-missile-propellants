@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body className="bg-[#0a0f1e] text-slate-100 antialiased overflow-x-hidden">
+      <body className="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
         {children}
       </body>
     </html>

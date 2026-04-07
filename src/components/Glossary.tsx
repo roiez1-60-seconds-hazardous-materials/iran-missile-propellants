@@ -84,7 +84,7 @@ export default function Glossary() {
       <div className="flex flex-wrap gap-2 justify-center mb-4">
         {cats.map(c => (
           <button key={c.k} onClick={() => setCat(c.k)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${cat === c.k ? 'bg-blue-800/60 text-blue-200 border-blue-600/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/30 hover:bg-slate-700/40'}`}>
+            className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${cat === c.k ? 'bg-blue-800/60 text-blue-200 border-blue-600/50' : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-700/40'}`}>
             {h ? c.he : c.en} {cat === c.k && `(${filtered.length})`}
           </button>
         ))}
@@ -93,21 +93,21 @@ export default function Glossary() {
       {/* Search */}
       <input value={search} onChange={e => setSearch(e.target.value)}
         placeholder={h ? 'חיפוש מונח...' : 'Search term...'}
-        className="w-full mb-6 px-5 py-3.5 rounded-2xl bg-slate-900/80 border border-slate-700/50 text-slate-200 placeholder-slate-500 text-sm outline-none focus:border-blue-500/50 transition-colors" />
+        className="w-full mb-6 px-5 py-3.5 rounded-2xl bg-white border border-slate-200 text-slate-700 placeholder-slate-500 text-sm outline-none focus:border-blue-500/50 transition-colors" />
 
       {/* Terms list */}
       <div className="space-y-3">
         {filtered.map((tm, i) => (
           <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className="rounded-2xl bg-slate-800/30 backdrop-blur-sm p-5 hover:border-blue-500/20 transition-all">
+            className="rounded-2xl bg-white backdrop-blur-sm p-5 hover:border-blue-500/20 transition-all">
             <div className="flex items-start justify-between gap-4 mb-2">
-              <span className="font-black text-blue-300 text-base">{tm.t}</span>
+              <span className="font-black text-blue-600 text-base">{tm.t}</span>
               <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border flex-shrink-0 ${
-                tm.c === 'chem' ? 'text-green-400 border-green-700/40 bg-green-950/30' :
-                tm.c === 'proc' ? 'text-purple-400 border-purple-700/40 bg-purple-950/30' :
-                tm.c === 'mil' ? 'text-blue-400 border-blue-700/40 bg-blue-950/30' :
-                tm.c === 'org' ? 'text-amber-400 border-amber-700/40 bg-amber-950/30' :
-                'text-red-400 border-red-700/40 bg-red-950/30'
+                tm.c === 'chem' ? 'text-green-600 border-green-700/40 bg-green-50' :
+                tm.c === 'proc' ? 'text-purple-400 border-purple-700/40 bg-purple-50' :
+                tm.c === 'mil' ? 'text-blue-600 border-blue-700/40 bg-blue-50' :
+                tm.c === 'org' ? 'text-amber-600 border-amber-700/40 bg-amber-50' :
+                'text-red-600 border-red-700/40 bg-red-50'
               }`}>
                 {cats.find(c => c.k === tm.c)?.[lang] || tm.c}
               </span>

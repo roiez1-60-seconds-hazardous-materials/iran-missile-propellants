@@ -40,7 +40,7 @@ export default function Timeline() {
           >
             {/* Year badge - on the line */}
             <div className="flex-shrink-0 w-[55px] md:w-[70px] text-left ml-2 md:ml-4">
-              <div className={`inline-block px-2 py-1 rounded-md text-[11px] md:text-xs font-mono font-black ${i >= 8 ? 'bg-red-900/60 text-red-300 border border-red-700/40' : 'bg-blue-900/50 text-blue-300 border border-blue-700/30'}`}>
+              <div className={`inline-block px-2 py-1 rounded-md text-[11px] md:text-xs font-mono font-black ${i >= 8 ? 'bg-red-100 text-red-600 border border-red-700/40' : 'bg-blue-900/50 text-blue-600 border border-blue-700/30'}`}>
                 {ev.year}
               </div>
             </div>
@@ -50,7 +50,7 @@ export default function Timeline() {
 
             {/* Content */}
             <div className="flex-1 pr-2">
-              <p className="text-sm text-slate-300 leading-relaxed group-hover:text-slate-100 transition-colors">
+              <p className="text-sm text-slate-500 leading-relaxed group-hover:text-slate-800 transition-colors">
                 {lang === 'he' ? ev.he : ev.en}
               </p>
             </div>

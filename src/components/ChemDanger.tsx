@@ -80,7 +80,7 @@ export default function ChemDanger() {
       <div className="flex flex-wrap gap-2 justify-center mb-6">
         {chemicals.map(c => (
           <button key={c.id} onClick={() => setActive(c.id)}
-            className={`px-4 py-2.5 rounded-xl text-sm font-bold border transition-all ${active === c.id ? `bg-slate-800 text-white ${c.color} border-2` : 'bg-slate-900/50 text-slate-400 border-slate-700/30 hover:bg-slate-800/50'}`}>
+            className={`px-4 py-2.5 rounded-xl text-sm font-bold border transition-all ${active === c.id ? `bg-slate-800 text-white ${c.color} border-2` : 'bg-slate-50 text-slate-400 border-slate-200 hover:bg-white'}`}>
             {c.icon} {c.id.toUpperCase()}
           </button>
         ))}
@@ -88,30 +88,30 @@ export default function ChemDanger() {
 
       <AnimatePresence mode="wait">
         <motion.div key={active} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
-          <div className="rounded-2xl bg-slate-800/40 backdrop-blur-sm p-6">
+          <div className="rounded-2xl bg-white shadow-sm backdrop-blur-sm p-6">
             <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-              <h3 className="text-xl font-black text-slate-100">{chem.icon} {g(chem.name)}</h3>
+              <h3 className="text-xl font-black text-slate-800">{chem.icon} {g(chem.name)}</h3>
               <div className="flex gap-2">
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-slate-300 border border-slate-600">{chem.nfpa}</span>
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-900/60 text-blue-300 border border-blue-700/50">ERG {chem.erg}</span>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-slate-500 border border-slate-300">{chem.nfpa}</span>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-600 border border-blue-300">ERG {chem.erg}</span>
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="text-sm font-bold text-blue-300 mb-3">{h ? 'מאפיינים פיסיקליים' : 'Physical Properties'}</h4>
+                <h4 className="text-sm font-bold text-blue-600 mb-3">{h ? 'מאפיינים פיסיקליים' : 'Physical Properties'}</h4>
                 {chem.props.map((p, i) => (
-                  <div key={i} className="flex justify-between py-2 border-b border-slate-800/20 last:border-0 gap-3">
+                  <div key={i} className="flex justify-between py-2 border-b border-slate-100 last:border-0 gap-3">
                     <span className="text-slate-400 text-sm">{g(p.k)}</span>
-                    <span className="text-sm text-slate-100 font-semibold text-left" dir="ltr">{g(p.v)}</span>
+                    <span className="text-sm text-slate-800 font-semibold text-left" dir="ltr">{g(p.v)}</span>
                   </div>
                 ))}
               </div>
               <div>
-                <h4 className="text-sm font-bold text-red-300 mb-3">⚠️ {h ? 'סיכונים ורעילות' : 'Hazards & Toxicity'}</h4>
+                <h4 className="text-sm font-bold text-red-600 mb-3">⚠️ {h ? 'סיכונים ורעילות' : 'Hazards & Toxicity'}</h4>
                 {chem.dangers.map((d, i) => (
-                  <div key={i} className="flex justify-between py-2 border-b border-slate-800/20 last:border-0 gap-3 bg-red-950/10 -mx-2 px-2 rounded">
+                  <div key={i} className="flex justify-between py-2 border-b border-slate-100 last:border-0 gap-3 bg-red-50/50 -mx-2 px-2 rounded">
                     <span className="text-slate-400 text-sm">{g(d.k)}</span>
-                    <span className="text-sm text-red-300 font-semibold text-left" dir="ltr">{g(d.v)}</span>
+                    <span className="text-sm text-red-600 font-semibold text-left" dir="ltr">{g(d.v)}</span>
                   </div>
                 ))}
               </div>
@@ -122,7 +122,7 @@ export default function ChemDanger() {
 
       {/* Hypergolic warning */}
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="mt-6 rounded-xl border-r-4 border-red-600 bg-red-950/30 p-4 text-sm text-red-200">
+        className="mt-6 rounded-xl border-r-4 border-red-600 bg-red-50 p-4 text-sm text-red-200">
         ⚠️ <b>{h ? 'בצקת ריאות מושהית:' : 'Delayed Pulmonary Edema:'}</b> {h ? 'נפגעי IRFNA/NTO עשויים להרגיש הקלה, אך 24-48 שעות לאחר מכן — הצפת ריאות פתאומית וכשל נשימתי קטלני!' : 'IRFNA/NTO casualties may feel relief, but 24-48 hours later — sudden lung flooding and fatal respiratory failure!'}
       </motion.div>
     </section>

@@ -29,7 +29,7 @@ const sources = [
   {n:'IISS — Iran Military Balance',u:'https://www.iiss.org/',c:'research'},
 ];
 
-const catC: Record<string,string> = { gov:'text-green-400 border-green-700/40 bg-green-950/30', academic:'text-purple-400 border-purple-700/40 bg-purple-950/30', research:'text-blue-400 border-blue-700/40 bg-blue-950/30', reference:'text-slate-400 border-slate-600/40 bg-slate-800/30' };
+const catC: Record<string,string> = { gov:'text-green-600 border-green-700/40 bg-green-50', academic:'text-purple-400 border-purple-700/40 bg-purple-50', research:'text-blue-600 border-blue-700/40 bg-blue-50', reference:'text-slate-400 border-slate-300/40 bg-white' };
 const catL: Record<string,Record<string,string>> = { gov:{he:'ממשלתי',en:'Gov'}, academic:{he:'אקדמי',en:'Academic'}, research:{he:'מחקרי',en:'Research'}, reference:{he:'עיון',en:'Reference'} };
 
 export default function Sources() {
@@ -39,12 +39,12 @@ export default function Sources() {
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-l from-blue-300 to-blue-500 mb-2">{t('sources.title')}</h2>
       </motion.div>
-      <div className="rounded-2xl bg-slate-800/30 overflow-hidden divide-y divide-slate-800/20">
+      <div className="rounded-2xl bg-white overflow-hidden divide-y divide-slate-800/20">
         {sources.map((s, i) => (
           <motion.a key={i} href={s.u} target="_blank" rel="noopener noreferrer"
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className="flex items-center gap-3 p-3.5 hover:bg-blue-950/20 transition-all text-slate-400 hover:text-blue-300 group">
-            <span className="text-blue-500/60 group-hover:text-blue-400 transition-colors flex-shrink-0">🔗</span>
+            className="flex items-center gap-3 p-3.5 hover:bg-blue-50 transition-all text-slate-400 hover:text-blue-600 group">
+            <span className="text-blue-500/60 group-hover:text-blue-600 transition-colors flex-shrink-0">🔗</span>
             <span className="text-sm flex-1">{s.n}</span>
             <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${catC[s.c]}`}>
               {catL[s.c]?.[lang] || s.c}

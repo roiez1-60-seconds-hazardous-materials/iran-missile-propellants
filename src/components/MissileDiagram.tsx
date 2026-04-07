@@ -63,16 +63,16 @@ export default function MissileDiagram() {
           <button key={m} onClick={() => { setMode(m); setActive(null); }}
             className={`px-6 py-3 rounded-2xl text-sm font-bold border-2 transition-all duration-300 ${mode === m
               ? m === 'liquid'
-                ? 'bg-blue-900/40 text-blue-200 border-blue-500/60 shadow-[0_0_25px_rgba(59,130,246,0.25)]'
-                : 'bg-amber-900/40 text-amber-200 border-amber-500/60 shadow-[0_0_25px_rgba(245,158,11,0.25)]'
-              : 'bg-slate-800/30 text-slate-500 border-slate-700/30 hover:border-slate-600/50'}`}>
+                ? 'bg-blue-900/40 text-blue-200 border-blue-500/60 '
+                : 'bg-amber-900/40 text-amber-200 border-amber-500/60 '
+              : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300/50'}`}>
             {m === 'liquid' ? `🔵 ${h ? 'טיל נוזלי (שהאב-3)' : 'Liquid (Shahab-3)'}` : `🟠 ${h ? 'טיל מוצק (סג׳יל-2)' : 'Solid (Sejjil-2)'}`}
           </button>
         ))}
       </div>
 
-      <div className="rounded-3xl bg-gradient-to-b from-[#0c1425] to-[#0a0f1e] p-6 md:p-10 overflow-hidden">
-        <svg viewBox="0 0 200 70" className="w-full" preserveAspectRatio="xMidYMid meet" style={{ filter:'drop-shadow(0 4px 15px rgba(0,0,0,0.5))' }}>
+      <div className="rounded-3xl bg-gradient-to-b from-slate-100 to-white p-6 md:p-10 overflow-hidden">
+        <svg viewBox="0 0 200 70" className="w-full" preserveAspectRatio="xMidYMid meet" style={{ filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.1))' }}>
           <defs>
             <pattern id="bp" width="10" height="10" patternUnits="userSpaceOnUse">
               <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(59,130,246,0.04)" strokeWidth="0.15"/>
@@ -203,12 +203,12 @@ export default function MissileDiagram() {
               className="mt-8 rounded-2xl p-6 border backdrop-blur-sm" style={{ borderColor: info.color + '40', backgroundColor: info.color + '08', boxShadow: `0 0 30px ${info.color}15` }}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-4 h-4 rounded-full" style={{ backgroundColor: info.color }} />
-                <h4 className="font-black text-lg text-slate-100">{h ? info.he : info.en}</h4>
+                <h4 className="font-black text-lg text-slate-800">{h ? info.he : info.en}</h4>
               </div>
-              <p className="text-sm text-slate-300 leading-7">{h ? info.desc_he : info.desc_en}</p>
+              <p className="text-sm text-slate-500 leading-7">{h ? info.desc_he : info.desc_en}</p>
             </motion.div>
           ) : (
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-8 text-center text-slate-600 text-sm py-4">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-8 text-center text-slate-500 text-sm py-4">
               {h ? '👆 העבירו את העכבר על חלק בטיל או לחצו עליו' : '👆 Hover over or tap a missile section'}
             </motion.p>
           )}

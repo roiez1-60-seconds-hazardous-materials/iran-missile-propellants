@@ -26,7 +26,7 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#0d0d1a]/80 border-b border-blue-500/20"
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/90 border-b border-slate-200 shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo 60sec + WhatsApp link */}
@@ -38,7 +38,7 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-2 cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-full overflow-hidden border flex-shrink-0 border-amber-500/40" style={{width:36,height:36,maxWidth:36,maxHeight:36,minWidth:36}}>
+            <div className="w-9 h-9 rounded-full overflow-hidden border flex-shrink-0 border-blue-300" style={{width:36,height:36,maxWidth:36,maxHeight:36,minWidth:36}}>
               <img
                 src="/images/logo-60sec.png"
                 alt="60 שניות של חומ״ס"
@@ -51,7 +51,7 @@ export default function Navbar() {
               />
             </div>
             <motion.span
-              className="text-xs text-amber-400/80 hidden sm:block"
+              className="text-xs text-blue-600 hidden sm:block"
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
@@ -67,7 +67,7 @@ export default function Navbar() {
             transition={{ delay: 0.5 }}
           >
             <span className="text-red-500 font-mono text-xs animate-pulse">●</span>
-            <span className="text-sm font-semibold text-gray-300 tracking-wider">
+            <span className="text-sm font-semibold text-slate-500 tracking-wider">
               {t('nav.title')}
             </span>
           </motion.div>
@@ -84,7 +84,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * i }}
                   whileHover={{ scale: 1.05, color: '#60a5fa' }}
-                  className="px-2 py-1 text-xs text-gray-400 hover:text-blue-400 transition-colors rounded"
+                  className="px-2 py-1 text-xs text-slate-400 hover:text-blue-600 transition-colors rounded"
                 >
                   {t(`nav.${s}`)}
                 </motion.button>
@@ -97,7 +97,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.15 }}
               whileTap={{ scale: 0.9, rotate: 180 }}
               transition={{ type: 'spring', stiffness: 300 }}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-bold hover:bg-blue-500/20"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full border border-blue-300 bg-blue-50 text-blue-600 text-sm font-bold hover:bg-blue-100"
             >
               <motion.div
                 animate={{ rotate: lang === 'he' ? 0 : 360 }}
@@ -127,7 +127,7 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-16 left-0 right-0 z-40 backdrop-blur-xl bg-[#0d0d1a]/95 border-b border-blue-500/20 lg:hidden"
+            className="fixed top-16 left-0 right-0 z-40 backdrop-blur-xl bg-white/98 border-b border-blue-500/20 lg:hidden"
           >
             <div className="flex flex-col p-4 gap-1">
               {sections.map((s, i) => (
@@ -137,7 +137,7 @@ export default function Navbar() {
                   initial={{ opacity: 0, x: lang === 'he' ? 50 : -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.05 * i }}
-                  className="py-3 px-4 text-right text-gray-300 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all text-sm"
+                  className="py-3 px-4 text-right text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all text-sm"
                 >
                   {t(`nav.${s}`)}
                 </motion.button>

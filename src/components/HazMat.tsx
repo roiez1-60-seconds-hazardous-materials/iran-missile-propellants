@@ -32,13 +32,13 @@ export default function HazMat() {
       <div className="space-y-4">
         {protocols.map((p, pi) => (
           <motion.div key={pi} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className={`rounded-2xl border-r-4 ${p.c} border border-slate-700/50 bg-slate-800/70 backdrop-blur-sm p-6`}>
-            <h3 className="text-lg font-black text-slate-100 mb-4">{g(p.t)}</h3>
+            className={`rounded-2xl border-r-4 ${p.c} border border-slate-200 bg-white backdrop-blur-sm p-6`}>
+            <h3 className="text-lg font-black text-slate-800 mb-4">{g(p.t)}</h3>
             <div className="space-y-3">
               {p.items.map((it, ii) => (
-                <div key={ii} className="flex gap-3 items-start bg-slate-900/50 rounded-xl p-3">
+                <div key={ii} className="flex gap-3 items-start bg-slate-50 rounded-xl p-3">
                   <span className="text-xl flex-shrink-0">{it.i}</span>
-                  <div><b className="text-sm text-slate-200">{g(it.l)}: </b><span className="text-sm text-slate-400">{g(it.x)}</span></div>
+                  <div><b className="text-sm text-slate-700">{g(it.l)}: </b><span className="text-sm text-slate-500">{g(it.x)}</span></div>
                 </div>
               ))}
             </div>

@@ -76,7 +76,7 @@ export default function Simulation() {
       <div className="flex flex-wrap gap-2 justify-center mb-6">
         {scenarios.map((s,i) => (
           <button key={i} onClick={() => {setSi(i);setPi(0);setPlay(false);}}
-            className={`px-4 py-2.5 rounded-xl text-sm font-bold border transition-all ${si===i ? 'bg-slate-700 text-white border-slate-500' : 'bg-slate-900/50 text-slate-400 border-slate-700/30 hover:bg-slate-800/50'}`}>
+            className={`px-4 py-2.5 rounded-xl text-sm font-bold border transition-all ${si===i ? 'bg-slate-700 text-white border-slate-500' : 'bg-slate-50 text-slate-400 border-slate-200 hover:bg-white'}`}>
             {s.icon} {g(s.t)}
           </button>
         ))}
@@ -84,23 +84,23 @@ export default function Simulation() {
 
       <AnimatePresence mode="wait">
         <motion.div key={si} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-          className={`rounded-2xl border border-slate-700/50 bg-slate-800/70 backdrop-blur-sm p-6 border-r-4 ${sc.c==='red'?'border-r-red-600':sc.c==='purple'?'border-r-purple-600':'border-r-amber-600'}`}>
+          className={`rounded-2xl border border-slate-200 bg-white backdrop-blur-sm p-6 border-r-4 ${sc.c==='red'?'border-r-red-600':sc.c==='purple'?'border-r-purple-600':'border-r-amber-600'}`}>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Display area */}
             <div>
-              <div className={`rounded-xl p-8 text-center border ${sc.c==='red'?'border-red-700/40 bg-red-950/20':sc.c==='purple'?'border-purple-700/40 bg-purple-950/20':'border-amber-700/40 bg-amber-950/20'}`}>
+              <div className={`rounded-xl p-8 text-center border ${sc.c==='red'?'border-red-700/40 bg-red-50':sc.c==='purple'?'border-purple-700/40 bg-purple-950/20':'border-amber-700/40 bg-amber-50'}`}>
                 <div className="text-6xl mb-3">{phIcons[si]?.[pi] || ph.ic}</div>
-                <div className="text-xs font-mono text-slate-500 mb-2 bg-slate-900/60 inline-block px-3 py-1 rounded-full">{ph.t}</div>
-                <div className={`text-lg font-black mb-2 ${sc.c==='red'?'text-red-300':sc.c==='purple'?'text-purple-300':'text-amber-300'}`}>{g(ph.e)}</div>
-                <p className="text-sm text-slate-400">{g(ph.d)}</p>
+                <div className="text-xs font-mono text-slate-400 mb-2 bg-slate-900/60 inline-block px-3 py-1 rounded-full">{ph.t}</div>
+                <div className={`text-lg font-black mb-2 ${sc.c==='red'?'text-red-600':sc.c==='purple'?'text-purple-600':'text-amber-600'}`}>{g(ph.e)}</div>
+                <p className="text-sm text-slate-500">{g(ph.d)}</p>
                 <div className="flex items-center justify-center gap-2 mt-4">
                   <div className="flex gap-1">{[...Array(5)].map((_,i) => <div key={i} className={`w-2.5 h-6 rounded-sm transition-all duration-500 ${i < ph.sev ? sevColors[ph.sev] : 'bg-slate-700/50'}`} />)}</div>
-                  <span className={`text-xs font-bold ${ph.sev >= 4 ? 'text-red-400' : 'text-amber-400'}`}>{sevLabels[lang][ph.sev]}</span>
+                  <span className={`text-xs font-bold ${ph.sev >= 4 ? 'text-red-600' : 'text-amber-600'}`}>{sevLabels[lang][ph.sev]}</span>
                 </div>
               </div>
               <div className="flex gap-2 mt-4">
-                <button onClick={() => {setPi(0);setPlay(true);}} className={`flex-1 py-2.5 rounded-xl font-bold text-sm border ${play?'bg-slate-700 text-slate-400 border-slate-600':'bg-blue-900/60 text-blue-200 border-blue-600/50'}`}>
+                <button onClick={() => {setPi(0);setPlay(true);}} className={`flex-1 py-2.5 rounded-xl font-bold text-sm border ${play?'bg-slate-700 text-slate-400 border-slate-300':'bg-blue-100 text-blue-200 border-blue-600/50'}`}>
                   {play ? '⏸' : '▶️'} {h?play?'פועל...':'הפעל סימולציה':play?'Running...':'Run Simulation'}
                 </button>
                 {sc.phases.map((_,i) => <button key={i} onClick={() => {setPi(i);setPlay(false);}} className={`w-9 h-9 rounded-lg text-xs font-bold ${pi===i?'bg-blue-800/80 text-blue-200':'bg-slate-800/60 text-slate-500'}`}>{i+1}</button>)}
@@ -111,19 +111,19 @@ export default function Simulation() {
             <div className="space-y-2">
               {sc.phases.map((p,i) => (
                 <div key={i} onClick={() => {setPi(i);setPlay(false);}}
-                  className={`p-3 rounded-xl cursor-pointer border transition-all ${pi===i ? `border-slate-500 bg-slate-700/50` : 'border-slate-700/20 bg-slate-900/30 hover:bg-slate-800/40'}`}>
+                  className={`p-3 rounded-xl cursor-pointer border transition-all ${pi===i ? `border-slate-500 bg-slate-700/50` : 'border-slate-100 bg-slate-50/80 hover:bg-white shadow-sm'}`}>
                   <div className="flex items-start gap-3">
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${pi===i?'bg-blue-800 text-blue-200':'bg-slate-700 text-slate-400'}`}>{i+1}</div>
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${pi===i?'bg-blue-800 text-blue-200':'bg-slate-700 text-slate-500'}`}>{i+1}</div>
                     <div>
-                      <div className="flex items-center gap-2"><span className="text-[10px] font-mono text-slate-500 bg-slate-800/50 px-1.5 py-0.5 rounded">{p.t}</span><span className={`text-sm font-bold ${pi===i?'text-slate-100':'text-slate-300'}`}>{g(p.e)}</span></div>
+                      <div className="flex items-center gap-2"><span className="text-[10px] font-mono text-slate-400 bg-white px-1.5 py-0.5 rounded">{p.t}</span><span className={`text-sm font-bold ${pi===i?'text-slate-800':'text-slate-600'}`}>{g(p.e)}</span></div>
                       {pi===i && <motion.p initial={{opacity:0,y:5}} animate={{opacity:1,y:0}} className="text-xs text-slate-400 mt-1">{g(p.d)}</motion.p>}
                     </div>
                   </div>
                 </div>
               ))}
-              <div className={`p-3 rounded-xl ${sc.c==='red'?'bg-red-950/30 border-red-700/40':sc.c==='purple'?'bg-purple-950/30 border-purple-700/40':'bg-amber-950/30 border-amber-700/40'} border`}>
-                <div className={`text-xs font-bold mb-1 ${sc.c==='red'?'text-red-300':sc.c==='purple'?'text-purple-300':'text-amber-300'}`}>🛡️ {h?'מענה נדרש:':'Required Response:'}</div>
-                <div className="text-xs text-slate-400">{g(sc.resp)}</div>
+              <div className={`p-3 rounded-xl ${sc.c==='red'?'bg-red-50 border-red-700/40':sc.c==='purple'?'bg-purple-50 border-purple-700/40':'bg-amber-50 border-amber-700/40'} border`}>
+                <div className={`text-xs font-bold mb-1 ${sc.c==='red'?'text-red-600':sc.c==='purple'?'text-purple-600':'text-amber-600'}`}>🛡️ {h?'מענה נדרש:':'Required Response:'}</div>
+                <div className="text-xs text-slate-500">{g(sc.resp)}</div>
               </div>
             </div>
           </div>

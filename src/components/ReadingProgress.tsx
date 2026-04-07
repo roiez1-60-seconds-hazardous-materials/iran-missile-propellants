@@ -16,7 +16,7 @@ export function ProgressBar() {
   }, []);
 
   return (
-    <div className="fixed top-16 left-0 right-0 z-40 h-[3px] bg-transparent">
+    <div className="fixed top-16 left-0 right-0 z-40 h-[3px] bg-slate-100">
       <motion.div
         className="h-full rounded-full"
         style={{
