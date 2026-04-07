@@ -1,676 +1,460 @@
 'use client';
-import { LangProvider, useLang } from '@/lib/LanguageContext';
 import { useState, useEffect } from 'react';
 
-/* ====== PROGRESS BAR ====== */
-function ProgressBar() {
-  const [p, setP] = useState(0);
-  useEffect(() => {
-    const fn = () => setP(document.documentElement.scrollHeight - window.innerHeight > 0 ? (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 : 0);
-    window.addEventListener('scroll', fn); return () => window.removeEventListener('scroll', fn);
-  }, []);
-  return <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gray-100"><div className="h-full bg-blue-800 transition-all duration-150" style={{width:`${p}%`}}/></div>;
+const P = {
+  ink:"#0c1222",navy:"#162040",steel:"#1e293b",gold:"#c8a44e",gL:"#e8d5a0",
+  cream:"#f5f0e8",parch:"#faf7f0",red:"#b91c1c",redS:"#fef2f2",
+  blue:"#1e40af",blueS:"#eff6ff",amber:"#92400e",amberS:"#fffbeb",
+  purple:"#6b21a8",purpleS:"#faf5ff",green:"#166534",greenS:"#f0fdf4",
+  muted:"#64748b",border:"#e2e0d8",white:"#fff"
+};
+
+const sIDs=["home","timeline","diagram","arsenal","propulsion","chemistry","processes","strategic","facilities","hazmat","glossary","sources"];
+const sHe=["ראשי","ציר זמן","אנטומיה","ארסנל","הנעה","כימיה","ייצור","אסטרטגי","מתקנים","חומ״ס","מקרא","מקורות"];
+const sEn=["Home","Timeline","Anatomy","Arsenal","Propulsion","Chemistry","Production","Strategic","Facilities","HazMat","Glossary","Sources"];
+
+function ProgressBar(){
+  const[p,setP]=useState(0);
+  useEffect(()=>{const fn=()=>{const h=document.documentElement.scrollHeight-window.innerHeight;setP(h>0?(window.scrollY/h)*100:0);};window.addEventListener("scroll",fn,{passive:true});return()=>window.removeEventListener("scroll",fn);},[]);
+  return <div style={{position:"fixed",top:0,left:0,right:0,zIndex:100,height:3,background:P.cream}}><div style={{height:"100%",width:`${p}%`,background:`linear-gradient(90deg,${P.gold},${P.gL})`,transition:"width 120ms"}}/></div>;
 }
 
-/* ====== NAVBAR ====== */
-function Nav() {
-  const { lang, toggle } = useLang();
-  const [open, setOpen] = useState(false);
-  const links = [
-    ['home','ראשי'],['timeline','ציר זמן'],['diagram','טיל'],['arsenal','ארסנל'],
-    ['chemistry','כימיה'],['processes','ייצור'],['facilities','מתקנים'],['hazmat','חומ״ס'],
-    ['glossary','מקרא'],['gallery','גלריה'],['sources','מקורות']
+function Nav({lang,toggle}:{lang:string;toggle:()=>void}){
+  const[open,setOpen]=useState(false);
+  const labels=lang==="he"?sHe:sEn;
+  return<><nav className="nv"><div style={{maxWidth:1100,margin:"0 auto",padding:"0 16px",height:48,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+    <div style={{display:"flex",alignItems:"center",gap:10}}>
+      <div className="mn" style={{width:30,height:30,borderRadius:6,background:P.ink,display:"flex",alignItems:"center",justifyContent:"center",color:P.gold,fontWeight:900,fontSize:11}}>60</div>
+      <span style={{fontSize:10,fontWeight:700,color:P.muted}}>60 שניות חומ״ס</span>
+    </div>
+    <div className="hd-links" style={{display:"flex",gap:2,alignItems:"center"}}>
+      {labels.map((s,i)=><a key={i} href={`#${sIDs[i]}`} style={{padding:"6px 8px",fontSize:10,color:P.muted,textDecoration:"none",borderRadius:4}}>{s}</a>)}
+      <button onClick={toggle} className="mn" style={{padding:"5px 14px",fontSize:11,fontWeight:800,background:P.ink,color:P.gold,border:"none",borderRadius:4,cursor:"pointer",marginInlineStart:8}}>{lang==="he"?"EN":"עב"}</button>
+    </div>
+    <button className="mob-btn" onClick={()=>setOpen(!open)} style={{display:"none",alignItems:"center",justifyContent:"center",background:"none",border:"none",cursor:"pointer",color:P.muted,fontSize:22}}>☰</button>
+  </div></nav>
+  {open&&<div className="mob-menu" style={{position:"fixed",top:51,left:0,right:0,zIndex:89,background:P.white,borderBottom:`1px solid ${P.border}`,padding:8,boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+    {labels.map((s,i)=><a key={i} href={`#${sIDs[i]}`} onClick={()=>setOpen(false)} style={{display:"block",padding:"10px 16px",fontSize:13,color:P.steel,textDecoration:"none",borderRadius:4}}>{s}</a>)}
+    <button onClick={()=>{toggle();setOpen(false);}} style={{display:"block",width:"100%",padding:"10px 16px",fontSize:13,fontWeight:700,background:P.ink,color:P.gold,border:"none",borderRadius:4,cursor:"pointer",marginTop:4}}>{lang==="he"?"English":"עברית"}</button>
+  </div>}</>;
+}
+
+function Hero({lang}:{lang:string}){
+  const he=lang==="he";
+  return<section id="home" className="mh" style={{paddingTop:80,paddingBottom:60,position:"relative"}}>
+    <div style={{maxWidth:800,margin:"0 auto",padding:"0 24px",textAlign:"center",position:"relative",zIndex:1}}>
+      <div className="mn au" style={{display:"inline-block",border:`1px solid ${P.gold}50`,padding:"3px 16px",borderRadius:2,color:P.gold,fontSize:10,fontWeight:700,letterSpacing:"0.3em",marginBottom:20}}>[ {he?"לא מסווג":"UNCLASSIFIED"} ]</div>
+      <p className="au" style={{fontSize:10,letterSpacing:"0.25em",color:`${P.gL}70`,textTransform:"uppercase",marginBottom:16}}>Intelligence Dossier • {he?"אפריל 2026":"April 2026"}</p>
+      <h1 className="sf au" style={{fontSize:"clamp(26px,5vw,50px)",fontWeight:900,color:P.white,lineHeight:1.15,marginBottom:12}}>{he?"מערך ייצור הטילים והדלקים של איראן":"Iran's Missile & Propellant Production Complex"}</h1>
+      <h2 className="sf au" style={{fontSize:"clamp(14px,2vw,20px)",fontWeight:400,color:`${P.gL}90`,marginBottom:16}}>{he?"תיק מודיעין טכנולוגי-טקטי":"Tech-Tactical Intelligence Dossier"}</h2>
+      <div className="gr au" style={{margin:"0 auto 16px"}}/>
+      <p className="au" style={{fontSize:13,color:`${P.white}70`,maxWidth:560,margin:"0 auto 32px",lineHeight:1.8}}>{he?"ניתוח אסטרטגי: טכנולוגיות הנעה, דלקים, תהליכי ייצור, מתקנים, סיכוני חומ״ס ופרוטוקולי חירום (ERG 2024)":"Strategic analysis: propulsion technologies, fuels, production processes, facilities, HazMat risks & emergency protocols (ERG 2024)"}</p>
+      <div className="au" style={{display:"flex",justifyContent:"center",gap:"clamp(16px,5vw,48px)",flexWrap:"wrap",marginBottom:28}}>
+        {[{n:"16",l:he?"סוגי טילים":"Missile Types",c:P.gold},{n:"3,000+",l:he?"טילים (IISS)":"Est. Missiles",c:P.gold},{n:"6",l:he?"מתקנים שהותקפו":"Facilities Struck",c:"#ef4444"},{n:"3",l:he?"תהליכי ייצור":"Critical Processes",c:P.gL}].map((s,i)=>
+          <div key={i} style={{textAlign:"center"}}><div className="sf" style={{fontSize:"clamp(22px,3.5vw,36px)",fontWeight:900,color:s.c}}>{s.n}</div><div style={{fontSize:9,color:`${P.white}50`}}>{s.l}</div></div>
+        )}
+      </div>
+      <p className="au" style={{fontSize:11,color:`${P.gL}50`}}>{he?"רועי צוקרמן — מומחה לחומ״ס וטב״ק":"Roei Zukerman — HazMat & CBRN Expert"}</p>
+    </div>
+  </section>;
+}
+
+function Sec({id,num,title,subtitle,children,sidebar,dark}:{id:string;num:string;title:string;subtitle?:string;children:React.ReactNode;sidebar?:React.ReactNode;dark?:boolean}){
+  return<section id={id} style={{padding:"48px 20px",background:dark?P.cream:P.parch,borderBottom:`1px solid ${P.border}`,position:"relative"}}>
+    <div style={{maxWidth:1100,margin:"0 auto",position:"relative"}}>
+      <div className="sf" style={{position:"absolute",top:-14,right:-5,fontSize:80,fontWeight:900,color:`${P.gold}08`,lineHeight:1,userSelect:"none",pointerEvents:"none"}}>{num}</div>
+      <div style={{marginBottom:24,position:"relative",zIndex:1}}>
+        <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:4}}>
+          <span className="mn" style={{fontSize:11,fontWeight:700,color:P.gold}}>{num}</span>
+          <h2 className="sf" style={{fontSize:"clamp(20px,3vw,30px)",fontWeight:800,color:P.ink}}>{title}</h2>
+        </div>
+        {subtitle&&<p style={{fontSize:13,color:P.muted,marginTop:2}}>{subtitle}</p>}
+        <div className="gr" style={{marginTop:10}}/>
+      </div>
+      <div style={{display:"flex",gap:28,flexWrap:"wrap"}}>
+        <div style={{flex:"1 1 500px",minWidth:0}}>{children}</div>
+        {sidebar&&<aside style={{flex:"0 1 280px",display:"flex",flexDirection:"column",gap:14}}>{sidebar}</aside>}
+      </div>
+    </div>
+  </section>;
+}
+
+function SB({color,title,children}:{color:string;title:string;children:React.ReactNode}){
+  const cs:Record<string,[string,string]>={blue:[P.blueS,P.blue],red:[P.redS,P.red],amber:[P.amberS,P.amber],purple:[P.purpleS,P.purple],green:[P.greenS,P.green],gold:[`${P.gold}10`,P.gold]};
+  const[bg,bc]=cs[color]||cs.blue;
+  return<div className="cm" style={{padding:16,borderRight:`3px solid ${bc}`,background:bg}}><h4 style={{fontSize:10,fontWeight:800,color:bc,marginBottom:8,textTransform:"uppercase",letterSpacing:"0.05em"}}>{title}</h4><div style={{fontSize:12,color:P.steel,lineHeight:1.7}}>{children}</div></div>;
+}
+
+function Timeline({lang}:{lang:string}){
+  const he=lang==="he";
+  const ev=[
+    {y:"1984",h:"רכישת 20 טילי Scud-B מלוב — תחילת תוכנית הטילים",e:"20 Scud-B missiles from Libya — program begins"},
+    {y:"1988",h:"מלחמת איראן-עירק: שיגור Scud. הנדסה הפוכה סובייטית",e:"Iran-Iraq War: Scud launches. Soviet reverse-engineering"},
+    {y:"1998",h:"שהאב-3 — טווח 1,300 ק״מ. מבוסס Nodong",e:"Shahab-3 — 1,300 km. Based on Nodong"},
+    {y:"2004",h:"גדר — מיכלי דלק מורחבים, טווח 2,000 ק״מ",e:"Ghadr — extended tanks, 2,000 km"},
+    {y:"2008",h:"סג׳יל-1 — פריצת דרך בדלק מוצק דו-שלבי",e:"Sejjil-1 — solid fuel breakthrough"},
+    {y:"2015",h:"עמאד — ראשון עם MaRV",e:"Emad — first with MaRV"},
+    {y:"2017",h:"ח׳ורמשהר — 2,000 ק״מ, 1,500 ק״ג",e:"Khorramshahr — 2,000 km, 1,500 kg"},
+    {y:"2023",h:"פתאח-1 היפרסוני. ח׳ייבר שכן עם MaRV",e:"Fattah-1 hypersonic. Kheibar Shekan w/ MaRV"},
+    {y:"10/24",h:"תקיפת פרצ׳ין וח׳וג׳יר — השמדת מערבלים",e:"Parchin & Khojir — mixers destroyed",r:true},
+    {y:"2/26",h:"מבצע שאגת האריה — South Pars, אספהאן",e:"Op. Roar of the Lion — South Pars, Isfahan",r:true},
+    {y:"4/26",h:"תקיפת מתקן HNO₃ בשיראז",e:"Shiraz HNO₃ plant struck",r:true},
   ];
-  return <>
-    <nav className="fixed top-1 left-0 right-0 z-40 bg-white/95 backdrop-blur border-b border-gray-100">
-      <div className="max-w-5xl mx-auto px-4 h-11 flex items-center justify-between">
-        <a href="https://chat.whatsapp.com/K4NzcZucmimKYFOXE3VVtD?mode=gi_t" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-          <img src="/images/logo-60sec.png" alt="" className="w-7 h-7 rounded" style={{width:28,height:28}}/>
-          <span className="text-[10px] text-gray-400 font-bold hidden sm:block">60 שניות חומ״ס</span>
-        </a>
-        <div className="hidden md:flex gap-1">{links.map(([id,he])=><a key={id} href={`#${id}`} className="px-2 py-1 text-[11px] text-gray-400 hover:text-blue-800 transition-colors">{he}</a>)}</div>
-        <div className="flex items-center gap-2">
-          <button onClick={toggle} className="text-[11px] font-bold text-blue-800 bg-blue-50 px-2.5 py-1 rounded hover:bg-blue-100">{lang==='he'?'EN':'עב'}</button>
-          <button onClick={()=>setOpen(!open)} className="md:hidden text-gray-400"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-        </div>
-      </div>
-    </nav>
-    {open && <div className="fixed top-12 inset-x-0 z-40 bg-white border-b border-gray-200 shadow-lg md:hidden p-2">
-      {links.map(([id,he])=><a key={id} href={`#${id}`} onClick={()=>setOpen(false)} className="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-50 rounded">{he}</a>)}
-    </div>}
-  </>;
+  return<Sec id="timeline" num="01" title={he?"ציר זמן: תוכנית הטילים":"Timeline"} subtitle={he?"מסקאד ועד היפרסוני":"Scud to Hypersonic"}
+    sidebar={<><SB color="gold" title={he?"נקודות מפנה":"Turning Points"}><p><b>1998</b> — Scud→Shahab (×4)</p><p><b>2008</b> — Liquid→Solid</p><p><b>2024</b> — Production strikes</p></SB><SB color="red" title="⚠️"><p>{he?"תקיפות 2024-2026 פגעו בשרשרת האספקה הכימית.":"2024-2026 strikes hit the chemical supply chain."}</p></SB></>}>
+    {ev.map((e,i)=><div key={i} style={{display:"flex",gap:14,alignItems:"flex-start",padding:"12px 0",borderBottom:`1px solid ${P.border}30`}}>
+      <div className="mn" style={{flexShrink:0,width:48,fontSize:12,fontWeight:700,color:e.r?P.red:P.gold,textAlign:"center"}}>{e.y}</div>
+      <div style={{width:8,height:8,borderRadius:"50%",border:`2px solid ${e.r?P.red:P.gold}`,background:e.r?P.red:"transparent",flexShrink:0,marginTop:5}}/>
+      <p style={{fontSize:13,color:e.r?P.red:P.steel,fontWeight:e.r?600:400}}>{he?e.h:e.e}</p>
+    </div>)}
+  </Sec>;
 }
 
-/* ====== HERO — Magazine Masthead ====== */
-function Hero() {
-  const { t } = useLang();
-  return (
-    <section id="home" className="pt-16 pb-10 px-4 border-b border-gray-100">
-      <div className="max-w-3xl mx-auto text-center">
-        <div className="inline-block px-3 py-0.5 border border-green-600 rounded text-green-700 text-[10px] font-bold tracking-widest mb-4">לא מסווג</div>
-        <p className="text-[10px] tracking-[0.25em] text-gray-400 uppercase mb-2">Intelligence Dossier • April 2026</p>
-        <h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-3 leading-tight">{t('title')}</h1>
-        <h2 className="text-base md:text-xl text-gray-500 font-light mb-3">{t('subtitle')}</h2>
-        <div className="w-12 h-0.5 bg-blue-900 mx-auto mb-3"/>
-        <p className="text-xs text-gray-400 max-w-lg mx-auto mb-6">{t('desc')}</p>
-        <div className="flex justify-center gap-10 mb-6">
-          {[['16','סוגי טילים','text-blue-900'],['3,000+','טילים (IISS)','text-blue-900'],['6','מתקנים שהותקפו','text-red-800'],['3','תהליכי ייצור','text-amber-800']].map(([n,l,c],i)=>(
-            <div key={i} className="text-center"><div className={`text-2xl md:text-3xl font-black ${c}`}>{n}</div><div className="text-[9px] text-gray-400">{l}</div></div>
-          ))}
-        </div>
-        <p className="text-[11px] text-gray-300">רועי צוקרמן — מומחה לחומ״ס וטב״ק</p>
-      </div>
-    </section>
-  );
-}
-
-/* ====== SECTION WRAPPER — Magazine article style ====== */
-function Section({ id, num, title, subtitle, children, sidebar }: { id:string; num:string; title:string; subtitle?:string; children:React.ReactNode; sidebar?:React.ReactNode }) {
-  return (
-    <section id={id} className="py-10 px-4 border-b border-gray-50">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-6">
-          <span className="text-blue-900 font-black text-lg ml-2">{num}.</span>
-          <h2 className="text-2xl md:text-3xl font-black text-gray-900 inline">{title}</h2>
-          {subtitle && <p className="text-sm text-gray-400 mt-1">{subtitle}</p>}
-          <div className="w-10 h-0.5 bg-blue-900 mt-2"/>
-        </div>
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 min-w-0">{children}</div>
-          {sidebar && <aside className="lg:w-72 flex-shrink-0 space-y-4">{sidebar}</aside>}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ====== INFO BOX (sidebar) ====== */
-function InfoBox({ color, title, children }: { color:'blue'|'red'|'amber'|'purple'|'green'; title:string; children:React.ReactNode }) {
-  const c = { blue:'border-r-blue-900 bg-blue-50', red:'border-r-red-800 bg-red-50', amber:'border-r-amber-700 bg-amber-50', purple:'border-r-purple-700 bg-purple-50', green:'border-r-green-700 bg-green-50' };
-  const t = { blue:'text-blue-900', red:'text-red-800', amber:'text-amber-800', purple:'text-purple-800', green:'text-green-800' };
-  return <div className={`rounded-lg p-4 border-r-[3px] ${c[color]}`}><h4 className={`text-xs font-black mb-2 ${t[color]}`}>{title}</h4><div className="text-xs text-gray-600 leading-relaxed">{children}</div></div>;
-}
-
-/* ====== TIMELINE ====== */
-function Timeline() {
-  const events = [
-    {y:'1984',t:'איראן רוכשת 20 טילי Scud-B מלוב — תחילת תוכנית הטילים'},
-    {y:'1988',t:'מלחמת איראן-עירק: שיגור טילי Scud. חסן טהראני מוקדאם מוביל הנדסה הפוכה של טכנולוגיה סובייטית'},
-    {y:'1998',t:'שהאב-3 נחשף — טווח 1,300 ק״מ. מבוסס Nodong צפון-קוריאני. דלק IRFNA + TM-185'},
-    {y:'2004',t:'שהאב-3B (גדר) — מיכלי דלק מורחבים, טווח 2,000 ק״מ'},
-    {y:'2008',t:'סג׳יל-1 — פריצת דרך בדלק מוצק דו-שלבי. AP + HTPB + Al'},
-    {y:'2015',t:'עמאד — ראשון עם ראש קרב מתמרן (MaRV)'},
-    {y:'2017',t:'ח׳ורמשהר — טווח 2,000 ק״מ, ראש קרב 1,500 ק״ג. דלק NTO + UDMH'},
-    {y:'2023',t:'פתאח-1 נחשף — טענה להיפרסוני (Mach 13). ח׳ייבר שכן פעיל עם MaRV'},
-    {y:'10/24',t:'ישראל תוקפת פרצ׳ין וח׳וג׳יר — השמדת מערבלים פלנטריים', red:true},
-    {y:'2/26',t:'מבצע שאגת האריה — תקיפות South Pars, אספהאן. מאות טילים לישראל', red:true},
-    {y:'4/26',t:'תקיפת מתקן חומצה חנקתית בשיראז — אחד האחרונים. צוואר הבקבוק הכימי', red:true},
+function MissileDiagram({lang}:{lang:string}){
+  const[mode,setMode]=useState("liquid");
+  const[hov,setHov]=useState<string|null>(null);
+  const he=lang==="he";
+  const liq=[
+    {id:"nose",lb:he?"חרטום":"Nose",x:2,w:6,d:he?"חרטום אווירודינמי. סגסוגת אלומיניום.":"Aerodynamic nosecone.",c:"#94a3b8"},
+    {id:"wh",lb:he?"ראש קרב":"Warhead",x:8,w:14,d:he?"TNT/RDX — 700-1,500 ק״ג. MaRV.":"TNT/RDX — 700-1,500 kg. MaRV.",c:"#dc2626"},
+    {id:"gui",lb:he?"הנחיה":"Guidance",x:22,w:8,d:he?"INS + GPS/GLONASS.":"INS + GPS/GLONASS.",c:"#7c3aed"},
+    {id:"ox",lb:"IRFNA",x:30,w:22,d:he?"חומצה חנקתית AK-27. צפיפות 1.55.":"Nitric acid AK-27. Density 1.55.",c:"#ea580c"},
+    {id:"fu",lb:"UDMH/TM-185",x:52,w:20,d:he?"שהאב: TM-185. ח׳ורמשהר: UDMH — היפרגולי!":"Shahab: TM-185. Khorramshahr: UDMH — hypergolic!",c:"#2563eb"},
+    {id:"eng",lb:he?"מנוע":"Engine",x:72,w:18,d:he?"3,000°C. נחיר De Laval. 80 אטמ׳.":"3,000°C. De Laval. 80 atm.",c:"#b91c1c"},
+    {id:"fin",lb:he?"כנפונים":"Fins",x:85,w:13,d:he?"4 כנפונים. קיאם: TVC.":"4 fins. Qiam: TVC.",c:"#475569"},
   ];
-  return (
-    <Section id="timeline" num="01" title="ציר זמן: תוכנית הטילים" subtitle="מסקאד ועד היפרסוני"
-      sidebar={<>
-        <InfoBox color="blue" title="נקודות מפנה">
-          <p>1998 — מעבר מ-Scud לשהאב-3 (טווח ×4)</p>
-          <p>2008 — מעבר מנוזלי למוצק (סג׳יל)</p>
-          <p>2024 — ישראל תוקפת מתקני ייצור</p>
-        </InfoBox>
-        <InfoBox color="red" title="⚠️ משמעות">
-          <p>תקיפות 2024-2026 פגעו ביכולת הייצור הכימי — לא בטילים עצמם אלא בשרשרת האספקה.</p>
-        </InfoBox>
-      </>}>
-      <div className="space-y-0">
-        {events.map((e,i) => (
-          <div key={i} className="flex gap-4 items-start py-3 border-b border-gray-50 last:border-0 group hover:bg-gray-50/50 transition-colors rounded">
-            <div className={`flex-shrink-0 w-14 text-left font-mono text-xs font-black ${(e as any).red ? 'text-red-700' : 'text-blue-900'}`}>{e.y}</div>
-            <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${(e as any).red ? 'bg-red-500' : 'bg-blue-400'}`}/>
-            <p className="text-sm text-gray-600 leading-relaxed group-hover:text-gray-800 transition-colors">{e.t}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ====== ARSENAL TABLE ====== */
-function Arsenal() {
-  const [filter, setFilter] = useState('all');
-  const missiles = [
-    {n:'שהאב-1',r:'285-330',w:'~1,000',p:'נוזלי',f:'IRFNA+TM-185',cep:'~2,500',note:'Scud-B',t:'l'},
-    {n:'שהאב-2',r:'~500',w:'~770',p:'נוזלי',f:'IRFNA+TM-185',cep:'~2,000',note:'Scud-C',t:'l'},
-    {n:'שהאב-3',r:'~1,300',w:'800-1,200',p:'נוזלי',f:'IRFNA(AK-27)+TM-185',cep:'~1,500',note:'Nodong',t:'l'},
-    {n:'קיאם-1/2',r:'800-1,000',w:'~700',p:'נוזלי',f:'IRFNA+UDMH',cep:'~500',note:'TVC, ללא כנפונים',t:'l'},
-    {n:'גדר-1/110',r:'1,600-2,000',w:'~750',p:'נוזלי',f:'IRFNA+TM-185',cep:'~300',note:'שהאב-3 משודרג',t:'l'},
-    {n:'עמאד',r:'~1,700',w:'~750',p:'נוזלי',f:'IRFNA+TM-185',cep:'~500',note:'ראשון עם MaRV',t:'l'},
-    {n:"ח'ורמשהר",r:'~2,000',w:'~1,500',p:'נוזלי',f:'NTO+UDMH',cep:'~30',note:'המדויק ביותר',t:'l'},
-    {n:'פאתח-110',r:'200-300',w:'~500',p:'מוצק',f:'AP+HTPB+Al',cep:'~100',note:'SRBM ניידת',t:'s'},
-    {n:'זולפקאר',r:'~700',w:'~600',p:'מוצק',f:'AP+HTPB+Al',cep:'~100',note:'נגד תשתיות',t:'s'},
-    {n:'דזפול',r:'~1,000',w:'~450',p:'מוצק',f:'AP+HTPB+Al',cep:'~50',note:'דו-שלבי',t:'s'},
-    {n:"ח'ייבר שכן",r:'~1,450',w:'~500',p:'מוצק',f:'AP+HTPB+Al+RDX',cep:'~30',note:'MaRV',t:'s'},
-    {n:"סג'יל-2",r:'~2,000',w:'650-1,000',p:'מוצק',f:'AP+HTPB+Al+RDX/HMX',cep:'~50',note:'המתקדם ביותר',t:'s'},
-    {n:'פתאח-1',r:'~1,400',w:'~500',p:'מוצק',f:'AP+HTPB+Al',cep:'?',note:'היפרסוני (טענה)',t:'s'},
+  const sol=[
+    {id:"nose",lb:he?"חרטום":"Nose",x:2,w:6,d:he?"פתאח-1: שברון היפרסוני.":"Fattah-1: hypersonic chevron.",c:"#94a3b8"},
+    {id:"wh",lb:"MaRV",x:8,w:12,d:he?"RDX/HMX. מתמרן.":"RDX/HMX. Maneuverable.",c:"#dc2626"},
+    {id:"s2",lb:he?"שלב 2":"Stage 2",x:20,w:22,d:he?"AP+HTPB+Al. בעירה מבפנים.":"AP+HTPB+Al. Burns inside-out.",c:"#d97706"},
+    {id:"sep",lb:he?"הפרדה":"Sep",x:42,w:4,d:he?"טבעת פירוטכנית.":"Pyrotechnic ring.",c:"#64748b"},
+    {id:"s1",lb:he?"שלב 1":"Stage 1",x:46,w:32,d:he?"AP 70% + HTPB 15% + Al 15%. 6-10 ימים.":"AP 70%+HTPB 15%+Al 15%. 6-10 days.",c:"#b45309"},
+    {id:"nz",lb:he?"נחיר":"Nozzle",x:78,w:15,d:he?"דה-לאבל + TVC. 2,800°C.":"De Laval + TVC. 2,800°C.",c:"#b91c1c"},
   ];
-  const fm = filter==='all' ? missiles : missiles.filter(m=>m.t===filter);
-  return (
-    <Section id="arsenal" num="02" title="ארסנל הטילים" subtitle="16 מערכות נשק — הגדול ביותר במזרח התיכון"
-      sidebar={<>
-        <InfoBox color="blue" title="סינון לפי הנעה">
-          <div className="flex gap-2 mt-1">
-            {[['all','הכל'],['l','נוזלי'],['s','מוצק']].map(([v,l])=>(
-              <button key={v} onClick={()=>setFilter(v)} className={`px-3 py-1 rounded text-[11px] font-bold transition-colors ${filter===v?'bg-blue-900 text-white':'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>{l}</button>
-            ))}
-          </div>
-        </InfoBox>
-        <InfoBox color="amber" title="💡 הבדל קריטי">
-          <p><b>נוזלי:</b> תדלוק שעות, נוזלים רעילים, חשוף לזיהוי מראש</p>
-          <p className="mt-1"><b>מוצק:</b> שיגור תוך דקות מ-TEL נייד, קשה לאתר</p>
-        </InfoBox>
-      </>}>
-      <div className="overflow-x-auto -mx-2">
-        <table className="w-full text-sm">
-          <thead><tr className="border-b-2 border-gray-200">
-            {['שם','טווח (ק״מ)','ראש קרב','הנעה','דלק / מחמצן','CEP','הערות'].map(h=><th key={h} className="py-2 px-2 text-right text-[11px] font-bold text-gray-400 whitespace-nowrap">{h}</th>)}
-          </tr></thead>
-          <tbody>{fm.map((m,i)=>(
-            <tr key={i} className="border-b border-gray-50 hover:bg-blue-50/30 transition-colors">
-              <td className="py-2.5 px-2 font-bold text-gray-800 whitespace-nowrap text-[13px]">{m.n}</td>
-              <td className="py-2.5 px-2 text-gray-500 font-mono text-xs" dir="ltr">{m.r}</td>
-              <td className="py-2.5 px-2 text-gray-500 font-mono text-xs" dir="ltr">{m.w}</td>
-              <td className="py-2.5 px-2"><span className={`px-2 py-0.5 rounded text-[10px] font-bold ${m.t==='l'?'bg-blue-50 text-blue-800':'bg-amber-50 text-amber-800'}`}>{m.p}</span></td>
-              <td className={`py-2.5 px-2 text-xs font-semibold ${m.t==='l'?'text-blue-800':'text-amber-800'}`}>{m.f}</td>
-              <td className="py-2.5 px-2 text-gray-400 text-xs font-mono" dir="ltr">{m.cep}</td>
-              <td className="py-2.5 px-2 text-gray-400 text-[11px]">{m.note}</td>
-            </tr>
-          ))}</tbody>
-        </table>
+  const parts=mode==="liquid"?liq:sol;
+  const act=parts.find(p=>p.id===hov);
+  return<Sec id="diagram" num="02" title={he?"אנטומיה של טיל בליסטי":"Missile Anatomy"} subtitle={he?"לחצו על חלק":"Click a section"} dark
+    sidebar={act?<div className="cm" style={{padding:16,borderRight:`3px solid ${act.c}`}}><h4 style={{fontSize:13,fontWeight:800,marginBottom:6}}>{act.lb}</h4><p style={{fontSize:12,color:P.steel,lineHeight:1.7}}>{act.d}</p></div>:<SB color="gold" title={he?"👆 אינטראקטיבי":"👆 Interactive"}><p>{he?"העבירו עכבר על חלק בטיל":"Hover a missile part"}</p></SB>}>
+    <div style={{display:"flex",gap:8,marginBottom:16}}>
+      {([["liquid","🔵",he?"נוזלי (שהאב-3)":"Liquid"],["solid","🟠",he?"מוצק (סג׳יל)":"Solid"]] as const).map(([m,ic,lb])=>
+        <button key={m} onClick={()=>{setMode(m);setHov(null);}} className={mode===m?"ta":"ti"} style={{padding:"8px 16px",borderRadius:6,fontSize:13,fontWeight:700,cursor:"pointer",transition:"all 0.2s"}}>{ic} {lb}</button>
+      )}
+    </div>
+    <div className="cm" style={{padding:20}}>
+      <svg viewBox="0 0 100 30" style={{width:"100%"}}>
+        <defs><linearGradient id="mG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#9ca3af"/><stop offset="50%" stopColor="#d1d5db"/><stop offset="100%" stopColor="#6b7280"/></linearGradient></defs>
+        <path d="M 8,15 Q 2,15 2,15 L 8,10 L 8,20 Z" fill="url(#mG)"/>
+        <rect x="8" y="10" width="82" height="10" rx="0.5" fill="url(#mG)"/>
+        <path d="M 90,10.5 L 95,8 L 95,22 L 90,19.5" fill="#4b5563"/>
+        {mode==="liquid"&&<><path d="M 87,10 L 84,5 L 92,5 L 90,10" fill="#64748b"/><path d="M 87,20 L 84,25 L 92,25 L 90,20" fill="#64748b"/></>}
+        {mode==="solid"&&<rect x="42" y="9.5" width="4" height="11" rx="0.3" fill="#374151"/>}
+        {parts.map(p=><rect key={p.id} x={p.x} y={hov===p.id?7:9} width={p.w} height={hov===p.id?16:12} rx="1" fill={hov===p.id?p.c+"40":"transparent"} stroke={hov===p.id?p.c:"transparent"} strokeWidth={hov===p.id?0.5:0} style={{cursor:"pointer",transition:"all 0.15s"}} onMouseEnter={()=>setHov(p.id)} onMouseLeave={()=>setHov(null)} onClick={()=>setHov(hov===p.id?null:p.id)}/>)}
+        <text x="50" y="29" textAnchor="middle" fill="#9ca3af" fontSize="2">{mode==="liquid"?"~16 m (Shahab-3)":"~17.6 m (Sejjil-2)"}</text>
+      </svg>
+      <div style={{display:"flex",justifyContent:"space-between",marginTop:6}}>
+        {parts.map(p=><span key={p.id} style={{fontSize:8,color:hov===p.id?P.ink:P.muted,fontWeight:hov===p.id?700:400,cursor:"pointer"}} onMouseEnter={()=>setHov(p.id)} onMouseLeave={()=>setHov(null)}>{p.lb}</span>)}
       </div>
-    </Section>
-  );
+    </div>
+  </Sec>;
 }
 
-/* ====== CHEMISTRY ====== */
-function Chemistry() {
-  const [tab, setTab] = useState(0);
-  const chems = [
-    { id:'IRFNA', name:'חומצה חנקתית מעושנת אדומה מעוכבת', erg:'Guide 157',
-      props:[['הרכב','HNO₃ ≥70% + N₂O₄ 18-27% + HF 0.6%'],['מראה','נוזל כתום-אדום, אדים צהובים'],['צפיפות','1.55 g/cm³'],['רתיחה','64°C'],['קפאון','-52°C']],
-      dangers:[['עור','הרס מיידי, כוויות כימיות'],['עיניים','עיוורון תוך שניות'],['שאיפה','בצקת ריאות מושהית 24-48 שעות!'],['היפרגולי','הצתה ספונטנית עם UDMH']] },
-    { id:'UDMH', name:'דימתילהידראזין בלתי סימטרי', erg:'Guide 131',
-      props:[['נוסחה','H₂NN(CH₃)₂ — CAS 57-14-7'],['מראה','שקוף, ריח אמוניה/דגים'],['רתיחה','63°C'],['הבזק','-15°C'],['דליקות','2.5%-95%']],
-      dangers:[['IDLH','Ca [15 ppm] — מסרטן IARC 2B'],['עור','חודר דרך עור שלם!'],['פירוק','NDMA + פורמלדהיד + HCN — 6 שבועות!']] },
-    { id:'NTO', name:'חנקן טטראוקסיד (N₂O₄)', erg:'Guide 124',
-      props:[['נוסחה','N₂O₄ — CAS 10544-72-6'],['רתיחה','21°C — מתאדה בטמפ׳ החדר!'],['צפיפות','1.448 g/cm³'],['מראה','חום-אדום, אדים חומים']],
-      dangers:[['שאיפה','קטלני! בצקת ריאות מושהית'],['כוויות','מגיב עם מים ברקמה ליצירת HNO₃']] },
-    { id:'AP/HTPB', name:'דלק מוצק קומפוזיט', erg:'—',
-      props:[['מחמצן','NH₄ClO₄ (AP) ~70%'],['מאגד','HTPB ~15%'],['מתכת','אבקת אלומיניום ~15%']],
-      dangers:[['בעירה','עצמית, בלתי ניתנת לכיבוי!'],['תוצרים','HCl + NOx + CO + Al₂O₃'],['סביבתי','פרכלורט מזהם מי תהום']] },
+function Arsenal({lang}:{lang:string}){
+  const[fl,setFl]=useState("all");
+  const he=lang==="he";
+  const ms=[
+    {n:"שהאב-1",ne:"Shahab-1",r:"285-330",w:"~1,000",f:"IRFNA+TM-185",cep:"~2,500",note:"Scud-B",t:"l"},
+    {n:"שהאב-2",ne:"Shahab-2",r:"~500",w:"~770",f:"IRFNA+TM-185",cep:"~2,000",note:"Scud-C",t:"l"},
+    {n:"שהאב-3",ne:"Shahab-3",r:"~1,300",w:"800-1,200",f:"IRFNA+TM-185",cep:"~1,500",note:"Nodong",t:"l"},
+    {n:"קיאם",ne:"Qiam",r:"800-1,000",w:"~700",f:"IRFNA+UDMH",cep:"~500",note:"TVC",t:"l"},
+    {n:"גדר",ne:"Ghadr",r:"1,600-2,000",w:"~750",f:"IRFNA+TM-185",cep:"~300",note:he?"שהאב+":"Shahab+",t:"l"},
+    {n:"עמאד",ne:"Emad",r:"~1,700",w:"~750",f:"IRFNA+TM-185",cep:"~500",note:"MaRV",t:"l"},
+    {n:"ח׳ורמשהר",ne:"Khorramshahr",r:"~2,000",w:"~1,500",f:"NTO+UDMH",cep:"~30",note:he?"מדויק":"Accurate",t:"l"},
+    {n:"פאתח-110",ne:"Fateh-110",r:"200-300",w:"~500",f:"AP+HTPB+Al",cep:"~100",note:"SRBM",t:"s"},
+    {n:"זולפקאר",ne:"Zolfaghar",r:"~700",w:"~600",f:"AP+HTPB+Al",cep:"~100",note:he?"תשתיות":"Infra",t:"s"},
+    {n:"דזפול",ne:"Dezful",r:"~1,000",w:"~450",f:"AP+HTPB+Al",cep:"~50",note:he?"דו-שלבי":"2-stage",t:"s"},
+    {n:"ח׳ייבר שכן",ne:"Kheibar Shekan",r:"~1,450",w:"~500",f:"AP+HTPB+Al+RDX",cep:"~30",note:"MaRV",t:"s"},
+    {n:"סג׳יל-2",ne:"Sejjil-2",r:"~2,000",w:"650-1,000",f:"AP+HTPB+RDX/HMX",cep:"~50",note:he?"מתקדם":"Advanced",t:"s"},
+    {n:"פתאח-1",ne:"Fattah-1",r:"~1,400",w:"~500",f:"AP+HTPB+Al",cep:"?",note:he?"היפרסוני":"Hypersonic",t:"s"},
   ];
-  const c = chems[tab];
-  return (
-    <Section id="chemistry" num="03" title="כימיה של הדלקים" subtitle="IRFNA, UDMH, NTO, AP/HTPB — תכונות וסיכונים"
-      sidebar={<>
-        <InfoBox color="red" title="⚠️ בצקת ריאות מושהית">
-          <p>נפגעי IRFNA / NTO עשויים להרגיש בסדר, אך 24-48 שעות לאחר מכן — הצפת ריאות פתאומית וכשל נשימתי קטלני.</p>
-          <p className="mt-1 font-bold">כל חשוף = אשפוז מיידי!</p>
-        </InfoBox>
-        <InfoBox color="purple" title="💡 תגובה היפרגולית">
-          <p>מגע ישיר בין דלק (UDMH) למחמצן (IRFNA/NTO) = הצתה ספונטנית מיידית. ללא ניצוץ, ללא חום חיצוני.</p>
-        </InfoBox>
-      </>}>
-      <div className="flex gap-2 mb-6 flex-wrap">
-        {chems.map((ch,i)=><button key={i} onClick={()=>setTab(i)} className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${tab===i?'bg-blue-900 text-white':'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>{ch.id}</button>)}
-      </div>
-      <div className="bg-gray-50 rounded-lg p-5">
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-          <h3 className="text-lg font-black text-gray-900">{c.id} — {c.name}</h3>
-          <span className="px-3 py-1 rounded text-xs font-bold bg-blue-50 text-blue-900 border border-blue-200">ERG {c.erg}</span>
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">מאפיינים</h4>
-            {c.props.map(([k,v],i)=><div key={i} className="flex justify-between py-2 border-b border-gray-100 last:border-0"><span className="text-sm text-gray-500">{k}</span><span className="text-sm text-gray-800 font-semibold" dir="ltr">{v}</span></div>)}
-          </div>
-          <div>
-            <h4 className="text-xs font-bold text-red-700 uppercase tracking-wider mb-3">⚠️ סיכונים</h4>
-            {c.dangers.map(([k,v],i)=><div key={i} className="flex justify-between py-2 border-b border-red-50 last:border-0 bg-red-50/50 -mx-1 px-1 rounded"><span className="text-sm text-gray-500">{k}</span><span className="text-sm text-red-800 font-semibold">{v}</span></div>)}
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
+  const fm=fl==="all"?ms:ms.filter(m=>m.t===fl);
+  const hd=he?["שם","טווח","רש״ק","הנעה","דלק","CEP","הערה"]:["Name","Range","Warhead","Type","Fuel","CEP","Note"];
+  return<Sec id="arsenal" num="03" title={he?"ארסנל הטילים":"Missile Arsenal"} subtitle={he?"הגדול במזרח התיכון":"Largest in Middle East"}
+    sidebar={<><SB color="gold" title={he?"סינון":"Filter"}><div style={{display:"flex",gap:6,marginTop:6}}>{([["all",he?"הכל":"All"],["l",he?"נוזלי":"Liquid"],["s",he?"מוצק":"Solid"]] as const).map(([v,l])=><button key={v} onClick={()=>setFl(v)} className={fl===v?"ta":"ti"} style={{padding:"5px 14px",borderRadius:5,fontSize:11,fontWeight:700,cursor:"pointer"}}>{l}</button>)}</div></SB><SB color="amber" title={he?"💡 הבדל":"💡 Key"}><p><b>{he?"נוזלי:":"Liquid:"}</b> {he?"תדלוק שעות":"Hours to fuel"}</p><p><b>{he?"מוצק:":"Solid:"}</b> {he?"שיגור מיידי":"Instant launch"}</p></SB></>}>
+    <div style={{overflowX:"auto"}}>
+      <table className="mt" style={{width:"100%",borderCollapse:"collapse"}}>
+        <thead><tr>{hd.map(h=><th key={h} style={{textAlign:he?"right":"left",whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
+        <tbody>{fm.map((m,i)=><tr key={i}>
+          <td style={{fontWeight:700,whiteSpace:"nowrap"}}>{he?m.n:m.ne}</td>
+          <td className="mn" style={{color:P.muted,fontSize:12}} dir="ltr">{m.r}</td>
+          <td className="mn" style={{color:P.muted,fontSize:12}} dir="ltr">{m.w}</td>
+          <td><span style={{padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:700,background:m.t==="l"?P.blueS:P.amberS,color:m.t==="l"?P.blue:P.amber}}>{m.t==="l"?(he?"נוזלי":"Liquid"):(he?"מוצק":"Solid")}</span></td>
+          <td style={{fontSize:12,fontWeight:600,color:m.t==="l"?P.blue:P.amber}}>{m.f}</td>
+          <td className="mn" style={{color:P.muted,fontSize:12}} dir="ltr">{m.cep}</td>
+          <td style={{color:P.muted,fontSize:11}}>{m.note}</td>
+        </tr>)}</tbody>
+      </table>
+    </div>
+  </Sec>;
 }
 
-/* ====== FACILITIES ====== */
-function Facilities() {
-  const facs = [
-    {n:"ח'וג'יר",d:'SHIG+SBIG. ייצור דלק מוצק, הרכבת טילים',s:'2024+2026',map:'https://maps.google.com/?q=35.6475,51.5511'},
-    {n:'פרצ׳ין',d:'PCI — ייצור HNO₃, חומרי נפץ. מתקן טאלקאן 2',s:'2024+2026',map:'https://maps.google.com/?q=35.5122,51.7714'},
-    {n:'שאהרוד',d:'ייצור מנועים. מערבלים פלנטריים ובורות יציקה',s:'מרץ 2026',map:'https://maps.google.com/?q=36.4181,54.9764'},
-    {n:'אספהאן',d:'המרת אורניום + כימיקלים דואליים',s:'יוני 2025',map:'https://maps.google.com/?q=32.6167,51.6500'},
-    {n:'אסלויה',d:'פטרוכימיה — אמוניה + HNO₃. 85% מייצוא פטרוכימי',s:'אפריל 2026',map:'https://maps.google.com/?q=27.4753,52.6100'},
-    {n:'שיראז',d:'ייצור חומצה חנקתית — "אחד האחרונים שנותרו"',s:'אפריל 2026',map:'https://maps.google.com/?q=29.5926,52.5836'},
+function Propulsion({lang}:{lang:string}){
+  const he=lang==="he";
+  return<Sec id="propulsion" num="04" title={he?"נוזלי מול מוצק":"Liquid vs Solid"} subtitle={he?"שתי פילוסופיות":"Two philosophies"} dark>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:20}}>
+      <div className="cm" style={{padding:24,borderRight:`3px solid ${P.blue}`,background:P.blueS}}>
+        <h3 className="sf" style={{fontSize:18,fontWeight:800,color:P.blue,marginBottom:12}}>🔵 {he?"נוזלי — היפרגולי":"Liquid — Hypergolic"}</h3>
+        <p style={{fontSize:13,color:P.steel,marginBottom:12}}>{he?"מגע דלק + מחמצן = הצתה ספונטנית":"Fuel+oxidizer = spontaneous ignition"}</p>
+        <div style={{fontSize:13,color:P.steel,lineHeight:2,marginBottom:12}}>
+          <p><b style={{color:P.blue}}>{he?"דלק:":"Fuel:"}</b> UDMH / TM-185</p>
+          <p><b style={{color:P.blue}}>{he?"מחמצן:":"Oxidizer:"}</b> IRFNA / NTO</p>
+          <p><b style={{color:P.blue}}>{he?"טילים:":"Missiles:"}</b> {he?"שהאב, גדר, עמאד, ח׳ורמשהר":"Shahab, Ghadr, Emad, Khorramshahr"}</p>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          <div style={{background:P.greenS,borderRadius:6,padding:8,fontSize:11}}>✅ {he?"שליטה, Isp":"Control, Isp"}</div>
+          <div style={{background:P.redS,borderRadius:6,padding:8,fontSize:11}}>❌ {he?"שעות, רעיל":"Hours, toxic"}</div>
+        </div>
+      </div>
+      <div className="cm" style={{padding:24,borderRight:`3px solid ${P.amber}`,background:P.amberS}}>
+        <h3 className="sf" style={{fontSize:18,fontWeight:800,color:P.amber,marginBottom:12}}>🟠 {he?"מוצק — קומפוזיט":"Solid — Composite"}</h3>
+        <p style={{fontSize:13,color:P.steel,marginBottom:12}}>{he?"יצוק יחד. כוננות מיידית":"Cast together. Instant readiness"}</p>
+        <div style={{fontSize:13,color:P.steel,lineHeight:2,marginBottom:12}}>
+          <p><b style={{color:P.amber}}>{he?"מחמצן:":"Ox:"}</b> AP ~70%</p>
+          <p><b style={{color:P.amber}}>{he?"מאגד:":"Binder:"}</b> HTPB+Al ~30%</p>
+          <p><b style={{color:P.amber}}>{he?"טילים:":"Missiles:"}</b> {he?"פאתח, זולפקאר, סג׳יל, פתאח":"Fateh, Zolfaghar, Sejjil, Fattah"}</p>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          <div style={{background:P.greenS,borderRadius:6,padding:8,fontSize:11}}>✅ {he?"מיידי":"Instant"}</div>
+          <div style={{background:P.redS,borderRadius:6,padding:8,fontSize:11}}>❌ {he?"תלות סין":"China dep."}</div>
+        </div>
+      </div>
+    </div>
+  </Sec>;
+}
+
+function Chemistry({lang}:{lang:string}){
+  const[tab,setTab]=useState(0);
+  const he=lang==="he";
+  const ch=[
+    {id:"IRFNA",nm:he?"חומצה חנקתית מעושנת":"Red Fuming Nitric Acid",erg:"157",ps:[["HNO₃ ≥70% + N₂O₄ + HF"],[he?"צפיפות":"Density","1.55"],["BP","64°C"],["FP","-52°C"]],ds:[[he?"עור — הרס מיידי":"Skin — destruction"],[he?"עיניים — עיוורון":"Eyes — blindness"],[he?"שאיפה — בצקת ריאות 24-48h!":"Inhalation — pulmonary edema 24-48h!"],[he?"היפרגולי עם UDMH":"Hypergolic w/ UDMH"]]},
+    {id:"UDMH",nm:he?"דימתילהידראזין":"Dimethylhydrazine",erg:"131",ps:[["CAS 57-14-7"],["BP","63°C"],["Flash","-15°C"],[he?"דליקות":"Flam.","2.5-95%"]],ds:[["IDLH 15 ppm — IARC 2B"],[he?"חודר עור שלם!":"Penetrates skin!"],[he?"פירוק: NDMA+HCN — 6 שבועות":"Decomp: NDMA+HCN — 6 weeks"]]},
+    {id:"NTO",nm:"N₂O₄",erg:"124",ps:[["CAS 10544-72-6"],["BP","21°C (!)"],[he?"צפיפות":"Density","1.448"]],ds:[[he?"קטלני! בצקת ריאות":"Lethal! Pulmonary edema"],[he?"מגיב עם מים ברקמה → HNO₃":"Reacts w/ tissue water → HNO₃"]]},
+    {id:"AP/HTPB",nm:he?"דלק מוצק":"Composite Solid",erg:"—",ps:[["AP ~70%"],["HTPB ~15%"],["Al ~15%"]],ds:[[he?"בעירה עצמית — לא ניתנת לכיבוי!":"Self-sustaining — cannot extinguish!"],["HCl + NOx + CO + Al₂O₃"],[he?"פרכלורט מזהם מי תהום":"Perchlorate contaminates water"]]},
   ];
-  return (
-    <Section id="facilities" num="04" title="מתקנים שהותקפו" subtitle="6 מוקדי כוח תעשייתיים"
-      sidebar={<>
-        <InfoBox color="amber" title="📦 יבוא מסין">
-          <p className="font-bold mb-1">עובדות:</p>
-          <p>חברת הקש Pishgaman Tejarat Rafi Novin רכשה אלפי טונות נתרן פרכלורט מ-Lion Commodities (הונג קונג) דרך נמל ג׳והאי.</p>
-          <p className="mt-1">כמות מספיקה ל~800 טילים מוצקים.</p>
-          <p className="font-bold mt-2 mb-1">משמעות:</p>
-          <p>איראן תלויה לחלוטין ביבוא סיני. סגירת הערוץ = השבתת ייצור דלק מוצק.</p>
-        </InfoBox>
-      </>}>
-      <div className="space-y-3">
-        {facs.map((f,i)=>(
-          <div key={i} className="flex items-start gap-4 py-3 border-b border-gray-50 last:border-0">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h4 className="font-bold text-gray-800">{f.n}</h4>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-50 text-red-700">{f.s}</span>
-              </div>
-              <p className="text-sm text-gray-500">{f.d}</p>
-            </div>
-            <a href={f.map} target="_blank" rel="noopener noreferrer" className="text-[11px] text-blue-700 hover:text-blue-900 whitespace-nowrap flex-shrink-0">📍 מפה</a>
-          </div>
-        ))}
+  const c=ch[tab];
+  return<Sec id="chemistry" num="05" title={he?"כימיה של הדלקים":"Fuel Chemistry"} subtitle="IRFNA · UDMH · NTO · AP/HTPB"
+    sidebar={<><SB color="red" title={he?"⚠️ בצקת ריאות":"⚠️ Pulmonary Edema"}><p>{he?"24-48 שעות אחרי: הצפת ריאות קטלנית.":"24-48h later: lethal lung flooding."}</p><p style={{fontWeight:700,marginTop:6}}>{he?"כל חשוף = אשפוז!":"All exposed = hospitalize!"}</p></SB><SB color="purple" title={he?"💡 היפרגולי":"💡 Hypergolic"}><p>{he?"UDMH + IRFNA = הצתה ספונטנית.":"UDMH + IRFNA = instant ignition."}</p></SB></>}>
+    <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>
+      {ch.map((x,i)=><button key={i} onClick={()=>setTab(i)} className={tab===i?"ta":"ti"} style={{padding:"8px 18px",borderRadius:6,fontSize:13,fontWeight:700,cursor:"pointer"}}>{x.id}</button>)}
+    </div>
+    <div className="cm" style={{padding:24}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,flexWrap:"wrap",gap:8}}>
+        <h3 className="sf" style={{fontSize:18,fontWeight:800}}>{c.id} — {c.nm}</h3>
+        <span className="mn" style={{padding:"4px 12px",borderRadius:4,fontSize:11,fontWeight:700,background:P.blueS,color:P.blue}}>ERG {c.erg}</span>
       </div>
-    </Section>
-  );
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:20}}>
+        <div>{c.ps.map((p,i)=><div key={i} style={{padding:"8px 0",borderBottom:`1px solid ${P.border}40`,fontSize:13}}>{p.length===2?<><span style={{color:P.muted}}>{p[0]}: </span><span className="mn" style={{fontWeight:500}} dir="ltr">{p[1]}</span></>:<span className="mn" style={{fontSize:12}} dir="ltr">{p[0]}</span>}</div>)}</div>
+        <div><h4 style={{fontSize:10,fontWeight:800,color:P.red,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>⚠️ {he?"סיכונים":"HAZARDS"}</h4>{c.ds.map((d,i)=><div key={i} style={{padding:"7px 8px",background:`${P.red}06`,borderRadius:4,marginBottom:4,fontSize:12,color:P.red,fontWeight:500}}>{d[0]}</div>)}</div>
+      </div>
+    </div>
+  </Sec>;
 }
 
-/* ====== HAZMAT ====== */
-function HazMat() {
-  return (
-    <Section id="hazmat" num="05" title="מענה חומ״ס — ERG 2024" subtitle="בידוד, מיגון, כיבוי ופרוטוקול רפואי"
-      sidebar={<>
-        <InfoBox color="red" title="🏥 פרוטוקול רפואי">
-          <p><b>שלב 1 — בזירה:</b> חילוץ מענן, הפשטת בגדים, שטיפה 15+ דקות</p>
-          <p className="mt-1"><b>שלב 2 — אשפוז:</b> כל חשוף = 24-48 שעות מעקב</p>
-          <p className="mt-1">משתנים (לאסיקס), דובוטמין, סטרואידים, גז NO בשאיפה</p>
-          <p className="mt-1"><b>UDMH:</b> ויטמין B6 נוגדן לעוויתות</p>
-        </InfoBox>
-      </>}>
-      <div className="space-y-4">
-        {[
-          {t:'IRFNA — ERG Guide 157',c:'border-r-red-700',items:['🚧 בידוד: 50 מ׳ | אש: 800 מ׳ | במעלה הרוח','🧑‍🚀 מיגון: חליפת מגן רמה A + מנ״פ בלבד!','🚫 מים: אסור על שלולית! ערפל רק לקירור','🧪 ניטרול: חול → NaHCO₃ מדורג. כלים ללא ניצוץ']},
-          {t:'UDMH — ERG Guide 131',c:'border-r-purple-700',items:['🚧 בידוד: 100 מ׳ | דליפה גדולה: 300+ מ׳','🧑‍🚀 חליפת מגן רמה A — חודר עור שלם!','💧 כיבוי: ערפל מים + קצף AR-AFFF','☠️ פירוק: NDMA + פורמלדהיד + HCN — 6 שבועות!']},
-          {t:'💥 תגובה היפרגולית',c:'border-r-red-700',items:['מגע דלק + מחמצן = הצתה מיידית ללא ניצוץ!','בשרידי טיל נוזלי: בידוד 800 מ׳, כוחות חומ״ס בלבד']},
-        ].map((p,pi)=>(
-          <div key={pi} className={`rounded-lg p-4 border-r-[3px] ${p.c} bg-gray-50`}>
-            <h4 className="font-bold text-gray-800 mb-3">{p.t}</h4>
-            <div className="space-y-2">{p.items.map((it,ii)=><p key={ii} className="text-sm text-gray-600 leading-relaxed">{it}</p>)}</div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ====== SOURCES ====== */
-function Sources() {
-  const srcs = [
-    {n:'CSIS Missile Defense Project',u:'https://missilethreat.csis.org/country/iran/',c:'מחקרי'},
-    {n:'Iran Watch — Missile Arsenal',u:'https://www.iranwatch.org/our-publications/weapon-program-background-report/table-irans-missile-arsenal',c:'מחקרי'},
-    {n:'USIP — Ballistic Missile Program',u:'https://iranprimer.usip.org/resource/irans-ballistic-missile-program',c:'ממשלתי'},
-    {n:'NIOSH/CDC — UDMH Pocket Guide',u:'https://www.cdc.gov/niosh/npg/npgd0227.html',c:'ממשלתי'},
-    {n:'NOAA CAMEO — IRFNA',u:'https://cameochemicals.noaa.gov/chemical/4044',c:'ממשלתי'},
-    {n:'NOAA CAMEO — NTO',u:'https://cameochemicals.noaa.gov/chemical/4075',c:'ממשלתי'},
-    {n:'ERG 2024',u:'https://www.phmsa.dot.gov/hazmat/erg/emergency-response-guidebook-erg',c:'ממשלתי'},
-    {n:'NCBI — AEGL Dimethylhydrazine',u:'https://www.ncbi.nlm.nih.gov/books/NBK222415/',c:'אקדמי'},
-    {n:'PMC — Delayed Pulmonary Edema',u:'https://pmc.ncbi.nlm.nih.gov/articles/PMC6350573/',c:'אקדמי'},
-    {n:'Alma Center — Iran Missiles',u:'https://israel-alma.org/iran-types-of-ballistic-missiles-overview/',c:'מחקרי'},
-    {n:'IISS Military Balance',u:'https://www.iiss.org/',c:'מחקרי'},
-    {n:'Wikipedia — Iran Missile Program',u:'https://en.wikipedia.org/wiki/Iranian_missile_program',c:'עיון'},
+function Processes({lang}:{lang:string}){
+  const[a,setA]=useState(0);
+  const he=lang==="he";
+  const pr=[
+    {nm:he?"אוסטוולד — HNO₃":"Ostwald — HNO₃",ic:"⚗️",or:"Wilhelm Ostwald, Nobel 1909",st:he?["NH₃ + אוויר → כור","זרז Pt-Rh 850°C → NO","NO → NO₂","NO₂ + מים → HNO₃ 68%","ריכוז ל-86%+","N₂O₄ + HF → IRFNA"]:["NH₃ + air → reactor","Pt-Rh 850°C → NO","NO → NO₂","NO₂ + H₂O → HNO₃ 68%","Concentrate >86%","N₂O₄ + HF → IRFNA"]},
+    {nm:he?"רשיג — UDMH":"Raschig — UDMH",ic:"🟣",or:"Friedrich Raschig (1863-1928)",st:he?["אמוניה + היפוכלוריט","0°C → כלוראמין","+ דימתילאמין","→ UDMH גולמי","זיקוק 63°C","UDMH טהור"]:["Ammonia + hypochlorite","0°C → chloramine","+ dimethylamine","→ crude UDMH","Distillation 63°C","Pure UDMH"]},
+    {nm:he?"בכמן — RDX/HMX":"Bachmann — RDX/HMX",ic:"💣",or:"Werner Bachmann (1901-1951)",st:he?["הקסאמין + HNO₃","ניטרציה 45-75°C","→ RDX","תנאים שונים → HMX","ראשי קרב + דלק + גרעיני"]:["Hexamine + HNO₃","Nitration 45-75°C","→ RDX","Different conditions → HMX","Warheads + fuel + nuclear"]},
   ];
-  const cc:Record<string,string> = {ממשלתי:'bg-green-50 text-green-800',מחקרי:'bg-blue-50 text-blue-800',אקדמי:'bg-purple-50 text-purple-800',עיון:'bg-gray-100 text-gray-600'};
-  return (
-    <Section id="sources" num="06" title="מקורות ומאמרים">
-      <div className="divide-y divide-gray-50">
-        {srcs.map((s,i)=><a key={i} href={s.u} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-2.5 text-gray-500 hover:text-blue-800 transition-colors group">
-          <span className="text-blue-400 group-hover:text-blue-700">🔗</span>
-          <span className="text-sm flex-1">{s.n}</span>
-          <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${cc[s.c]}`}>{s.c}</span>
-        </a>)}
-      </div>
-    </Section>
-  );
+  const p=pr[a];
+  return<Sec id="processes" num="06" title={he?"תהליכי ייצור":"Production Processes"} subtitle={he?"3 תהליכים שנפגעו":"3 targeted processes"}
+    sidebar={<><SB color="purple" title={he?"📜 מקור":"📜 Origin"}><p style={{fontWeight:700}}>{p.nm}</p><p style={{marginTop:4}}>{p.or}</p></SB><SB color="amber" title={he?"⚡ מערבלים":"⚡ Mixers"}><p>{he?"מכונות ענק מסין. השמדתם = ואקום.":"Giant machines from China. Destroyed = vacuum."}</p></SB></>}>
+    <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
+      {pr.map((x,i)=><button key={i} onClick={()=>setA(i)} className={a===i?"ta":"ti"} style={{padding:"8px 16px",borderRadius:6,fontSize:13,fontWeight:700,cursor:"pointer"}}>{x.ic} {x.nm.split("—")[0]}</button>)}
+    </div>
+    <div className="cm" style={{padding:24}}>
+      <h3 className="sf" style={{fontSize:18,fontWeight:800,marginBottom:16}}>{p.ic} {p.nm}</h3>
+      {p.st.map((s,i)=><div key={i} style={{display:"flex",gap:14,alignItems:"flex-start",padding:"10px 0",borderBottom:`1px solid ${P.border}30`}}>
+        <div style={{width:26,height:26,borderRadius:"50%",background:P.ink,color:P.gold,fontSize:11,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{i+1}</div>
+        <p style={{fontSize:13,color:P.steel,paddingTop:3}}>{s}</p>
+      </div>)}
+    </div>
+  </Sec>;
 }
 
-/* ====== GALLERY ====== */
-function Gallery() {
-  const [cur, setCur] = useState(0);
-  const slides = Array.from({length:13},(_,i)=>`/images/slide-${String(i+1).padStart(2,'0')}.jpg`);
-  return (
-    <Section id="gallery" num="07" title="גלריה" subtitle="מצגת מודיעינית — 13 שקפים">
-      <div className="bg-gray-50 rounded-lg overflow-hidden">
-        <div className="relative"><img src={slides[cur]} alt="" className="w-full"/>
-          <button onClick={()=>setCur(Math.max(0,cur-1))} disabled={cur===0} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-gray-600 flex items-center justify-center disabled:opacity-30">›</button>
-          <button onClick={()=>setCur(Math.min(12,cur+1))} disabled={cur===12} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-gray-600 flex items-center justify-center disabled:opacity-30">‹</button>
+function Strategic({lang}:{lang:string}){
+  const he=lang==="he";
+  return<Sec id="strategic" num="07" title={he?"צוואר הבקבוק":"Chemical Chokepoint"} subtitle={he?"HNO₃ — המפתח":"HNO₃ — Master Key"} dark
+    sidebar={<SB color="red" title={he?"🔑 מסקנה":"🔑 Conclusion"}><p>{he?"חומצה חנקתית מחברת הכל: טילים, דלק, נפץ, גרעין.":"Nitric acid connects everything: missiles, fuel, explosives, nuclear."}</p></SB>}>
+    <div className="pq">{he?"מתקן HNO₃ אחד = ארבע יכולות נשק. אין leverage כזה.":"One HNO₃ plant = four weapon capabilities. Unmatched leverage."}</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:12}}>
+      {[{ic:"💧",t:"IRFNA",d:he?"שהאב, גדר":"Shahab, Ghadr",bg:P.blueS,c:P.blue},{ic:"🧊",t:"NTO",d:"N₂O₄",bg:P.purpleS,c:P.purple},{ic:"💣",t:"RDX/HMX",d:he?"נפץ":"Explosives",bg:P.amberS,c:P.amber},{ic:"☢️",t:he?"גרעיני":"Nuclear",d:"Implosion",bg:P.redS,c:P.red}].map((x,i)=>
+        <div key={i} className="cm" style={{padding:16,textAlign:"center",background:x.bg}}>
+          <div style={{fontSize:28,marginBottom:6}}>{x.ic}</div>
+          <div style={{fontSize:11,fontWeight:800,color:x.c}}>{x.t}</div>
+          <div style={{fontSize:10,color:P.muted,marginTop:4}}>{x.d}</div>
         </div>
-        <div className="flex gap-1 p-2 overflow-x-auto">{slides.map((s,i)=><button key={i} onClick={()=>setCur(i)} className={`flex-shrink-0 w-14 h-9 rounded overflow-hidden border-2 transition-all ${i===cur?'border-blue-500':'border-transparent opacity-50'}`}><img src={s} alt="" className="w-full h-full object-cover"/></button>)}</div>
-        <div className="text-center text-xs text-gray-400 py-1">{cur+1} / 13</div>
-      </div>
-    </Section>
-  );
+      )}
+    </div>
+  </Sec>;
 }
 
-/* ====== FOOTER ====== */
-function Footer() {
-  return (
-    <footer className="border-t border-gray-200 py-8 px-4 bg-gray-50 text-center space-y-2">
-      <div className="flex items-center justify-center gap-2">
-        <img src="/images/logo-60sec.png" alt="" className="w-7 h-7 rounded" style={{width:28,height:28}}/>
-        <span className="text-sm font-bold text-blue-900">ניתוח 60 שניות של חומ״ס</span>
-      </div>
-      <p className="text-sm text-gray-500"><b className="text-gray-700">רועי צוקרמן</b> — מומחה לחומ״ס וטב״ק</p>
-      <div className="flex items-center justify-center gap-3 text-sm">
-        <a href="mailto:roiez1@gmail.com" className="text-blue-800">✉️ roiez1@gmail.com</a>
-        <a href="https://chat.whatsapp.com/K4NzcZucmimKYFOXE3VVtD?mode=gi_t" target="_blank" className="text-green-700 bg-green-50 px-3 py-1 rounded text-xs font-bold border border-green-200">WhatsApp</a>
-      </div>
-      <p className="text-[10px] text-gray-300">מקורות פתוחים בלבד | לא מסווג | אפריל 2026</p>
-    </footer>
-  );
-}
-
-/* ====== MISSILE DIAGRAM ====== */
-function MissileDiagram() {
-  const [mode, setMode] = useState<'liquid'|'solid'>('liquid');
-  const [hover, setHover] = useState<string|null>(null);
-
-  const liquidParts = [
-    {id:'nose',label:'חרטום',x:2,w:6,desc:'חרטום אווירודינמי. סגסוגת אלומיניום או קומפוזיט עמיד לחום. מתפרק בכניסה חוזרת.',c:'#94a3b8'},
-    {id:'warhead',label:'ראש קרב',x:8,w:14,desc:'מילוי נפץ HE (TNT/RDX) — 700-1,500 ק״ג. בטילים מתקדמים: ראש קרב מתמרן (MaRV) המשנה מסלול בחדירה לאטמוספירה.',c:'#dc2626'},
-    {id:'guidance',label:'הנחיה',x:22,w:8,desc:'מחשב טיסה + ג׳ירוסקופ אינרציאלי (INS) + GPS/GLONASS. בח׳ורמשהר — תיקון מסלול סופי, CEP ~30 מ׳.',c:'#7c3aed'},
-    {id:'oxidizer',label:'מחמצן IRFNA',x:30,w:22,desc:'מיכל חומצה חנקתית מעושנת אדומה (AK-27). צפיפות 1.55. נוזל כתום-אדום קורוזיבי. לחץ 15-25 אטמוספירות.',c:'#ea580c'},
-    {id:'fuel',label:'דלק UDMH/TM-185',x:52,w:20,desc:'שהאב: קרוסין TM-185. ח׳ורמשהר: UDMH — שקוף, מסרטן, חודר עור. היפרגולי: מגע עם IRFNA = הצתה מיידית!',c:'#2563eb'},
-    {id:'engine',label:'מנוע + נחיר',x:72,w:18,desc:'תא בעירה: IRFNA+UDMH → 3,000°C. נחיר De Laval מאיץ גזים. משאבות טורבו בלחץ 80 אטמוספירות.',c:'#b91c1c'},
-    {id:'fins',label:'כנפונים',x:85,w:13,desc:'4 כנפונים לייצוב. בטילים מתקדמים (קיאם) — הוסרו ונוסף TVC (בקרת וקטור דחף).',c:'#475569'},
+function Facilities({lang}:{lang:string}){
+  const he=lang==="he";
+  const fs=[
+    {n:he?"ח׳וג׳יר":"Khojir",d:he?"SHIG+SBIG. דלק מוצק":"SHIG+SBIG. Solid fuel",s:"2024+2026"},
+    {n:he?"פרצ׳ין":"Parchin",d:he?"PCI — HNO₃, נפץ, טאלקאן 2":"PCI — HNO₃, explosives",s:"2024+2026"},
+    {n:he?"שאהרוד":"Shahrud",d:he?"מנועים, מערבלים":"Engines, mixers",s:"3/2026"},
+    {n:he?"אספהאן":"Isfahan",d:he?"אורניום + דואלי":"Uranium + dual-use",s:"6/2025"},
+    {n:he?"אסלויה":"Asaluyeh",d:he?"פטרוכימיה — NH₃ + HNO₃":"Petrochemicals",s:"4/2026"},
+    {n:he?"שיראז":"Shiraz",d:he?"HNO₃ — \"אחד האחרונים\"":"HNO₃ — \"last remaining\"",s:"4/2026"},
   ];
+  return<Sec id="facilities" num="08" title={he?"מתקנים שהותקפו":"Facilities Struck"} subtitle={he?"6 מוקדים":"6 targets"}
+    sidebar={<SB color="amber" title={he?"📦 סין":"📦 China"}><p>{he?"אלפי טונות נתרן פרכלורט מהונג קונג. ל~800 טילים.":"Thousands of tons from HK. ~800 missiles."}</p></SB>}>
+    {fs.map((f,i)=><div key={i} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"12px 0",borderBottom:`1px solid ${P.border}30`}}>
+      <div style={{flex:1}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+          <h4 style={{fontWeight:800,fontSize:15}}>{f.n}</h4>
+          <span className="mn" style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:3,background:P.redS,color:P.red}}>{f.s}</span>
+        </div>
+        <p style={{fontSize:13,color:P.muted}}>{f.d}</p>
+      </div>
+    </div>)}
+  </Sec>;
+}
 
-  const solidParts = [
-    {id:'nose',label:'חרטום',x:2,w:6,desc:'חרטום לחדירה חוזרת. בפתאח-1: צורת שברון היפרסונית.',c:'#94a3b8'},
-    {id:'warhead',label:'רש״ק MaRV',x:8,w:12,desc:'מילוי RDX/HMX. בח׳ייבר שכן ופתאח: ראש קרב מתמרן — מתחמק מיירוט.',c:'#dc2626'},
-    {id:'stage2',label:'שלב 2 — מנוע מוצק',x:20,w:22,desc:'סוללת AP+HTPB+Al יצוקה. בעירה מבפנים החוצה (star grain). נחיר עם TVC.',c:'#d97706'},
-    {id:'inter',label:'הפרדה',x:42,w:4,desc:'טבעת פירוטכנית שמנתקת שלב 1 לאחר שריפת הדלק.',c:'#64748b'},
-    {id:'stage1',label:'שלב 1 — מנוע ראשי',x:46,w:32,desc:'הסוללה הגדולה: AP(70%)+HTPB(15%)+Al(15%). יציקה בבורות תת-קרקעיים 6-10 ימים. מערבלים פלנטריים מסין.',c:'#b45309'},
-    {id:'nozzle',label:'נחיר + TVC',x:78,w:15,desc:'נחיר דה-לאבל + הטיית נחיר גמישה. שליטה בכיוון טיסה. טמפרטורת יציאה: ~2,800°C.',c:'#b91c1c'},
+function HazMat({lang}:{lang:string}){
+  const he=lang==="he";
+  const pr=[
+    {t:"IRFNA — ERG 157",c:P.red,it:he?["🚧 בידוד: 50 מ׳ | אש: 800 מ׳","🧑‍🚀 חליפת A + מנ״פ","🚫 אסור מים על שלולית","🧪 חול → NaHCO₃"]:["🚧 Isolate: 50m | Fire: 800m","🧑‍🚀 Level A + SCBA","🚫 No water on pool","🧪 Sand → NaHCO₃"]},
+    {t:"UDMH — ERG 131",c:P.purple,it:he?["🚧 בידוד: 100 מ׳ | דליפה: 300+","🧑‍🚀 חליפת A — חודר עור!","💧 ערפל + AR-AFFF","☠️ NDMA+HCN — 6 שבועות"]:["🚧 Isolate: 100m | Large: 300+","🧑‍🚀 Level A — penetrates skin!","💧 Fog + AR-AFFF","☠️ NDMA+HCN — 6 weeks"]},
+    {t:he?"💥 היפרגולי":"💥 Hypergolic",c:P.red,it:he?["מגע = הצתה מיידית","שרידי טיל: 800 מ׳, חומ״ס בלבד"]:["Contact = instant ignition","Debris: 800m, HazMat only"]},
   ];
-
-  const parts = mode === 'liquid' ? liquidParts : solidParts;
-  const active = parts.find(p => p.id === hover);
-
-  return (
-    <Section id="diagram" num="02½" title="אנטומיה של טיל בליסטי" subtitle="לחצו על חלק בטיל כדי ללמוד עליו"
-      sidebar={active ? (
-        <div className="rounded-lg p-4 border-r-[3px] bg-gray-50" style={{borderRightColor:active.c}}>
-          <h4 className="text-sm font-black text-gray-800 mb-2">{active.label}</h4>
-          <p className="text-xs text-gray-600 leading-relaxed">{active.desc}</p>
-        </div>
-      ) : (
-        <InfoBox color="blue" title="👆 העבירו את העכבר על חלק בטיל">
-          <p>לחצו או העבירו את העכבר על אזור בטיל כדי לראות הסבר מפורט על כל רכיב.</p>
-        </InfoBox>
-      )}>
-      <div className="flex gap-2 mb-4">
-        <button onClick={()=>{setMode('liquid');setHover(null);}} className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${mode==='liquid'?'bg-blue-900 text-white':'bg-gray-100 text-gray-500'}`}>🔵 נוזלי (שהאב-3)</button>
-        <button onClick={()=>{setMode('solid');setHover(null);}} className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${mode==='solid'?'bg-amber-800 text-white':'bg-gray-100 text-gray-500'}`}>🟠 מוצק (סג׳יל-2)</button>
-      </div>
-      <div className="bg-gray-50 rounded-lg p-4">
-        <svg viewBox="0 0 100 30" className="w-full">
-          {/* Missile body */}
-          <defs>
-            <linearGradient id="bG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#9ca3af"/><stop offset="50%" stopColor="#d1d5db"/><stop offset="100%" stopColor="#6b7280"/></linearGradient>
-          </defs>
-          <path d="M 8,15 Q 2,15 2,15 L 8,10 L 8,20 Z" fill="url(#bG)"/>
-          <rect x="8" y="10" width="82" height="10" rx="0.5" fill="url(#bG)"/>
-          <path d="M 90,10.5 L 95,8 L 95,22 L 90,19.5" fill="#4b5563"/>
-          {mode==='liquid' && <><path d="M 87,10 L 84,5 L 92,5 L 90,10" fill="#64748b"/><path d="M 87,20 L 84,25 L 92,25 L 90,20" fill="#64748b"/></>}
-          {mode==='solid' && <rect x="42" y="9.5" width="4" height="11" rx="0.3" fill="#374151"/>}
-          {/* Hover zones */}
-          {parts.map(p=>(
-            <rect key={p.id} x={p.x} y={hover===p.id?7:9} width={p.w} height={hover===p.id?16:12} rx="1"
-              fill={hover===p.id ? p.c+'40' : 'transparent'} stroke={hover===p.id ? p.c : 'transparent'} strokeWidth={hover===p.id?0.5:0}
-              className="cursor-pointer transition-all" onMouseEnter={()=>setHover(p.id)} onMouseLeave={()=>setHover(null)} onClick={()=>setHover(hover===p.id?null:p.id)}/>
-          ))}
-          <text x="50" y="29" textAnchor="middle" fill="#9ca3af" fontSize="2">{mode==='liquid' ? '~16 m (Shahab-3)' : '~17.6 m (Sejjil-2)'}</text>
-        </svg>
-        {/* Labels below */}
-        <div className="flex justify-between mt-1 text-[8px] text-gray-400 px-1">
-          {parts.map(p=><span key={p.id} className={`${hover===p.id?'text-gray-700 font-bold':''}  transition-colors`} style={{cursor:'pointer'}} onMouseEnter={()=>setHover(p.id)} onMouseLeave={()=>setHover(null)}>{p.label}</span>)}
-        </div>
-      </div>
-    </Section>
-  );
+  return<Sec id="hazmat" num="09" title={he?"מענה חומ״ס — ERG 2024":"HazMat — ERG 2024"}
+    sidebar={<SB color="red" title={he?"🏥 רפואי":"🏥 Medical"}><p><b>{he?"בזירה:":"Scene:"}</b> {he?"חילוץ, הפשטה, שטיפה 15+":"Extract, decon, 15+ min"}</p><p><b>{he?"אשפוז:":"Hospital:"}</b> {he?"24-48h. לאסיקס, דובוטמין, iNO":"24-48h. Lasix, dobutamine, iNO"}</p><p><b>UDMH:</b> B6</p></SB>}>
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      {pr.map((p,i)=><div key={i} className="cm" style={{padding:20,borderRight:`3px solid ${p.c}`}}>
+        <h4 className="sf" style={{fontWeight:800,fontSize:15,marginBottom:10}}>{p.t}</h4>
+        {p.it.map((x,j)=><p key={j} style={{fontSize:13,color:P.steel,lineHeight:1.7,marginBottom:4}}>{x}</p>)}
+      </div>)}
+    </div>
+  </Sec>;
 }
 
-/* ====== PROPULSION COMPARISON ====== */
-function Propulsion() {
-  return (
-    <Section id="propulsion" num="02¾" title="נוזלי מול מוצק" subtitle="שתי טכנולוגיות הנעה, שתי פילוסופיות">
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="rounded-lg p-5 bg-blue-50 border-r-[3px] border-r-blue-900">
-          <h3 className="font-black text-blue-900 mb-3">🔵 הנעה נוזלית — היפרגולית</h3>
-          <p className="text-sm text-gray-600 mb-3">מגע ישיר בין דלק למחמצן = הצתה ספונטנית. ללא מצת.</p>
-          <div className="text-sm text-gray-600 space-y-1 mb-3">
-            <p><b className="text-blue-900">דלק:</b> UDMH / הידראזין / TM-185</p>
-            <p><b className="text-blue-900">מחמצן:</b> IRFNA (AK-27) / NTO (N₂O₄)</p>
-            <p><b className="text-blue-900">טילים:</b> שהאב, גדר, עמאד, קיאם, ח׳ורמשהר</p>
-          </div>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-green-50 rounded p-2"><b className="text-green-800">✅ יתרונות:</b><br/>שליטה במנוע, Isp גבוה, אחסון בטמפ׳ חדר</div>
-            <div className="bg-red-50 rounded p-2"><b className="text-red-800">❌ חסרונות:</b><br/>תדלוק שעות, חשוף לזיהוי, רעיל קטלני</div>
-          </div>
-        </div>
-        <div className="rounded-lg p-5 bg-amber-50 border-r-[3px] border-r-amber-800">
-          <h3 className="font-black text-amber-800 mb-3">🟠 הנעה מוצקה — קומפוזיט</h3>
-          <p className="text-sm text-gray-600 mb-3">דלק ומחמצן יצוקים יחד. כוננות מיידית.</p>
-          <div className="text-sm text-gray-600 space-y-1 mb-3">
-            <p><b className="text-amber-800">מחמצן:</b> אמוניום פרכלורט (AP) ~70%</p>
-            <p><b className="text-amber-800">מאגד/דלק:</b> HTPB ~15% + אבקת אלומיניום ~15%</p>
-            <p><b className="text-amber-800">טילים:</b> פאתח, זולפקאר, דזפול, ח׳ייבר שכן, סג׳יל, פתאח</p>
-          </div>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-green-50 rounded p-2"><b className="text-green-800">✅ יתרונות:</b><br/>שיגור מיידי, שרידות, TEL ניידים</div>
-            <div className="bg-red-50 rounded p-2"><b className="text-red-800">❌ חסרונות:</b><br/>אין עצירת בעירה, מערבלים מסין, 6-10 ימי יציקה</div>
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-/* ====== PRODUCTION PROCESSES ====== */
-function Processes() {
-  const [active, setActive] = useState(0);
-  const procs = [
-    { name:'אוסטוולד — HNO₃', icon:'⚗️', origin:'Wilhelm Ostwald (1853-1932), Nobel 1909',
-      desc:'חמצון קטליטי של אמוניה לייצור חומצה חנקתית — חומר המוצא לכל שרשרת הנשק.',
-      steps:['NH₃ + אוויר מוזרמים לכור','זרז Pt-Rh (90:10) ב-850°C → NO','קירור + חמצון: NO → NO₂ (גז חום-אדום)','מגדל ספיגה: NO₂ + מים → HNO₃ (~68%)','ריכוז עם H₂SO₄ ל->86%','הוספת N₂O₄ + HF → IRFNA מוכן לטילים']},
-    { name:'רשיג — UDMH', icon:'🟣', origin:'Friedrich Raschig (1863-1928), כימאי גרמני',
-      desc:'ייצור דלק טילים נוזלי מחומרי גלם פשוטים — אמוניה, אקונומיקה ודימתילאמין.',
-      steps:['אמוניה + נתרן היפוכלוריט (אקונומיקה)','תגובה ב-0°C → כלוראמין (NH₂Cl)','כלוראמין + דימתילאמין','תגובה → UDMH גולמי','זיקוק מסיבי (63°C)','UDMH טהור — דלק מסרטן']},
-    { name:'בכמן — RDX/HMX', icon:'💣', origin:'Werner E. Bachmann (1901-1951), Michigan, WWII',
-      desc:'ניטרציה של הקסאמין בחומצה חנקתית — ייצור חומרי נפץ לדלק מוצק, ראשי קרב ועדשות גרעיניות.',
-      steps:['הקסאמין (קוביות קמפינג) + HNO₃ מרוכזת','ניטרציה מבוקרת 45-75°C (עלייה = פיצוץ!)','שטיפה, סינון, ייבוש → RDX','בתנאים שונים → HMX (חזק יותר)','שימושים: ראשי קרב + דלק מוצק + עדשות גרעיניות']},
+function Glossary({lang}:{lang:string}){
+  const[search,setSearch]=useState('');
+  const[cat,setCat]=useState('all');
+  const he=lang==="he";
+  const terms=[
+    {t:'IRFNA',c:'chem',d:he?'חומצה חנקתית מעושנת אדומה מעוכבת. HNO₃ + N₂O₄ + HF':'Inhibited Red Fuming Nitric Acid. HNO₃ + N₂O₄ + HF'},
+    {t:'UDMH',c:'chem',d:he?'דלק טילים שקוף, מסרטן, חודר עור. CAS 57-14-7':'Clear missile fuel, carcinogenic. CAS 57-14-7'},
+    {t:'NTO',c:'chem',d:he?'N₂O₄ — רותח ב-21°C. משמש בח׳ורמשהר':'N₂O₄ — boils at 21°C. Used in Khorramshahr'},
+    {t:'AP',c:'chem',d:he?'אמוניום פרכלורט — ~70% מדלק מוצק':'Ammonium perchlorate — ~70% of solid fuel'},
+    {t:'HTPB',c:'chem',d:he?'מאגד פולימרי + דלק בדלק מוצק':'Polymer binder + fuel in solid propellant'},
+    {t:'RDX/HMX',c:'chem',d:he?'חומרי נפץ. בכמן. גם בעדשות גרעיניות':'Explosives. Bachmann process. Also nuclear lenses'},
+    {t:'HNO₃',c:'chem',d:he?'חומצה חנקתית — חומר גלם קריטי לכל שרשרת הנשק':'Nitric acid — critical precursor for entire weapons chain'},
+    {t:'Ostwald',c:'proc',d:he?'חמצון NH₃ על Pt-Rh → HNO₃':'NH₃ oxidation on Pt-Rh → HNO₃'},
+    {t:'Raschig',c:'proc',d:he?'NH₃ + NaOCl → כלוראמין + DMA → UDMH':'NH₃ + NaOCl → chloramine + DMA → UDMH'},
+    {t:'Bachmann',c:'proc',d:he?'הקסאמין + HNO₃ → RDX':'Hexamine + HNO₃ → RDX'},
+    {t:'MaRV',c:'mil',d:he?'ראש קרב מתמרן — מקשה על יירוט':'Maneuverable Re-entry Vehicle'},
+    {t:'CEP',c:'mil',d:he?'רדיוס 50% פגיעה. ח׳ורמשהר: ~30 מ׳':'Circular Error Probable. Khorramshahr: ~30m'},
+    {t:'TEL',c:'mil',d:he?'משגר נייד — שיגור תוך דקות':'Mobile launcher — launch in minutes'},
+    {t:'TVC',c:'mil',d:he?'הטיית נחיר לשינוי כיוון':'Thrust Vector Control'},
+    {t:'SHIG',c:'org',d:he?'טילים נוזליים':'Liquid missile org'},
+    {t:'SBIG',c:'org',d:he?'טילים מוצקים':'Solid missile org'},
+    {t:'PCI',c:'org',d:he?'תעשיות כימיקלים פרצ׳ין':'Parchin Chemical Industries'},
+    {t:'מנ״פ',c:'haz',d:he?'מערכת נשימה פתוחה — SCBA':'Self-Contained Breathing Apparatus'},
+    {t:'ERG 2024',c:'haz',d:he?'מדריך תגובה לחירום':'Emergency Response Guidebook'},
+    {t:'IDLH',c:'haz',d:he?'ריכוז מסוכן לחיים. UDMH: 15 ppm':'Immediately Dangerous to Life. UDMH: 15 ppm'},
   ];
-  const p = procs[active];
-  return (
-    <Section id="processes" num="03½" title="תהליכי ייצור כימיים" subtitle="שלושת התהליכים הקריטיים שנפגעו בתקיפות"
-      sidebar={<>
-        <InfoBox color="purple" title="📜 מקור השם">
-          <p className="font-bold">{p.name}</p>
-          <p className="mt-1">{p.origin}</p>
-        </InfoBox>
-        <InfoBox color="amber" title="⚡ מערבלים פלנטריים">
-          <p>מכונות ענק לערבוב דלק מוצק. איראן לא מייצרת — הברחות מסין. השמדתם = ואקום ייצורי.</p>
-        </InfoBox>
-      </>}>
-      <div className="flex gap-2 mb-4 flex-wrap">
-        {procs.map((pr,i)=><button key={i} onClick={()=>setActive(i)} className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${active===i?'bg-blue-900 text-white':'bg-gray-100 text-gray-500'}`}>{pr.icon} {pr.name.split('—')[0]}</button>)}
-      </div>
-      <div className="bg-gray-50 rounded-lg p-5">
-        <h3 className="font-black text-gray-900 text-lg mb-1">{p.icon} {p.name}</h3>
-        <p className="text-sm text-gray-500 mb-4">{p.desc}</p>
-        <div className="space-y-0">
-          {p.steps.map((s,i)=>(
-            <div key={i} className="flex gap-3 items-start py-3 border-b border-gray-100 last:border-0">
-              <div className="w-7 h-7 rounded-full bg-blue-900 text-white text-xs font-black flex items-center justify-center flex-shrink-0">{i+1}</div>
-              <p className="text-sm text-gray-700 leading-relaxed pt-1">{s}</p>
-            </div>
-          ))}
+  const cats=[{k:'all',l:he?'הכל':'All'},{k:'chem',l:he?'כימיה':'Chem'},{k:'proc',l:he?'תהליכים':'Process'},{k:'mil',l:he?'צבאי':'Military'},{k:'org',l:he?'ארגונים':'Orgs'},{k:'haz',l:he?'חומ״ס':'HazMat'}];
+  const catC:Record<string,[string,string]>={chem:[P.greenS,P.green],proc:[P.purpleS,P.purple],mil:[P.blueS,P.blue],org:[P.amberS,P.amber],haz:[P.redS,P.red]};
+  const filtered=terms.filter(tm=>(cat==='all'||tm.c===cat)&&(search===''||tm.t.toLowerCase().includes(search.toLowerCase())||tm.d.toLowerCase().includes(search.toLowerCase())));
+  return<Sec id="glossary" num="10" title={he?"מקרא מונחים":"Glossary"} subtitle={`${terms.length} ${he?'מונחים':'terms'}`}>
+    <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
+      {cats.map(c=><button key={c.k} onClick={()=>setCat(c.k)} className={cat===c.k?"ta":"ti"} style={{padding:"5px 12px",borderRadius:5,fontSize:11,fontWeight:700,cursor:"pointer"}}>{c.l}</button>)}
+    </div>
+    <input value={search} onChange={e=>setSearch(e.target.value)} placeholder={he?"🔍 חיפוש מונח...":"🔍 Search..."} style={{width:"100%",padding:"10px 14px",borderRadius:8,background:P.white,border:`1px solid ${P.border}`,fontSize:13,marginBottom:16,outline:"none"}}/>
+    <div style={{display:"flex",flexDirection:"column",gap:8}}>
+      {filtered.map((tm,i)=>{const[bg,c]=catC[tm.c]||[P.cream,P.muted];return<div key={i} className="cm" style={{padding:14}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+          <span style={{fontWeight:800,color:P.blue}}>{tm.t}</span>
+          <span style={{fontSize:9,fontWeight:700,padding:"1px 6px",borderRadius:3,background:bg,color:c}}>{cats.find(x=>x.k===tm.c)?.l}</span>
         </div>
-      </div>
-    </Section>
-  );
+        <p style={{fontSize:12,color:P.steel,lineHeight:1.6}}>{tm.d}</p>
+      </div>;})}
+    </div>
+  </Sec>;
 }
 
-/* ====== STRATEGIC — HNO₃ CHOKEPOINT ====== */
-function Strategic() {
-  return (
-    <Section id="strategic" num="03¾" title="צוואר הבקבוק הכימי" subtitle="HNO₃ — המפתח המוחלט"
-      sidebar={<>
-        <InfoBox color="red" title="💡 המשמעות">
-          <p className="font-bold">השמדת מתקני אוסטוולד ובכמן = פגיעה סימולטנית ב:</p>
-          <p className="mt-1">• טילים נוזליים (IRFNA)</p>
-          <p>• טילים מוצקים (RDX/HMX)</p>
-          <p>• פרויקט גרעיני (עדשות קריסה)</p>
-        </InfoBox>
-      </>}>
-      <div className="text-center mb-6">
-        <div className="inline-block px-6 py-3 rounded-lg bg-red-50 border-2 border-red-200">
-          <div className="text-3xl font-black text-red-800">HNO₃</div>
-          <div className="text-xs text-red-600">חומצה חנקתית</div>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {[
-          {icon:'💧',t:'מחמצן IRFNA',d:'שהאב, גדר, קיאם, ח׳ורמשהר',c:'bg-blue-50 text-blue-900'},
-          {icon:'🧊',t:'רכיב NTO',d:'N₂O₄ מאותו תהליך',c:'bg-purple-50 text-purple-900'},
-          {icon:'💣',t:'RDX/HMX',d:'חומרי נפץ + דלק מוצק',c:'bg-amber-50 text-amber-900'},
-          {icon:'☢️',t:'עדשות גרעיניות',d:'Implosion Lenses',c:'bg-red-50 text-red-900'},
-        ].map((t,i)=>(
-          <div key={i} className={`rounded-lg p-4 text-center ${t.c}`}>
-            <div className="text-2xl mb-1">{t.icon}</div>
-            <div className="text-xs font-bold">{t.t}</div>
-            <div className="text-[10px] opacity-70 mt-1">{t.d}</div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ====== GLOSSARY ====== */
-function Glossary() {
-  const [search, setSearch] = useState('');
-  const [cat, setCat] = useState('all');
-  const terms = [
-    {t:'IRFNA',c:'chem',d:'Inhibited Red Fuming Nitric Acid — חומצה חנקתית מעושנת אדומה מעוכבת. המחמצן העיקרי בטילים נוזליים. הרכב: HNO₃ (70%+) + N₂O₄ (18-27%) + HF (0.6%)'},
-    {t:'UDMH',c:'chem',d:'Unsymmetrical Dimethylhydrazine — דלק טילים נוזלי שקוף. רעיל, מסרטן, חודר עור. CAS 57-14-7'},
-    {t:'NTO (N₂O₄)',c:'chem',d:'Nitrogen Tetroxide — חנקן טטראוקסיד. מחמצן נוזלי חום-אדום. רותח ב-21°C בלבד — מתאדה בטמפ׳ החדר. משמש בח׳ורמשהר'},
-    {t:'HNO₃',c:'chem',d:'Nitric Acid — חומצה חנקתית. חומר הגלם הקריטי: ממנו מייצרים IRFNA, RDX/HMX, NTO. מיוצרת בתהליך אוסטוולד'},
-    {t:'AP',c:'chem',d:'Ammonium Perchlorate — אמוניום פרכלורט. ~70% מהדלק המוצק. משחרר חמצן בחימום'},
-    {t:'HTPB',c:'chem',d:'Hydroxyl-Terminated Polybutadiene — פולימר גמיש. מאגד + דלק בדלק מוצק (~15%)'},
-    {t:'RDX',c:'chem',d:'Research Department Explosive — הקסוגן. חומר נפץ חזק פי 1.6 מ-TNT. מיוצר בתהליך בכמן'},
-    {t:'HMX',c:'chem',d:'High Melting Explosive — אוקטוגן. חזק מ-RDX. משמש גם בעדשות קריסה גרעיניות'},
-    {t:'NOx',c:'chem',d:'תחמוצות חנקן — גזים רעילים מ-IRFNA. גורמים לבצקת ריאות מושהית (24-48 שעות)'},
-    {t:'NDMA',c:'chem',d:'תוצר פירוק UDMH מסרטן. נשאר בקרקע 6 שבועות'},
-    {t:'NH₃',c:'chem',d:'אמוניה — חומר גלם לאוסטוולד ורשיג. מיוצרת באסלויה'},
-    {t:'TM-185',c:'chem',d:'קרוסין צבאי בסימון סובייטי. דלק בשהאב וגדר'},
-    {t:'AK-27',c:'chem',d:'סימון סובייטי ל-IRFNA: 73% HNO₃ + 27% N₂O₄ + מעכב'},
-    {t:'HF',c:'chem',d:'מימן פלואורי — מעכב קורוזיה ב-IRFNA (0.6%)'},
-    {t:'Dual-Use',c:'chem',d:'שימוש כפול — חומר אזרחי שניתן להסבה צבאית'},
-    {t:'Ostwald Process',c:'proc',d:'ע״ש Wilhelm Ostwald (Nobel 1909). חמצון NH₃ על זרז Pt-Rh → HNO₃. מפעיל את כל שרשרת הנשק'},
-    {t:'Raschig Process',c:'proc',d:'ע״ש Friedrich Raschig (1863-1928). אמוניה + אקונומיקה → כלוראמין + DMA → UDMH. גם Ketazine Process'},
-    {t:'Bachmann Process',c:'proc',d:'ע״ש Werner Bachmann (1901-1951, Michigan, WWII). הקסאמין + HNO₃ → RDX. גם Bachmann-Hay Process'},
-    {t:'היפרגולי',c:'mil',d:'מגע דלק+מחמצן = הצתה ספונטנית. ללא ניצוץ, מצת או חום'},
-    {t:'MaRV',c:'mil',d:'Maneuverable Re-entry Vehicle — ראש קרב מתמרן. מקשה על יירוט'},
-    {t:'CEP',c:'mil',d:'Circular Error Probable — רדיוס שבו נופלים 50% מהטילים. ח׳ורמשהר: ~30 מ׳'},
-    {t:'TEL',c:'mil',d:'Transporter Erector Launcher — משגר נייד. שיגור תוך דקות'},
-    {t:'TVC',c:'mil',d:'Thrust Vector Control — הטיית נחיר לשינוי כיוון טיסה. מחליף כנפונים'},
-    {t:'Isp',c:'mil',d:'Specific Impulse — דחף סגולי. מדד יעילות מנוע רקטי (בשניות)'},
-    {t:'SRBM / MRBM',c:'mil',d:'טיל טווח קצר (עד 1,000 ק״מ) / טווח בינוני (1,000-3,000 ק״מ)'},
-    {t:'SHIG',c:'org',d:'Shahid Hemmat Industrial Group — טילים נוזליים'},
-    {t:'SBIG',c:'org',d:'Shahid Bakeri Industrial Group — טילים מוצקים'},
-    {t:'PCI',c:'org',d:'Parchin Chemical Industries — HNO₃ וחומרי נפץ'},
-    {t:'MODAFL',c:'org',d:'Ministry of Defense and Armed Forces Logistics — משרד ההגנה'},
-    {t:'AIO',c:'org',d:'Aerospace Industries Organization — תיאום ייצור טילים'},
-    {t:'IRGC',c:'org',d:'משמרות המהפכה — מפעילי תוכנית הטילים'},
-    {t:'מנ״פ',c:'haz',d:'מערכת נשימה פתוחה — SCBA. חובה באירוע IRFNA/UDMH'},
-    {t:'ERG 2024',c:'haz',d:'Emergency Response Guidebook — מדריך תגובה לחירום'},
-    {t:'IDLH',c:'haz',d:'ריכוז = סכנה מיידית לחיים. UDMH: 15 ppm'},
-    {t:'AEGL',c:'haz',d:'רמות חשיפה חריפה. AEGL-2 = נזק. AEGL-3 = מוות'},
-    {t:'חליפת מגן רמה A',c:'haz',d:'חליפה אטומה לגזים + מנ״פ — הרמה הגבוהה ביותר'},
-    {t:'בצקת ריאות מושהית',c:'haz',d:'הצטברות נוזלים בריאות 24-48 שעות אחרי NOx. קטלני ללא טיפול'},
+function Sources({lang}:{lang:string}){
+  const he=lang==="he";
+  const sr=[
+    {n:"CSIS Missile Defense Project",c:he?"מחקרי":"Research"},{n:"Iran Watch — Missile Arsenal",c:he?"מחקרי":"Research"},
+    {n:"USIP — Ballistic Missile Program",c:he?"ממשלתי":"Govt"},{n:"NIOSH/CDC — UDMH",c:he?"ממשלתי":"Govt"},
+    {n:"NOAA CAMEO — IRFNA & NTO",c:he?"ממשלתי":"Govt"},{n:"ERG 2024 — PHMSA",c:he?"ממשלתי":"Govt"},
+    {n:"NCBI — AEGL Dimethylhydrazine",c:he?"אקדמי":"Academic"},{n:"PMC — Delayed Pulmonary Edema",c:he?"אקדמי":"Academic"},
+    {n:"Alma Center — Iran Missiles",c:he?"מחקרי":"Research"},{n:"IISS Military Balance",c:he?"מחקרי":"Research"},
   ];
-  const cats = [{k:'all',l:'הכל'},{k:'chem',l:'כימיה'},{k:'proc',l:'תהליכים'},{k:'mil',l:'צבאי'},{k:'org',l:'ארגונים'},{k:'haz',l:'חומ״ס'}];
-  const catC:Record<string,string> = {chem:'bg-green-50 text-green-800',proc:'bg-purple-50 text-purple-800',mil:'bg-blue-50 text-blue-800',org:'bg-amber-50 text-amber-800',haz:'bg-red-50 text-red-800'};
-  const filtered = terms.filter(tm=>(cat==='all'||tm.c===cat) && (search===''||tm.t.toLowerCase().includes(search.toLowerCase())||tm.d.toLowerCase().includes(search.toLowerCase())));
-  return (
-    <Section id="glossary" num="08" title="מקרא מונחים" subtitle={`${terms.length} מונחים מקצועיים`}>
-      <div className="flex gap-2 mb-3 flex-wrap">
-        {cats.map(c=><button key={c.k} onClick={()=>setCat(c.k)} className={`px-3 py-1 rounded text-xs font-bold transition-colors ${cat===c.k?'bg-blue-900 text-white':'bg-gray-100 text-gray-500'}`}>{c.l}</button>)}
-      </div>
-      <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="🔍 חיפוש מונח..." className="w-full px-4 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-sm mb-4 outline-none focus:border-blue-300"/>
-      <div className="space-y-2">
-        {filtered.map((tm,i)=>(
-          <div key={i} className="rounded-lg bg-gray-50 p-4">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-black text-blue-900">{tm.t}</span>
-              <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${catC[tm.c]||'bg-gray-100'}`}>{cats.find(c=>c.k===tm.c)?.l}</span>
-            </div>
-            <p className="text-sm text-gray-600 leading-relaxed">{tm.d}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
+  const cc:Record<string,[string,string]>={[he?"ממשלתי":"Govt"]:[P.greenS,P.green],[he?"מחקרי":"Research"]:[P.blueS,P.blue],[he?"אקדמי":"Academic"]:[P.purpleS,P.purple]};
+  return<Sec id="sources" num="11" title={he?"מקורות":"Sources"}>
+    {sr.map((s,i)=>{const[bg,c]=cc[s.c]||[P.cream,P.muted];return<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:`1px solid ${P.border}30`}}>
+      <span style={{color:P.gold}}>🔗</span><span style={{flex:1,fontSize:13,color:P.steel}}>{s.n}</span><span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:3,background:bg,color:c}}>{s.c}</span>
+    </div>;})}
+  </Sec>;
 }
 
-/* ====== INSIGHTS ====== */
-function Insights() {
-  return (
-    <Section id="insights" num="09" title="סיכום: הפגיעה הסינרגטית">
-      <div className="grid md:grid-cols-3 gap-4">
-        {[
-          {icon:'⚗️',t:'צוואר הבקבוק',d:'HNO₃ = מפתח ל-IRFNA + NTO + RDX/HMX + גרעיני. פגיעה אחת = שיתוק רב-מערכתי.',c:'bg-red-50 border-r-red-700'},
-          {icon:'🇨🇳',t:'תלות בסין',d:'נתרן פרכלורט מג׳והאי. נתיב ימי יחיד (הורמוז). ללא חלופה מקומית.',c:'bg-amber-50 border-r-amber-700'},
-          {icon:'🎯',t:'אפקט מצטבר',d:'6 תקיפות ב-18 חודשים. מערבלים, בורות יציקה, מגדלי זיקוק, מתקני HNO₃ — שרשרת שלמה.',c:'bg-blue-50 border-r-blue-900'},
-        ].map((c,i)=>(
-          <div key={i} className={`rounded-lg p-5 border-r-[3px] ${c.c}`}>
-            <div className="text-2xl mb-2">{c.icon}</div>
-            <h3 className="font-black text-gray-800 mb-2">{c.t}</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">{c.d}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
+function Insights({lang}:{lang:string}){
+  const he=lang==="he";
+  return<Sec id="insights" num="12" title={he?"הפגיעה הסינרגטית":"Synergistic Impact"}>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:16}}>
+      {[{ic:"⚗️",t:he?"צוואר הבקבוק":"Chokepoint",d:he?"HNO₃ = מפתח לכל.":"HNO₃ = key to all.",bg:P.redS,bc:P.red},
+        {ic:"🇨🇳",t:he?"תלות סין":"China Dep.",d:he?"נתרן פרכלורט — נתיב יחיד.":"Perchlorate — single route.",bg:P.amberS,bc:P.amber},
+        {ic:"🎯",t:he?"מצטבר":"Cumulative",d:he?"6 תקיפות, 18 חודשים.":"6 strikes, 18 months.",bg:P.blueS,bc:P.blue},
+      ].map((x,i)=><div key={i} className="cm" style={{padding:24,borderRight:`3px solid ${x.bc}`,background:x.bg}}>
+        <div style={{fontSize:28,marginBottom:8}}>{x.ic}</div>
+        <h3 className="sf" style={{fontWeight:800,fontSize:16,marginBottom:6}}>{x.t}</h3>
+        <p style={{fontSize:13,color:P.steel,lineHeight:1.7}}>{x.d}</p>
+      </div>)}
+    </div>
+  </Sec>;
 }
 
-/* ====== MAIN PAGE ====== */
-export default function Home() {
-  return (
-    <LangProvider>
-      <ProgressBar/>
-      <Nav/>
-      <main>
-        <Hero/>
-        <Timeline/>
-        <MissileDiagram/>
-        <Arsenal/>
-        <Propulsion/>
-        <Chemistry/>
-        <Processes/>
-        <Strategic/>
-        <Facilities/>
-        <HazMat/>
-        <Glossary/>
-        <Gallery/>
-        <Sources/>
-        <Insights/>
-      </main>
-      <Footer/>
-    </LangProvider>
-  );
+function Footer({lang}:{lang:string}){
+  const he=lang==="he";
+  return<footer style={{borderTop:`1px solid ${P.gold}40`,padding:"36px 20px",background:P.ink,textAlign:"center"}}>
+    <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:10}}>
+      <div className="mn" style={{width:30,height:30,borderRadius:6,background:P.gold,display:"flex",alignItems:"center",justifyContent:"center",color:P.ink,fontWeight:900,fontSize:11}}>60</div>
+      <span style={{fontSize:14,fontWeight:700,color:P.gold}}>{he?"ניתוח 60 שניות של חומ״ס":"60 Seconds HazMat"}</span>
+    </div>
+    <p style={{fontSize:13,color:`${P.white}80`,marginBottom:10}}><b style={{color:P.white}}>{he?"רועי צוקרמן":"Roei Zukerman"}</b> — {he?"מומחה לחומ״ס וטב״ק":"HazMat & CBRN Expert"}</p>
+    <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginBottom:14}}>
+      <span style={{fontSize:12,color:P.gold}}>✉️ roiez1@gmail.com</span>
+    </div>
+    <div style={{height:1,maxWidth:300,margin:"0 auto 10px",background:`linear-gradient(90deg,transparent,${P.gold}60,transparent)`}}/>
+    <p style={{fontSize:10,color:`${P.white}25`}}>{he?"מקורות פתוחים | לא מסווג":"Open sources | Unclassified"} | {he?"אפריל 2026":"April 2026"}</p>
+  </footer>;
+}
+
+export default function Home(){
+  const[lang,setLang]=useState("he");
+  return<div dir={lang==="he"?"rtl":"ltr"}>
+    <ProgressBar/>
+    <Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/>
+    <Hero lang={lang}/>
+    <Timeline lang={lang}/>
+    <MissileDiagram lang={lang}/>
+    <Arsenal lang={lang}/>
+    <Propulsion lang={lang}/>
+    <Chemistry lang={lang}/>
+    <Processes lang={lang}/>
+    <Strategic lang={lang}/>
+    <Facilities lang={lang}/>
+    <HazMat lang={lang}/>
+    <Glossary lang={lang}/>
+    <Sources lang={lang}/>
+    <Insights lang={lang}/>
+    <Footer lang={lang}/>
+  </div>;
 }
