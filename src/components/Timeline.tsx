@@ -1,82 +1,56 @@
 'use client';
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Flame, Eye, ShoppingCart, FileWarning, Bomb, Crosshair } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useLang } from '@/lib/LanguageContext';
 
-const eventsData = [
-  { year: '2002', icon: Eye, colorClass: 'border-amber-500 bg-amber-500/10 text-amber-400', he: { label: 'השראה', desc: 'שימוש בנגזרת פנטניל בתיאטרון במוסקבה — 130 בני ערובה נהרגו' }, en: { label: 'Inspiration', desc: 'Fentanyl derivative used at Moscow theater — 130 hostages killed' } },
-  { year: '2005', icon: Flame, colorClass: 'border-blue-500 bg-blue-500/10 text-blue-400', he: { label: 'מחקר', desc: 'תחילת פרסום מאמרים על ייצור פנטניל וחומרי גלם לייצור גזי עצבים ב-IHU' }, en: { label: 'Research', desc: 'First publications on fentanyl synthesis and nerve agent precursors at IHU' } },
-  { year: '2014', icon: ShoppingCart, colorClass: 'border-red-500 bg-red-500/10 text-red-400', he: { label: 'רכש', desc: 'ניסיון רכישת אלפי מנות מדטומידין מסין — ללא היסטוריה רפואית במחלקה' }, en: { label: 'Procurement', desc: 'Attempted purchase of thousands of medetomidine doses from China — no medical research history' } },
-  { year: '2023', icon: FileWarning, colorClass: 'border-purple-500 bg-purple-500/10 text-purple-400', he: { label: 'חשיפה', desc: 'הדלפת מסמכי פרויקט הרתעה — רימוני גז מבוססי מדטומידין' }, en: { label: 'Exposure', desc: 'Leak of Project Deterrence documents — medetomidine-based grenades' } },
-  { year: '2025', icon: Bomb, colorClass: 'border-orange-500 bg-orange-500/10 text-orange-400', he: { label: 'השמדה', desc: 'תקיפה ישראלית — השמדת מתחם שהיד מייסמי ותקיפת IHU' }, en: { label: 'Destruction', desc: 'Israeli strike — Shahid Meisami complex destroyed, IHU struck' } },
-  { year: '2026', icon: Crosshair, colorClass: 'border-red-600 bg-red-600/10 text-red-500', he: { label: 'סיכול', desc: 'תקיפות צה"ל על 3 מטרות ספציפיות בקמפוס IHU — מרכז כימיה, מנהרות רוח, מרכז הנדסה' }, en: { label: 'Targeted Strike', desc: 'IDF strikes on 3 specific IHU campus targets — Chemistry, Wind Tunnels, Engineering' } },
+const events = [
+  { year: '1984', he: 'איראן רוכשת 20 טילי Scud-B מלוב — תחילת תוכנית הטילים', en: 'Iran acquires 20 Scud-B missiles from Libya — missile program begins', icon: '📦' },
+  { year: '1988', he: 'מלחמת הערים: שיגור טילי Scud על עירק. חסן טהראני מוקדאם מוביל הנדסה הפוכה', en: 'War of the Cities: Scud launches at Iraq. Tehrani Moghaddam leads reverse engineering', icon: '💥' },
+  { year: '1998', he: 'שהאב-3 נחשף — טווח 1,300 ק״מ. מבוסס Nodong צפון-קוריאני. דלק IRFNA+TM-185', en: 'Shahab-3 unveiled — 1,300 km range. Based on North Korean Nodong. IRFNA+TM-185 fuel', icon: '🚀' },
+  { year: '2004', he: 'שהאב-3B (גדר) — מיכלי דלק מורחבים, טווח 2,000 ק״מ. תוכנית מודרניזציה', en: 'Shahab-3B (Ghadr) — extended fuel tanks, 2,000 km range. Modernization program', icon: '⚙️' },
+  { year: '2008', he: 'סג׳יל-1 נבחן — פריצת דרך בדלק מוצק דו-שלבי. AP+HTPB+Al. שיגור מהיר', en: 'Sejjil-1 tested — solid-fuel two-stage breakthrough. AP+HTPB+Al. Rapid launch capability', icon: '🔩' },
+  { year: '2015', he: 'עמאד נחשף — ראשון עם ראש קרב מתמרן (MaRV). דיוק משופר משמעותית', en: 'Emad unveiled — first with Maneuverable Re-entry Vehicle (MaRV). Significantly improved accuracy', icon: '🎯' },
+  { year: '2017', he: 'ח׳ורמשהר — טווח 2,000 ק״מ, ראש קרב 1,500 ק״ג. NTO+UDMH. הטיל הנוזלי המדויק ביותר', en: 'Khorramshahr — 2,000 km, 1,500 kg warhead. NTO+UDMH. Most accurate liquid missile', icon: '💣' },
+  { year: '2023', he: 'פתאח-1 נחשף — טענה להיפרסוני, Mach 13. ח׳ייבר שכן פעיל עם MaRV', en: 'Fattah-1 unveiled — claimed hypersonic, Mach 13. Kheibar Shekan operational with MaRV', icon: '⚡' },
+  { year: '10/2024', he: 'ישראל תוקפת פרצ׳ין וח׳וג׳יר — השמדת מערבלים פלנטריים ומתקן טאלקאן 2 (עמאד)', en: 'Israel strikes Parchin & Khojir — planetary mixers destroyed, Taleghan 2 facility (AMAD)', icon: '🎯' },
+  { year: '2/2026', he: 'מבצע שאגת האריה — תקיפות South Pars, אספהאן. איראן משגרת מאות טילים לישראל', en: 'Operation Roaring Lion — South Pars, Isfahan strikes. Iran launches hundreds of missiles at Israel', icon: '🔥' },
+  { year: '4/2026', he: 'תקיפת מתקן חומצה חנקתית בשיראז — אחד האחרונים שנותרו. צוואר הבקבוק הכימי', en: 'Shiraz nitric acid facility struck — one of the last remaining. The chemical chokepoint', icon: '⚗️' },
 ];
-
-function TimelineEvent({ ev, index, lang }: { ev: typeof eventsData[0]; index: number; lang: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const Icon = ev.icon;
-  const data = lang === 'he' ? ev.he : ev.en;
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: 30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-30px' }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="relative flex items-start gap-4 mb-8"
-    >
-      <div className="flex-shrink-0 z-10">
-        <motion.div
-          whileHover={{ scale: 1.15 }}
-          animate={isInView ? {
-            boxShadow: [
-              `0 0 0px ${ev.colorClass.includes('red') ? 'rgba(239,68,68,0)' : ev.colorClass.includes('amber') ? 'rgba(245,158,11,0)' : 'rgba(59,130,246,0)'}`,
-              `0 0 20px ${ev.colorClass.includes('red') ? 'rgba(239,68,68,0.4)' : ev.colorClass.includes('amber') ? 'rgba(245,158,11,0.4)' : 'rgba(59,130,246,0.4)'}`,
-              `0 0 0px ${ev.colorClass.includes('red') ? 'rgba(239,68,68,0)' : ev.colorClass.includes('amber') ? 'rgba(245,158,11,0)' : 'rgba(59,130,246,0)'}`,
-            ]
-          } : {}}
-          transition={{ duration: 2, repeat: isInView ? 2 : 0 }}
-          className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 ${ev.colorClass} flex items-center justify-center bg-[#0d0d1a]`}
-        >
-          <Icon size={18} />
-        </motion.div>
-      </div>
-      <div className={`flex-1 p-4 rounded-xl border ${ev.colorClass} backdrop-blur-sm`}>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="font-mono text-xl font-black">{ev.year}</span>
-          <span className="text-xs font-bold opacity-70">{data.label}</span>
-        </div>
-        <p className="text-xs text-gray-400 leading-relaxed">{data.desc}</p>
-      </div>
-    </motion.div>
-  );
-}
 
 export default function Timeline() {
   const { t, lang } = useLang();
-
   return (
-    <section id="timeline" className="relative py-20 px-4 max-w-3xl mx-auto">
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-16">
-        <h2 className="text-3xl sm:text-5xl font-black text-white mb-2">{t('timeline.title')}</h2>
-        <p className="text-gray-400">{t('timeline.subtitle')}</p>
+    <section id="timeline" className="py-20 px-4 max-w-5xl mx-auto">
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-l from-blue-300 to-blue-500 mb-2">{t('timeline.title')}</h2>
+        <p className="text-slate-400 text-sm">{t('timeline.subtitle')}</p>
       </motion.div>
+
       <div className="relative">
-        <motion.div className="absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 bg-gray-800 rounded-full overflow-hidden">
+        {/* Vertical line */}
+        <div className="absolute top-0 bottom-0 right-1/2 md:right-1/2 w-px bg-gradient-to-b from-blue-500/60 via-red-500/40 to-amber-500/60" />
+
+        {events.map((ev, i) => (
           <motion.div
-            className="w-full rounded-full"
-            style={{ background: 'linear-gradient(180deg, #f59e0b, #ef4444, #7c3aed)' }}
-            initial={{ height: '0%' }}
-            whileInView={{ height: '100%' }}
-            viewport={{ once: true }}
-            transition={{ duration: 3, ease: 'easeInOut' }}
-          />
-        </motion.div>
-        {eventsData.map((ev, i) => (
-          <TimelineEvent key={ev.year} ev={ev} index={i} lang={lang} />
+            key={i}
+            initial={{ opacity: 0, x: i % 2 === 0 ? 50 : -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className={`relative flex items-start mb-8 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+          >
+            {/* Center dot */}
+            <div className="absolute right-1/2 md:right-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-slate-900 border-2 border-blue-500/60 flex items-center justify-center text-lg z-10">
+              {ev.icon}
+            </div>
+
+            {/* Content card */}
+            <div className={`w-full md:w-5/12 ${i % 2 === 0 ? 'md:mr-auto md:pl-8' : 'md:ml-auto md:pr-8'} pr-14 md:pr-0 pl-0 md:pl-0`}>
+              <div className="rounded-xl border border-slate-700/50 bg-slate-800/70 backdrop-blur-sm p-4 hover:border-blue-500/30 transition-all">
+                <div className="text-xs font-mono text-blue-400 mb-1 font-bold">{ev.year}</div>
+                <p className="text-sm text-slate-300 leading-relaxed">{lang === 'he' ? ev.he : ev.en}</p>
+              </div>
+            </div>
+          </motion.div>
         ))}
       </div>
     </section>

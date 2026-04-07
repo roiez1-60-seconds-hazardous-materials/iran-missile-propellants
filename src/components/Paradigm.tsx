@@ -1,90 +1,49 @@
 'use client';
 import { motion } from 'framer-motion';
-import { Syringe, Skull, ShieldAlert, ShieldOff } from 'lucide-react';
 import { useLang } from '@/lib/LanguageContext';
-
-const rows = [
-  { key: 'examples', icon: null, he: { label: 'דוגמאות', pba: 'פנטניל, מדטומידין', nerve: 'סרין, VX' }, en: { label: 'Examples', pba: 'Fentanyl, Medetomidine', nerve: 'Sarin, VX' } },
-  { key: 'objective', icon: null, he: { label: 'מטרה', pba: 'ניטרול טקטי, טשטוש, חטיפות', nerve: 'קטלניות והשמדה המונית' }, en: { label: 'Objective', pba: 'Tactical neutralization, abduction', nerve: 'Lethality and mass destruction' } },
-  { key: 'mechanism', icon: null, he: { label: 'מנגנון', pba: 'דיכוי מערכת העצבים (CNS)', nerve: 'עיכוב אנזים AChE' }, en: { label: 'Mechanism', pba: 'CNS depression', nerve: 'AChE enzyme inhibition' } },
-  { key: 'deniability', icon: null, he: { label: 'הכחשה סבירה', pba: 'גבוהה מאוד — שימוש רפואי כפול', nerve: 'אפסית — נשק צבאי מובהק' }, en: { label: 'Deniability', pba: 'Very high — dual medical use', nerve: 'Zero — overtly military' } },
-];
-
-const pillars = [
-  { he: { title: 'חומרים מבוססי תרופות', desc: 'פנטניל ומדטומידין — קטלני מעל 2 מ"ג' }, en: { title: 'PBAs', desc: 'Fentanyl & medetomidine — lethal above 2mg' }, color: 'red' },
-  { he: { title: 'גזי עצבים', desc: 'כולל נוביצ\'וק — ייצור בקנה מידה קטן' }, en: { title: 'Nerve Agents', desc: 'Including Novichok — small-scale production' }, color: 'purple' },
-  { he: { title: 'RCAs', desc: 'רימוני "אשכן" — ללא הצהרה מלאה' }, en: { title: 'RCAs', desc: '"Ashkan" grenades — undeclared' }, color: 'amber' },
-];
 
 export default function Paradigm() {
   const { t, lang } = useLang();
+  const h = lang === 'he';
   return (
-    <section id="paradigm" className="py-20 px-4 max-w-6xl mx-auto">
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
-        <h2 className="text-3xl sm:text-5xl font-black text-white mb-2">{t('paradigm.title')}</h2>
-        <p className="text-gray-400 max-w-2xl mx-auto">{t('paradigm.subtitle')}</p>
+    <section id="propulsion" className="py-20 px-4 max-w-6xl mx-auto">
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-l from-blue-300 to-blue-500 mb-2">{t('propulsion.title')}</h2>
+        <p className="text-slate-400 text-sm">{t('propulsion.subtitle')}</p>
       </motion.div>
-
-      {/* Three pillars */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {pillars.map((p, i) => {
-          const d = lang === 'he' ? p.he : p.en;
-          const colors: Record<string, string> = { red: 'border-red-500/40 bg-red-500/5', purple: 'border-purple-500/40 bg-purple-500/5', amber: 'border-amber-500/40 bg-amber-500/5' };
-          const textColors: Record<string, string> = { red: 'text-red-400', purple: 'text-purple-400', amber: 'text-amber-400' };
-          return (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2 }}
-              whileHover={{ scale: 1.02, y: -2 }}
-              className={`p-5 rounded-xl border ${colors[p.color]} backdrop-blur-sm text-center`}
-            >
-              <div className={`text-xl font-black mb-2 ${textColors[p.color]}`}>{d.title}</div>
-              <div className="text-xs text-gray-400">{d.desc}</div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Comparison table */}
-      <div className="overflow-x-auto -mx-4 px-4">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-xl border border-gray-700/50 overflow-hidden backdrop-blur-sm min-w-[480px]">
-        {/* Header */}
-        <div className="grid grid-cols-3 bg-gray-800/50">
-          <div className="p-3 text-center text-xs text-gray-500 font-semibold">{lang === 'he' ? 'פרמטר' : 'Parameter'}</div>
-          <div className="p-3 text-center border-x border-gray-700/30">
-            <div className="flex items-center justify-center gap-1">
-              <Syringe size={14} className="text-red-400" />
-              <span className="text-sm font-bold text-red-400">{lang === 'he' ? 'חומרים מבוססי תרופות' : 'PBAs'}</span>
-            </div>
+      <div className="grid md:grid-cols-2 gap-6">
+        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+          className="rounded-2xl border border-blue-700/40 bg-blue-950/20 backdrop-blur-sm p-6 shadow-[0_0_30px_rgba(59,130,246,0.1)]">
+          <h3 className="text-xl font-black text-blue-300 mb-4 flex items-center gap-2">🔵 {h ? 'הנעה נוזלית — היפרגולית' : 'Liquid Propulsion — Hypergolic'}</h3>
+          <p className="text-sm text-slate-300 mb-4">{h ? 'מגע ישיר בין דלק למחמצן = הצתה ספונטנית. ללא מצת.' : 'Direct contact between fuel & oxidizer = spontaneous ignition. No igniter needed.'}</p>
+          <div className="space-y-2 text-sm text-slate-300 mb-4">
+            <div><b className="text-blue-400">{h ? 'דלק:' : 'Fuel:'}</b> UDMH / {h ? 'הידראזין' : 'Hydrazine'} / {h ? 'קרוסין' : 'Kerosene'} TM-185</div>
+            <div><b className="text-blue-400">{h ? 'מחמצן:' : 'Oxidizer:'}</b> IRFNA (AK-27) / NTO (N₂O₄)</div>
           </div>
-          <div className="p-3 text-center">
-            <div className="flex items-center justify-center gap-1">
-              <Skull size={14} className="text-gray-400" />
-              <span className="text-sm font-bold text-gray-400">{lang === 'he' ? 'גז עצבים' : 'Nerve Agent'}</span>
-            </div>
+          <div className="space-y-2 text-sm">
+            <div><b className="text-blue-400">{h ? 'טילים:' : 'Missiles:'}</b> <span className="text-slate-400">{h ? 'שהאב-1/2/3, גדר, עמאד, קיאם, ח׳ורמשהר' : 'Shahab-1/2/3, Ghadr, Emad, Qiam, Khorramshahr'}</span></div>
           </div>
-        </div>
-        {rows.map((r, i) => {
-          const d = lang === 'he' ? r.he : r.en;
-          return (
-            <motion.div
-              key={r.key}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className={`grid grid-cols-3 ${i % 2 === 0 ? 'bg-gray-900/30' : 'bg-transparent'} border-t border-gray-700/20`}
-            >
-              <div className="p-3 text-xs font-semibold text-gray-300">{d.label}</div>
-              <div className="p-3 text-xs text-red-300/80 border-x border-gray-700/20">{d.pba}</div>
-              <div className="p-3 text-xs text-gray-500">{d.nerve}</div>
-            </motion.div>
-          );
-        })}
-      </motion.div>
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            <div className="bg-green-950/30 rounded-lg p-3 border border-green-800/30"><div className="text-green-400 text-xs font-bold mb-1">✅</div><div className="text-xs text-slate-400">{h ? 'שליטה במנוע (Throttling) • Isp גבוה • אחסון בטמפ׳ חדר' : 'Throttling • High Isp • Room temp storage'}</div></div>
+            <div className="bg-red-950/30 rounded-lg p-3 border border-red-800/30"><div className="text-red-400 text-xs font-bold mb-1">❌</div><div className="text-xs text-slate-400">{h ? 'תדלוק שעות • חשוף לזיהוי • רעיל קטלני • קורוזיבי' : 'Hours to fuel • Detectable • Lethal toxicity • Corrosive'}</div></div>
+          </div>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+          className="rounded-2xl border border-amber-700/40 bg-amber-950/20 backdrop-blur-sm p-6 shadow-[0_0_30px_rgba(245,158,11,0.1)]">
+          <h3 className="text-xl font-black text-amber-300 mb-4 flex items-center gap-2">🟠 {h ? 'הנעה מוצקה — קומפוזיט' : 'Solid Propulsion — Composite'}</h3>
+          <p className="text-sm text-slate-300 mb-4">{h ? 'דלק ומחמצן יצוקים יחד בתצורה פולימרית. כוננות מיידית.' : 'Fuel & oxidizer cast together in polymeric form. Immediate readiness.'}</p>
+          <div className="space-y-2 text-sm text-slate-300 mb-4">
+            <div><b className="text-amber-400">{h ? 'מחמצן:' : 'Oxidizer:'}</b> {h ? 'אמוניום פרכלורט' : 'Ammonium Perchlorate'} (AP) ~70%</div>
+            <div><b className="text-amber-400">{h ? 'מאגד/דלק:' : 'Binder/Fuel:'}</b> HTPB ~15% + {h ? 'אבקת אלומיניום' : 'Al powder'} ~15%</div>
+          </div>
+          <div className="space-y-2 text-sm">
+            <div><b className="text-amber-400">{h ? 'טילים:' : 'Missiles:'}</b> <span className="text-slate-400">{h ? 'פאתח, זולפקאר, דזפול, ח׳ייבר שכן, חאג׳ קאסם, סג׳יל, פתאח' : 'Fateh, Zolfaghar, Dezful, Kheibar Shekan, Haj Qasem, Sejjil, Fattah'}</span></div>
+          </div>
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            <div className="bg-green-950/30 rounded-lg p-3 border border-green-800/30"><div className="text-green-400 text-xs font-bold mb-1">✅</div><div className="text-xs text-slate-400">{h ? 'שיגור מיידי (דקות) • שרידות • TEL ניידים • תחזוקה נמוכה' : 'Instant launch • High survivability • Mobile TELs • Low maintenance'}</div></div>
+            <div className="bg-red-950/30 rounded-lg p-3 border border-red-800/30"><div className="text-red-400 text-xs font-bold mb-1">❌</div><div className="text-xs text-slate-400">{h ? 'אין עצירת בעירה • מערבלים פלנטריים (מסין) • 6-10 ימי יציקה' : 'No burn termination • Planetary mixers (from China) • 6-10 day casting'}</div></div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

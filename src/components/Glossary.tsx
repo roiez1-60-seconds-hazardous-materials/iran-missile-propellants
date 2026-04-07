@@ -1,110 +1,60 @@
 'use client';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Building2, FlaskConical, User, BookOpen } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useLang } from '@/lib/LanguageContext';
 
-type Cat = 'all' | 'org' | 'chem' | 'person' | 'tech';
-const cats: { key: Cat; icon: any; he: string; en: string }[] = [
-  { key: 'all', icon: BookOpen, he: 'הכל', en: 'All' },
-  { key: 'org', icon: Building2, he: 'ארגונים', en: 'Organizations' },
-  { key: 'chem', icon: FlaskConical, he: 'חומרים', en: 'Chemicals' },
-  { key: 'person', icon: User, he: 'אנשים', en: 'People' },
-  { key: 'tech', icon: BookOpen, he: 'מונחים', en: 'Terms' },
+const terms = [
+  {t:'IRFNA',c:'chem',he:'Inhibited Red Fuming Nitric Acid — חומצה חנקתית מעושנת אדומה מעוכבת. המחמצן העיקרי לטילים נוזליים',en:'Inhibited Red Fuming Nitric Acid — primary oxidizer for liquid missiles'},
+  {t:'UDMH',c:'chem',he:'Unsymmetrical Dimethylhydrazine — דימתילהידראזין. דלק נוזלי רעיל ומסרטן (CAS 57-14-7)',en:'Unsymmetrical Dimethylhydrazine — toxic carcinogenic liquid fuel (CAS 57-14-7)'},
+  {t:'NTO / N₂O₄',c:'chem',he:'Nitrogen Tetroxide — חנקן טטראוקסיד. מחמצן נוזלי, רותח ב-21°C',en:'Nitrogen Tetroxide — liquid oxidizer, boils at 21°C'},
+  {t:'HNO₃',c:'chem',he:'חומצה חנקתית — חומר מוצא ל-IRFNA, NTO, RDX, HMX',en:'Nitric Acid — precursor for IRFNA, NTO, RDX, HMX'},
+  {t:'TM-185',c:'chem',he:'קרוסין צבאי (סימון סובייטי). דלק בטילי Scud/שהאב',en:'Military kerosene (Soviet designation). Scud/Shahab fuel'},
+  {t:'AK-27',c:'chem',he:'סימון סובייטי ל-IRFNA: 73% HNO₃ + 27% N₂O₄ + מעכב',en:'Soviet designation for IRFNA: 73% HNO₃ + 27% N₂O₄ + inhibitor'},
+  {t:'AP',c:'chem',he:'Ammonium Perchlorate — אמוניום פרכלורט (NH₄ClO₄). מחמצן בדלק מוצק (~70%)',en:'Ammonium Perchlorate (NH₄ClO₄). Solid fuel oxidizer (~70%)'},
+  {t:'HTPB',c:'chem',he:'Hydroxyl-Terminated Polybutadiene — מאגד/דלק בדלק מוצק',en:'Hydroxyl-Terminated Polybutadiene — solid fuel binder/fuel'},
+  {t:'RDX',c:'chem',he:'הקסוגן — חומר נפץ נהדף. מיוצר מ-HNO₃ בתהליך בכמן',en:'Hexogen — high explosive. Produced from HNO₃ via Bachmann process'},
+  {t:'HMX',c:'chem',he:'אוקטוגן — חומר נפץ + עדשות קריסה גרעיניות (Implosion Lenses)',en:'Octogen — explosive + nuclear implosion lenses'},
+  {t:'NOx',c:'chem',he:'תחמוצות חנקן — גזים רעילים מ-IRFNA. גורמים לבצקת ריאות',en:'Nitrogen oxides — toxic gases from IRFNA. Cause pulmonary edema'},
+  {t:'NDMA',c:'chem',he:'N-Nitrosodimethylamine — תוצר פירוק UDMH מסרטן. נשאר שבועות',en:'N-Nitrosodimethylamine — carcinogenic UDMH decomposition product'},
+  {t:'היפרגולי',c:'mil',he:'מגע ישיר דלק+מחמצן = הצתה ספונטנית ללא מצת',en:'Hypergolic — direct contact fuel+oxidizer = spontaneous ignition'},
+  {t:'MaRV',c:'mil',he:'Maneuverable Re-entry Vehicle — ראש קרב מתמרן בחדירה',en:'Maneuverable Re-entry Vehicle — warhead maneuvers during re-entry'},
+  {t:'CEP',c:'mil',he:'Circular Error Probable — 50% מהטילים נופלים ברדיוס זה',en:'Circular Error Probable — 50% of missiles land within this radius'},
+  {t:'TEL',c:'mil',he:'Transporter Erector Launcher — משגר נייד על גלגלים',en:'Transporter Erector Launcher — mobile launch platform'},
+  {t:'SHIG',c:'org',he:'Shahid Hemmat Industrial Group — אחראית על טילים נוזליים',en:'Shahid Hemmat Industrial Group — liquid missile production'},
+  {t:'SBIG',c:'org',he:'Shahid Bakeri Industrial Group — אחראית על טילים מוצקים',en:'Shahid Bakeri Industrial Group — solid missile production'},
+  {t:'PCI',c:'org',he:'Parchin Chemical Industries — ייצור HNO₃, חומרי נפץ',en:'Parchin Chemical Industries — HNO₃, explosives production'},
+  {t:'מנ״פ',c:'hazmat',he:'מערכת נשימה פתוחה בלחץ חיובי (SCBA)',en:'Self-Contained Breathing Apparatus (SCBA)'},
+  {t:'ERG',c:'hazmat',he:'Emergency Response Guidebook — מדריך תגובה לחירום 2024',en:'Emergency Response Guidebook 2024'},
+  {t:'IDLH',c:'hazmat',he:'Immediately Dangerous to Life or Health — סכנה מיידית לחיים',en:'Immediately Dangerous to Life or Health'},
+  {t:'חליפת מגן רמה A',c:'hazmat',he:'חליפה אטומה לגזים + מנ״פ — הרמה הגבוהה ביותר',en:'Gas-tight encapsulated suit + SCBA — highest protection level'},
 ];
 
-const terms: { term: string; cat: Cat; he: string; en: string }[] = [
-  { term: 'IHU', cat: 'org', he: 'אוניברסיטת אימאם חוסיין — המוסד האקדמי של IRGC. הוקם 1986, סומן ע"י OFAC 2012.', en: 'Imam Hossein University — IRGC\'s academic institution. Founded 1986, OFAC-designated 2012.' },
-  { term: 'IRGC', cat: 'org', he: 'משמרות המהפכה האיסלאמית — הזרוע הצבאית-מודיעינית המרכזית של איראן.', en: 'Islamic Revolutionary Guard Corps — Iran\'s main military-intelligence force.' },
-  { term: 'SPND', cat: 'org', he: 'ארגון המחקר והחדשנות ההגנתית — מתאם פרויקטי נשק רגישים, הוקם ע"י פח\'ריזאדה.', en: 'Organization of Defensive Innovation & Research — coordinates sensitive weapons projects.' },
-  { term: 'MUT', cat: 'org', he: 'אוניברסיטת מאלק אשתר לטכנולוגיה — כפופה למשרד ההגנה (MODAFL), סומנה באו"ם.', en: 'Malek Ashtar University of Technology — MODAFL subordinate, UN-designated.' },
-  { term: 'MODAFL', cat: 'org', he: 'משרד ההגנה האיראני — מפקח על תעשיות הנשק.', en: 'Iran\'s Ministry of Defense — oversees weapons industries.' },
-  { term: 'SMG', cat: 'org', he: 'קבוצת שהיד מייסמי — חברת בת של SPND, ייצרה רימונים כימיים. הושמדה 2025.', en: 'Shahid Meisami Group — SPND subsidiary, produced chemical grenades. Destroyed 2025.' },
-  { term: 'ISAEM', cat: 'org', he: 'האגודה המדעית האיראנית לחומרים אנרגטיים — משתפת פעולה עם IHU ו-SPND.', en: 'Iranian Scientific Association of Energetic Materials — collaborates with IHU and SPND.' },
-  { term: 'OPCW', cat: 'org', he: 'הארגון לאיסור נשק כימי — אחראי על אכיפת CWC.', en: 'Organisation for the Prohibition of Chemical Weapons — enforces the CWC.' },
-  { term: 'CWC', cat: 'tech', he: 'אמנת הנשק הכימי — אוסרת פיתוח, ייצור ושימוש בנשק כימי.', en: 'Chemical Weapons Convention — prohibits development, production and use of chemical weapons.' },
-  { term: 'PBA', cat: 'tech', he: 'חומרים מבוססי תרופות — חומרים פרמצבטיים שהוסבו לשימוש נשקי.', en: 'Pharmaceutical-Based Agents — pharmaceutical agents weaponized for military use.' },
-  { term: 'CNS', cat: 'tech', he: 'מערכת העצבים המרכזית — המטרה העיקרית של חומרים מבוססי תרופות.', en: 'Central Nervous System — primary target of PBAs.' },
-  { term: 'AChE', cat: 'tech', he: 'אצטילכולינאסטראז — אנזים שנחסם ע"י גזי עצבים מסורתיים (סארין, VX).', en: 'Acetylcholinesterase — enzyme inhibited by traditional nerve agents (sarin, VX).' },
-  { term: 'RCA', cat: 'tech', he: 'חומרי פיזור מהומות — כגון CS, גז מדמיע. רימוני "אשכן".', en: 'Riot Control Agents — e.g. CS tear gas. "Ashkan" grenades.' },
-  { term: 'SAR', cat: 'tech', he: 'יחסי מבנה-פעילות — מסגרת המקשרת שינויים מולקולריים להשפעות ביולוגיות.', en: 'Structure-Activity Relationship — framework linking molecular changes to biological effects.' },
-  { term: 'פנטניל / Fentanyl', cat: 'chem', he: 'אופיואיד סינתטי חזק — קטלני מעל 2 מ"ג. גורם לאיבוד הכרה ומוות במינון גבוה.', en: 'Potent synthetic opioid — lethal above 2 mg. Used as incapacitating/lethal agent.' },
-  { term: 'מדטומידין / Medetomidine', cat: 'chem', he: 'חומר הרדמה וטרינרי שמפעיל מנגנון הרגעה במערכת העצבים. הוסב לנשק. בשילוב עם פנטניל — נלוקסון חוסם רק את מרכיב הפנטניל אך לא משפיע על המדטומידין (מנגנון שונה). נדרש טיפול רפואי נוסף.', en: 'Veterinary sedative that activates a calming mechanism in the nervous system. Weaponized by IHU. When combined with fentanyl — naloxone only blocks the fentanyl component but has no effect on medetomidine (different mechanism). Additional medical treatment required.' },
-  { term: 'נלוקסון / Naloxone', cat: 'chem', he: 'תרופה נגד מנת יתר של אופיואידים — חוסמת את השפעת הפנטניל בלבד. בשילוב עם מדטומידין, הנפגע עלול להישאר מורדם גם לאחר מתן נלוקסון (מנגנון פעולה שונה).', en: 'Opioid overdose antidote — blocks fentanyl only. When medetomidine is also present, casualty may remain sedated even after naloxone (different mechanism of action).' },
-  { term: 'קטמין / Ketamine', cat: 'chem', he: 'חומר הרדמה המנתק תחושות — יוצר ב-IHU כולל הצורה הפעילה (S) של החומר.', en: 'Dissociative anesthetic — synthesized at IHU including active (S)-enantiomer.' },
-  { term: 'סבופלורן / Sevoflurane', cat: 'chem', he: 'חומר הרדמה בשאיפה — יוצר לראשונה באיראן ב-IHU (2015).', en: 'Inhalation anesthetic — first Iranian synthesis at IHU (2015).' },
-  { term: 'נוביצ\'וק / Novichok', cat: 'chem', he: 'סדרת גזי עצבים מתקדמים — מחקר וייצור בקנה מידה קטן באיראן.', en: 'Advanced nerve agent series — small-scale research and production in Iran.' },
-  { term: 'חוסיין פח\'ראיאן / Fakhraian', cat: 'person', he: 'פרופסור חבר בכימיה ב-IHU, עורך ראשי של כתבי עת ביטחוניים. מוביל המחקר על חומרים מבוססי תרופות וחומרי גלם לייצור גזי עצבים.', en: 'Associate Prof. of Chemistry at IHU, editor-in-chief of defense journals. Lead PBA and nerve agent precursor researcher.' },
-  { term: 'מהראן באברי / Babri', cat: 'person', he: 'מנהל קבוצת שהיד מייסמי. סומן ע"י ארה"ב 2020. שמר קשר עם OPCW.', en: 'Director of Shahid Meisami Group. US-designated 2020. Maintained OPCW ties.' },
-  { term: 'מוחסן פח\'ריזאדה / Fakhrizadeh', cat: 'person', he: 'מייסד SPND, אבי תוכנית הנשק הגרעיני. הרצה ב-IHU. חוסל 2020.', en: 'SPND founder, father of nuclear weapons program. Lectured at IHU. Assassinated 2020.' },
-  { term: 'פרויקט הרתעה / Deterrence', cat: 'tech', he: 'פרויקט IHU לפיתוח רימונים מבוססי מדטומידין — נחשף ב-2023 ע"י האקרים.', en: 'IHU project for medetomidine-based grenades — exposed by hackers in 2023.' },
-  { term: 'ארבעין / Arbaeen', cat: 'tech', he: 'מל"ט קרב מרובה רוטורים של IRGC — נושא 7 ק"ג, טווח 10 ק"מ.', en: 'IRGC multirotor combat drone — 7 kg payload, 10 km range.' },
-];
+const cats = [{k:'all',he:'הכל',en:'All'},{k:'chem',he:'כימיה',en:'Chemistry'},{k:'mil',he:'צבאי',en:'Military'},{k:'org',he:'ארגונים',en:'Organizations'},{k:'hazmat',he:'חומ״ס',en:'HazMat'}];
 
 export default function Glossary() {
   const { t, lang } = useLang();
+  const h = lang === 'he';
   const [search, setSearch] = useState('');
-  const [cat, setCat] = useState<Cat>('all');
-
-  const filtered = terms.filter(tm => {
-    const matchCat = cat === 'all' || tm.cat === cat;
-    const matchSearch = search === '' || tm.term.toLowerCase().includes(search.toLowerCase()) || (lang === 'he' ? tm.he : tm.en).toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
-  });
+  const [cat, setCat] = useState('all');
+  const filtered = terms.filter(tm => (cat === 'all' || tm.c === cat) && (search === '' || tm.t.toLowerCase().includes(search.toLowerCase()) || tm[lang].toLowerCase().includes(search.toLowerCase())));
 
   return (
-    <section id="glossary" className="py-20 px-4 max-w-4xl mx-auto">
+    <section id="glossary" className="py-20 px-4 max-w-5xl mx-auto">
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-8">
-        <h2 className="text-3xl sm:text-5xl font-black text-white mb-2">{t('glossary.title')}</h2>
+        <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-l from-blue-300 to-blue-500 mb-2">{t('glossary.title')}</h2>
       </motion.div>
-
-      {/* Search + filter */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="relative flex-1">
-          <Search size={16} className="absolute top-3 left-3 text-gray-500" />
-          <input
-            value={search} onChange={e => setSearch(e.target.value)}
-            placeholder={lang === 'he' ? 'חיפוש...' : 'Search...'}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-800/50 border border-gray-700/40 text-sm text-gray-200 placeholder-gray-600 focus:border-blue-500/50 focus:outline-none"
-          />
-        </div>
-        <div className="flex gap-1">
-          {cats.map(c => {
-            const Icon = c.icon;
-            return (
-              <motion.button
-                key={c.key} onClick={() => setCat(c.key)} whileTap={{ scale: 0.95 }}
-                className={`px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors ${cat === c.key ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' : 'bg-gray-800/30 text-gray-500 border border-gray-700/20 hover:text-gray-300'}`}
-              >
-                <Icon size={13} />
-                {lang === 'he' ? c.he : c.en}
-              </motion.button>
-            );
-          })}
-        </div>
+      <div className="flex flex-wrap gap-2 justify-center mb-4">
+        {cats.map(c => <button key={c.k} onClick={() => setCat(c.k)} className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${cat===c.k?'bg-blue-800/60 text-blue-200 border-blue-600/50':'bg-slate-800/50 text-slate-400 border-slate-700/30'}`}>{h?c.he:c.en}</button>)}
       </div>
-
-      {/* Terms list */}
-      <div className="space-y-2">
-        <AnimatePresence mode="popLayout">
-          {filtered.map((tm, i) => (
-            <motion.div
-              key={tm.term} layout
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-              transition={{ delay: i * 0.02 }}
-              whileHover={{ scale: 1.01, x: lang === 'he' ? -4 : 4 }}
-              className="p-3 rounded-xl bg-gray-800/30 border border-gray-700/20 backdrop-blur-sm"
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-mono text-sm font-bold text-blue-400">{tm.term}</span>
-                <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${tm.cat === 'org' ? 'bg-purple-500/10 text-purple-400' : tm.cat === 'chem' ? 'bg-red-500/10 text-red-400' : tm.cat === 'person' ? 'bg-amber-500/10 text-amber-400' : 'bg-blue-500/10 text-blue-400'}`}>
-                  {cats.find(c => c.key === tm.cat)?.[lang === 'he' ? 'he' : 'en']}
-                </span>
-              </div>
-              <p className="text-xs text-gray-400 leading-relaxed">{lang === 'he' ? tm.he : tm.en}</p>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+      <input value={search} onChange={e => setSearch(e.target.value)} placeholder={h?'חיפוש...':'Search...'} className="w-full mb-6 px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/50 text-slate-200 placeholder-slate-500 text-sm outline-none focus:border-blue-500/50" />
+      <div className="rounded-2xl border border-slate-700/50 bg-slate-800/70 backdrop-blur-sm overflow-hidden divide-y divide-slate-700/30">
+        {filtered.map((tm, i) => (
+          <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+            className="flex justify-between items-start p-4 gap-4 hover:bg-slate-700/20 transition-colors">
+            <span className="font-bold text-blue-300 text-sm flex-shrink-0 min-w-[100px]">{tm.t}</span>
+            <span className="text-sm text-slate-400 text-left" dir="auto">{tm[lang]}</span>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
