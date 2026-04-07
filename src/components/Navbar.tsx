@@ -38,11 +38,11 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-2 cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-full overflow-hidden border flex-shrink-0 border-amber-500/40">
+            <div className="w-9 h-9 rounded-full overflow-hidden border flex-shrink-0 border-amber-500/40" style={{width:36,height:36,maxWidth:36,maxHeight:36,minWidth:36}}>
               <img
                 src="/images/logo-60sec.png"
                 alt="60 שניות של חומ״ס"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover" style={{width:36,height:36,maxWidth:36,maxHeight:36}}
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';

@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="relative z-10 border-t border-slate-800/60 py-12 px-4">
       <div className="max-w-5xl mx-auto text-center space-y-4">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <img src="/images/logo-60sec.png" alt="60 שניות" className="w-12 h-12 rounded-xl" />
+          <img src="/images/logo-60sec.png" alt="60 שניות" className="w-12 h-12 rounded-xl" style={{width:48,height:48,maxWidth:48}} />
           <div className="text-right">
             <div className="text-lg font-black text-blue-400">
               {lang === 'he' ? 'ניתוח 60 שניות של חומ״ס' : '60 Seconds HazMat Analysis'}
