@@ -328,21 +328,33 @@ return<Sec id="strategic" num="09" title={he?"למה HNO₃ הוא חומר מפ
 function Facilities({lang}:{lang:string}){const he=lang==="he";const[openFac,setOpenFac]=useState<string|null>(null);
 const fs=[
   {id:"parchin",n:he?"פרצ׳ין":"Parchin",s:he?"אוקטובר 2024":"Oct 2024",coords:"35.5122,51.7714",
+   earth:"https://earth.google.com/web/@35.5122,51.7714,1200a,5000d,35y,0h,0t,0r",
+   sat:"https://www.pbs.org/newshour/world/satellite-images-show-damage-from-israeli-strikes-at-2-secretive-iranian-military-bases",
    short:he?"PCI — ייצור HNO₃, חומרי נפץ. מתקן טאלקאן 2. 3 מבני ערבוב דלק מוצק הושמדו":"PCI — HNO₃, explosives. Talaqan-2. 3 solid fuel mixing buildings destroyed",
    details:he?["מתחם צבאי ענק ~40 ק״מ דרומית-מזרחית לטהרן","Parchin Chemical Industries (PCI) — ייצור חומצה חנקתית וחומרי נפץ","מתקן טאלקאן 2 — קשר ישיר לתוכנית הגרעין: ניסויי חומרי נפץ לעדשות קריסה","סה״כ לפחות 3 מבנים לערבוב דלק מוצק נהרסו בתקיפה","בדיקות IAEA מצאו עקבות אורניום באתר ב-2015","איראן שיפצה וחפתה חלקים מהמתקן לפני פיקוח בינלאומי"]:["Massive military complex ~40 km SE of Tehran","PCI — nitric acid and explosives production","Talaqan-2 facility — direct nuclear link: explosive lens testing","At least 3 solid fuel mixing buildings destroyed in strike","IAEA found uranium traces at site in 2015","Iran renovated/paved over sections before international inspections"]},
   {id:"khojir",n:he?"ח׳וג׳יר":"Khojir",s:he?"אוקטובר 2024":"Oct 2024",coords:"35.7280,51.5530",
+   earth:"https://earth.google.com/web/@35.728,51.553,1200a,5000d,35y,0h,0t,0r",
+   sat:"https://www.timesofisrael.com/satellite-images-show-damage-at-two-secretive-iranian-bases-after-israeli-strikes/",
    short:he?"SHIG+SBIG. דלק מוצק, הרכבת טילים. 2 מבני ערבוב + מערבלים פלנטריים":"SHIG+SBIG. Solid fuel, missile assembly. 2 mixing buildings + planetary mixers",
    details:he?["~20 ק״מ ממרכז טהרן. מערכת מנהרות תת-קרקעית","SHIG (Shahid Hemmat) — אחראי על טילים נוזליים","SBIG (Shahid Bakeri) — אחראי על טילים מוצקים","12 מערבלים פלנטריים הושמדו — ציוד ייחודי שאיראן אינה מייצרת","מערבלים יובאו מסין דרך חברות קש בהונג קונג","לוויינים הראו הרחבה משמעותית של המתקן לפני התקיפה"]:["~20 km from central Tehran. Underground tunnel system","SHIG (Shahid Hemmat) — liquid missile division","SBIG (Shahid Bakeri) — solid missile division","12 planetary mixers destroyed — unique equipment Iran cannot manufacture","Mixers imported from China via Hong Kong shell companies","Satellite imagery showed major expansion before strike"]},
   {id:"shahrud",n:he?"שאהרוד":"Shahrud",s:he?"אוקטובר 2024":"Oct 2024",coords:"36.4181,54.9764",
+   earth:"https://earth.google.com/web/@36.4181,54.9764,1200a,8000d,35y,0h,0t,0r",
+   sat:"https://thedefensepost.com/2024/11/02/israeli-strikes-hurt-iran-escalation-possible/",
    short:he?"ייצור מנועי טילים מוצקים. מערבלים ובורות יציקה":"Solid motor production. Mixers and casting pits",
    details:he?["מרכז ייצור מנועי טילים מוצקים בצפון-מזרח איראן","בורות יציקה תת-קרקעיים ליציקת סוללות דלק גדולות (6-10 ימים)","מערבלים פלנטריים נוספים שהושמדו","אחד משלושת המתקנים שזוהו ע״י IISS כקריטיים לייצור דלק מוצק","התקיפה פגעה בתשתית שלא ניתן לשחזר ללא יבוא חדש מסין"]:["Solid motor manufacturing center in NE Iran","Underground casting pits for large fuel grain casting (6-10 days)","Additional planetary mixers destroyed","One of three facilities identified by IISS as critical for solid fuel","Strike hit infrastructure that cannot be restored without new Chinese imports"]},
   {id:"fordow",n:he?"פורדו / נתנז / אספהאן":"Fordow / Natanz / Isfahan",s:he?"יוני 2025 (עם כלביא)":"Jun 2025 (Im Kalbia)",coords:"34.8854,50.9970",
+   earth:"https://earth.google.com/web/@34.8854,50.997,1200a,5000d,35y,0h,0t,0r",
+   sat:"https://www.jpost.com/israel-news/article-858449",
    short:he?"מתקני העשרת אורניום. ארה״ב הפציצה עם GBU-57. נזק כבד למרכזות":"Uranium enrichment. US struck with GBU-57. Heavy centrifuge damage",
    details:he?["פורדו — מתקן העשרה תת-קרקעי חפור בהר. מוגן ביותר","נתנז — המתקן הגדול ביותר. אלפי מרכזות IR-6 מתקדמות","אספהאן — המרת אורניום (UCF) + מחקר","ארה״ב הצטרפה למבצע ב-22 ביוני והפציצה עם 14 פצצות GBU-57 חודרות בונקר","כל פצצת GBU-57 שוקלת ~14 טון וחודרת עד 60 מטר בסלע","לפי IAEA — 233 ק״ג אורניום ב-60% העשרה היו באתרים לפני התקיפה"]:["Fordow — underground enrichment in mountain. Most protected","Natanz — largest facility. Thousands of advanced IR-6 centrifuges","Isfahan — Uranium Conversion Facility (UCF) + research","US joined June 22, struck with 14 GBU-57 bunker busters","Each GBU-57 weighs ~14 tons, penetrates up to 60m of rock","Per IAEA — 233 kg of 60% enriched uranium at sites before strike"]},
   {id:"southpars",n:he?"אסלויה / South Pars":"Asaluyeh / South Pars",s:he?"פברואר 2026 (שאגת הארי)":"Feb 2026 (Roaring Lion)",coords:"27.4753,52.6100",
+   earth:"https://earth.google.com/web/@27.4753,52.61,500a,15000d,35y,0h,0t,0r",
+   sat:"https://www.timesofisrael.com/satellite-images-begin-to-show-damage-wrought-across-the-region-by-iran-war/",
    short:he?"פטרוכימיה — אמוניה + HNO₃. 85% מהייצוא הפטרוכימי":"Petrochemicals — ammonia + HNO₃. 85% of petrochemical exports",
    details:he?["שדה הגז הטבעי הגדול ביותר בעולם (משותף עם קטאר)","מכיל מפעלי פטרוכימיה לייצור אמוניה — חומר הגלם לתהליך אוסטוולד","85% מייצוא הפטרוכימי האיראני מגיע מאזור זה","תקיפה באזור זה פוגעת בו-זמנית ביכולת ייצור דלקי טילים וגם בכלכלה","שריפה גדולה במתקן Phase 14 עצרה ייצור 12 מיליון מ״ק גז"]:["World's largest natural gas field (shared with Qatar)","Contains petrochemical plants producing ammonia — Ostwald process feedstock","85% of Iranian petrochemical exports come from this area","Strike simultaneously hits missile fuel production AND economy","Major fire at Phase 14 halted 12 million m³ gas production"]},
   {id:"shiraz",n:he?"מתקני HNO₃ (כולל שיראז)":"HNO₃ Plants (incl. Shiraz)",s:he?"2026 (מתמשך)":"2026 (ongoing)",coords:"29.5926,52.5836",
+   earth:"https://earth.google.com/web/@29.5926,52.5836,1500a,10000d,35y,0h,0t,0r",
+   sat:"https://www.bellingcat.com/resources/2026/04/07/tool-damage-assessment-destruction-sentinel-satellite-imagery-iran-us-gulf/",
    short:he?"ייצור חומצה חנקתית — צוואר הבקבוק הכימי של תוכנית הטילים":"Nitric acid production — chemical chokepoint of missile program",
    details:he?["מתקני ייצור חומצה חנקתית (תהליך אוסטוולד) פזורים ברחבי איראן","שיראז — אחד המתקנים האחרונים שנותרו פעילים","חומצה חנקתית = חומר הגלם ל-IRFNA, NTO, RDX/HMX ועדשות גרעיניות","השמדת המתקנים משתקת את כל שרשרת ייצור הנשק","מפעל לייצור טילים בליסטיים בשיראז נפגע כבר במבצע עם כלביא (יוני 2025)"]:["Nitric acid plants (Ostwald process) scattered across Iran","Shiraz — one of last remaining active facilities","Nitric acid = precursor for IRFNA, NTO, RDX/HMX and nuclear lenses","Destroying these plants paralyzes entire weapons production chain","Ballistic missile factory in Shiraz already hit during Im Kalbia (June 2025)"]},
 ];
@@ -354,7 +366,9 @@ return<Sec id="facilities" num="02" title={he?"מתקנים שהותקפו":"Fac
           <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",flex:1}}>
             <h4 style={{fontWeight:800,fontSize:15}}>{f.n}</h4>
             <span className="mn" style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:3,background:P.redS,color:P.red}}>{f.s}</span>
-            <a href={`https://maps.google.com/?q=${f.coords}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{fontSize:10,color:P.blue,textDecoration:"none",fontWeight:600}}>📍 Google Maps</a>
+            <a href={`https://maps.google.com/?q=${f.coords}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{fontSize:10,color:P.blue,textDecoration:"none",fontWeight:600}}>📍 Maps</a>
+            <a href={f.earth} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{fontSize:10,color:P.green,textDecoration:"none",fontWeight:600}}>🌍 Earth</a>
+            <a href={f.sat} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{fontSize:10,color:P.purple,textDecoration:"none",fontWeight:600}}>🛰️ {he?"לוויין":"Satellite"}</a>
           </div>
           <span style={{fontSize:16,color:P.gold,transition:"transform 0.2s",transform:openFac===f.id?"rotate(180deg)":"rotate(0)"}}>{openFac===f.id?"▲":"▼"}</span>
         </div>
