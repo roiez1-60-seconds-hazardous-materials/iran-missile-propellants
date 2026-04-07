@@ -3,76 +3,87 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLang } from '@/lib/LanguageContext';
 
-type EquipNode = { id:string; type:'reactor'|'tower'|'tank'|'hx'|'pump'|'product'; label:string; label_en:string; detail:string; detail_en:string; x:number; y:number; color:string; temp?:string };
-type Pipe = { from:string; to:string; label?:string; color?:string };
+type Equipment = { id:string; he:string; en:string; desc_he:string; desc_en:string; color:string; formula?:string; temp?:string; };
 
-const ostwaldNodes: EquipNode[] = [
-  { id:'nh3tank', type:'tank', label:'מיכל אמוניה', label_en:'NH₃ Tank', detail:'מיכל אחסון אמוניה בלחץ. חומר גלם מתעשיית הדשנים — זמין ובשימוש כפול (dual-use)', detail_en:'Pressurized ammonia storage. Fertilizer industry feedstock — available, dual-use', x:5, y:20, color:'#3b82f6' },
-  { id:'air', type:'pump', label:'מדחס אוויר', label_en:'Air Compressor', detail:'דוחס אוויר (O₂) ליחס 5:4 מול עם NH₃. מסנן לחות ואבק', detail_en:'Compresses air (O₂) at 5:4 molar ratio with NH₃. Moisture/dust filtered', x:5, y:65, color:'#60a5fa' },
-  { id:'converter', type:'reactor', label:'כור קטליטי\nPt-Rh', label_en:'Catalytic\nConverter', detail:'הלב של התהליך: רשת פלטינה-רודיום (90:10) במגע של אלפית שנייה. 800-950°C, 4-10 bar. תגובה אקסותרמית: -905.2 kJ/mol. 4NH₃+5O₂→4NO+6H₂O. הזרז יקר ביותר — מיוצר רק בכמה מדינות', detail_en:'Process heart: Pt-Rh gauze (90:10) with millisecond contact. 800-950°C, 4-10 bar. Exothermic: -905.2 kJ/mol. Catalyst extremely expensive — few countries produce it', x:28, y:35, color:'#f59e0b', temp:'800-950°C' },
-  { id:'cooler', type:'hx', label:'מחליף חום\n+ חמצון', label_en:'Heat Exchanger\n+ Oxidation', detail:'NO מתקרר וחמצן נוסף הופך אותו ל-NO₂ (גז חום-אדמדם רעיל). 2NO+O₂→2NO₂. חום מנוצל לחימום חומרי גלם (רקופרציה)', detail_en:'NO cools, additional O₂ converts to NO₂ (toxic red-brown gas). 2NO+O₂→2NO₂. Heat recovered for feedstock preheating', x:50, y:35, color:'#f97316' },
-  { id:'absorber', type:'tower', label:'מגדל ספיגה', label_en:'Absorption\nTower', detail:'מגדל גבוה עם מדפי בועות. NO₂ נספג במים: 3NO₂+H₂O→2HNO₃+NO. ריכוז ~68%. NO שנוצר חוזר לחמצון. צנרת טיטניום/זירקוניום עמידה לחומצה', detail_en:'Tall bubble-tray column. NO₂ absorbed in water: 3NO₂+H₂O→2HNO₃+NO. ~68% concentration. Titanium/Zirconium piping', x:68, y:20, color:'#ea580c' },
-  { id:'conc', type:'tower', label:'מגדל ריכוז\n(זיקוק)', label_en:'Concentrator\n(Distillation)', detail:'ריכוז ל->86% באמצעות זיקוק עם חומצה גופרתית (H₂SO₄) כמייבש. צנרת מיוחדת — HNO₃ מרוכזת מאכלת כל מתכת רגילה', detail_en:'Concentration to >86% via distillation with H₂SO₄ as desiccant. Special piping — concentrated HNO₃ corrodes all common metals', x:83, y:20, color:'#dc2626' },
-  { id:'hno3', type:'product', label:'HNO₃', label_en:'HNO₃', detail:'חומצה חנקתית מרוכזת (>86%) — חומר הגלם הקריטי ביותר. ממנו מייצרים IRFNA, RDX, HMX, NTO', detail_en:'Concentrated nitric acid (>86%) — most critical feedstock. Used to produce IRFNA, RDX, HMX, NTO', x:83, y:65, color:'#ef4444' },
-  { id:'irfna', type:'product', label:'IRFNA\n(+N₂O₄+HF)', label_en:'IRFNA\n(+N₂O₄+HF)', detail:'הוספת 18-27% N₂O₄ + 0.6% HF (מעכב קורוזיה) = מחמצן מוכן לשימוש בטילים נוזליים', detail_en:'Add 18-27% N₂O₄ + 0.6% HF (corrosion inhibitor) = missile-ready liquid oxidizer', x:68, y:70, color:'#dc2626' },
-];
-const ostwaldPipes: Pipe[] = [
-  { from:'nh3tank', to:'converter', label:'NH₃' }, { from:'air', to:'converter', label:'O₂' },
-  { from:'converter', to:'cooler', label:'NO (גז)' }, { from:'cooler', to:'absorber', label:'NO₂' },
-  { from:'absorber', to:'conc', label:'HNO₃ 68%' }, { from:'conc', to:'hno3', label:'>86%' },
-  { from:'hno3', to:'irfna', label:'+N₂O₄+HF' },
+const ostwaldEq: Equipment[] = [
+  { id:'feed', he:'מגדל אמוניה', en:'NH₃ Feed', desc_he:'אמוניה גזית (NH₃) ואוויר מסוננים מוזרמים ביחס 4:5. אמוניה מיובאת — חומר גלם זול מתעשיית הדשנים', desc_en:'Gaseous NH₃ and filtered air fed at 4:5 ratio. NH₃ imported — cheap fertilizer feedstock', color:'#3b82f6' },
+  { id:'reactor', he:'כור קטליטי Pt-Rh', en:'Pt-Rh Catalytic Reactor', desc_he:'רשתות פלטינה-רודיום (90:10) ב-800-950°C. מגע אלפית שנייה. תגובה אקסותרמית: -905.2 kJ/mol. NO נוצר בזרם חם', desc_en:'Platinum-Rhodium gauzes (90:10) at 800-950°C. Millisecond contact. Exothermic: -905.2 kJ/mol', color:'#f59e0b', formula:'4NH₃ + 5O₂ → 4NO + 6H₂O', temp:'800-950°C' },
+  { id:'cooler', he:'מחליף חום / קירור', en:'Heat Exchanger / Cooler', desc_he:'מקרר את תערובת NO מ-900°C. חום ממוחזר לחימום ראשוני של האמוניה', desc_en:'Cools NO mixture from 900°C. Heat recycled for NH₃ preheating', color:'#60a5fa' },
+  { id:'oxidizer', he:'מגדל חמצון', en:'Oxidation Tower', desc_he:'NO + חמצן נוסף → NO₂ (גז חום-אדמדם רעיל). לחץ 6-10 אטמוספירות', desc_en:'NO + additional O₂ → NO₂ (toxic red-brown gas). 6-10 atmospheres pressure', color:'#f97316', formula:'2NO + O₂ → 2NO₂' },
+  { id:'absorber', he:'מגדל ספיגה', en:'Absorption Column', desc_he:'NO₂ נספג במים לקרנות. ריכוז ~68% HNO₃. גזי זנב (NO) מוחזרים למגדל החמצון', desc_en:'NO₂ absorbed in water on plates. ~68% HNO₃ concentration. Tail gas (NO) recycled to oxidation', color:'#f97316', formula:'3NO₂ + H₂O → 2HNO₃ + NO' },
+  { id:'distill', he:'מגדל ריכוז/זיקוק', en:'Concentration Column', desc_he:'זיקוק עם חומצה גופרתית (H₂SO₄) מרכז ל->86%. צנרת טיטניום/זירקוניום עמידה לקורוזיה', desc_en:'Distillation with H₂SO₄ concentrates to >86%. Ti/Zr corrosion-resistant piping', color:'#ef4444' },
+  { id:'irfna', he:'תחנת עירבוב IRFNA', en:'IRFNA Blending Station', desc_he:'הוספת N₂O₄ (18-27%) + HF (0.6%) = IRFNA (AK-27) מוכן לטילים. מילוי מכלי טיטניום אטומים', desc_en:'Adding N₂O₄ (18-27%) + HF (0.6%) = IRFNA (AK-27) ready for missiles. Filled into sealed Ti tanks', color:'#dc2626' },
 ];
 
-const raschigNodes: EquipNode[] = [
-  { id:'nh3', type:'tank', label:'אמוניה (NH₃)', label_en:'Ammonia (NH₃)', detail:'חומר גלם זמין. תעשיית דשנים וניקוי', detail_en:'Available feedstock. Fertilizer & cleaning industries', x:5, y:25, color:'#3b82f6' },
-  { id:'naocl', type:'tank', label:'נתרן היפוכלוריט\n(NaOCl — אקונומיקה)', label_en:'Sodium Hypochlorite\n(NaOCl — Bleach)', detail:'אקונומיקה — חומר ניקוי ביתי. זמין בכמויות תעשייתיות. שימוש כפול מובהק', detail_en:'Bleach — household cleaner. Available in industrial quantities. Clear dual-use', x:5, y:65, color:'#60a5fa' },
-  { id:'reactor1', type:'reactor', label:'כור תגובה\n(טמפ\' נמוכה)', label_en:'Reactor\n(Low Temp)', detail:'תגובה בטמפרטורות קרות (5-10°C). NH₃+NaOCl→NH₂Cl+NaOH. כלוראמין — מולקולת ביניים תגובתית ורעילה', detail_en:'Low temperature reaction (5-10°C). NH₃+NaOCl→NH₂Cl+NaOH. Chloramine — reactive toxic intermediate', x:30, y:40, color:'#a855f7', temp:'5-10°C' },
-  { id:'dma', type:'tank', label:'דימתילאמין\n(CH₃)₂NH', label_en:'Dimethylamine\n(CH₃)₂NH', detail:'חומר כימי תעשייתי. ריח דגים חריף. שימוש כפול — גם בתעשיית הצבע', detail_en:'Industrial chemical. Strong fishy odor. Dual-use — also in paint industry', x:55, y:15, color:'#3b82f6' },
-  { id:'reactor2', type:'reactor', label:'כור תגובה\nראשי', label_en:'Main\nReactor', detail:'NH₂Cl+(CH₃)₂NH→(CH₃)₂NNH₂+HCl. יצירת הקשר N-N שנותן לנוזל את האנרגיה כדלק. תגובה מסוכנת — גזי HCl רעילים', detail_en:'NH₂Cl+(CH₃)₂NH→(CH₃)₂NNH₂+HCl. N-N bond formation gives the fuel its energy. Dangerous — toxic HCl gases', x:55, y:50, color:'#7c3aed' },
-  { id:'distill', type:'tower', label:'מגדל זיקוק\n(מרובה)', label_en:'Distillation\nColumn', detail:'זיקוק חוזר ונשנה להסרת מים ולהשגת ריכוז טהור מספיק למנועי טילים. תהליך ארוך ומסוכן', detail_en:'Repeated distillation to remove water and achieve purity sufficient for missile engines. Long & dangerous process', x:78, y:35, color:'#6d28d9' },
-  { id:'udmh', type:'product', label:'UDMH', label_en:'UDMH', detail:'דימתילהידראזין בלתי סימטרי. דלק טילים רעיל ומסרטן (IARC 2B). CAS 57-14-7. שקוף, ריח אמוניה/דגים', detail_en:'Unsymmetrical Dimethylhydrazine. Toxic carcinogenic missile fuel (IARC 2B). Colorless, ammonia/fish odor', x:78, y:70, color:'#7c3aed' },
-];
-const raschigPipes: Pipe[] = [
-  { from:'nh3', to:'reactor1' }, { from:'naocl', to:'reactor1' },
-  { from:'reactor1', to:'reactor2', label:'NH₂Cl' }, { from:'dma', to:'reactor2' },
-  { from:'reactor2', to:'distill', label:'UDMH גולמי' }, { from:'distill', to:'udmh', label:'UDMH טהור' },
+const raschigEq: Equipment[] = [
+  { id:'nh3', he:'מאגר אמוניה', en:'NH₃ Storage', desc_he:'אמוניה מעובה בלחץ. חומר גלם ראשון — זמין מתעשיית דשנים', desc_en:'Pressurized liquid ammonia. First feedstock — available from fertilizer industry', color:'#3b82f6' },
+  { id:'naocl', he:'מגבל תת-כלורי', en:'Hypochlorite Generator', desc_he:'נתרן היפוכלוריט (NaOCl) — אקונומיקה. מיוצר מכלור + סודה קאוסטית', desc_en:'Sodium hypochlorite (NaOCl) — bleach. Produced from chlorine + caustic soda', color:'#60a5fa' },
+  { id:'chloramine', he:'כור כלוראמין', en:'Chloramine Reactor', desc_he:'תגובה בטמפרטורה נמוכה. NH₃ + NaOCl → NH₂Cl. כלוראמין = מולקולת ביניים תגובתית מאוד', desc_en:'Low temperature reaction. NH₃ + NaOCl → NH₂Cl. Chloramine = highly reactive intermediate', color:'#a855f7', formula:'NH₃ + NaOCl → NH₂Cl + NaOH' },
+  { id:'dma', he:'מאגר דימתילאמין', en:'DMA Storage', desc_he:'דימתילאמין (CH₃)₂NH — חומר כימי תעשייתי בריח דגים. Dual-use', desc_en:'Dimethylamine (CH₃)₂NH — industrial chemical with fishy odor. Dual-use', color:'#3b82f6' },
+  { id:'reactor', he:'כור סינתזה UDMH', en:'UDMH Synthesis Reactor', desc_he:'כלוראמין + דימתילאמין → UDMH. יצירת קשר N-N האנרגטי. תגובה מבוקרת', desc_en:'Chloramine + DMA → UDMH. Energetic N-N bond formation. Controlled reaction', color:'#7c3aed', formula:'(CH₃)₂NH + NH₂Cl → (CH₃)₂NNH₂ + HCl' },
+  { id:'distill', he:'מגדלי זיקוק', en:'Distillation Columns', desc_he:'זיקוק מרובה-שלבי להסרת מים ותוצרי לוואי. UDMH טהור ≥98% לדלק טילים', desc_en:'Multi-stage distillation to remove water and byproducts. Pure UDMH ≥98% for missile fuel', color:'#a855f7' },
+  { id:'udmh', he:'מילוי UDMH', en:'UDMH Fill', desc_he:'דלק מוכן — CAS 57-14-7. שקוף, ריח אמוניה. רעיל ומסרטן. נקודת הבזק -15°C', desc_en:'Ready fuel — CAS 57-14-7. Colorless, ammonia odor. Toxic & carcinogenic. Flash point -15°C', color:'#dc2626' },
 ];
 
-const bachmannNodes: EquipNode[] = [
-  { id:'hex', type:'tank', label:'הקסאמין\n(Hexamine)', label_en:'Hexamine\n(Urotropine)', detail:'מולקולת כלוב C₆H₁₂N₄. חומר פשוט — קוביות הצתה לקמפינג. זמין בשוק הפתוח', detail_en:'Cage molecule C₆H₁₂N₄. Simple compound — camping ignition tablets. Commercially available', x:5, y:25, color:'#3b82f6' },
-  { id:'hno3', type:'tank', label:'HNO₃ מרוכזת\n(מאוסטוולד)', label_en:'Conc. HNO₃\n(from Ostwald)', detail:'חומצה חנקתית >98% מתהליך אוסטוולד. הכל חוזר ל-HNO₃!', detail_en:'Nitric acid >98% from Ostwald process. Everything traces back to HNO₃!', x:5, y:65, color:'#ef4444' },
-  { id:'nitr', type:'reactor', label:'כור ניטרציה\n(מבוקר)', label_en:'Nitrolysis\nReactor', detail:'ניטרציה מבוקרת ב-45-75°C. הוספת אנהידריד אצטי + אמוניום חנקתי. קירור מתמיד — אם הטמפרטורה עולה = פיצוץ במפעל! תהליך מסוכן ביותר', detail_en:'Controlled nitrolysis at 45-75°C. Adding acetic anhydride + ammonium nitrate. Constant cooling — if temperature rises = factory explosion! Extremely dangerous', x:35, y:40, color:'#dc2626', temp:'45-75°C' },
-  { id:'wash', type:'tower', label:'שטיפה\nוניקוי', label_en:'Washing\n& Purification', detail:'שטיפת התוצר בסודיום ביקרבונט לנטרול חומצה שיורית. סינון וייבוש', detail_en:'Product washing with sodium bicarbonate to neutralize residual acid. Filtering & drying', x:58, y:40, color:'#f97316' },
-  { id:'rdx', type:'product', label:'RDX\n(הקסוגן)', label_en:'RDX\n(Hexogen)', detail:'חומר נפץ נהדף (High Explosive). מילוי ראשי קרב טילים + תוסף אנרגטי לדלק מוצק מתקדם (סג׳יל, ח׳ייבר שכן)', detail_en:'High Explosive. Missile warhead fill + energetic additive for advanced solid fuel (Sejjil, Kheibar Shekan)', x:80, y:20, color:'#f59e0b' },
-  { id:'hmx', type:'product', label:'HMX\n(אוקטוגן)', label_en:'HMX\n(Octogen)', detail:'חומר נפץ חזק יותר מ-RDX. שימוש קריטי: עדשות נפץ גרעיניות (Implosion Lenses) — הלב של נשק גרעיני', detail_en:'More powerful than RDX. Critical use: nuclear Implosion Lenses — the heart of a nuclear weapon', x:80, y:65, color:'#ef4444' },
-];
-const bachmannPipes: Pipe[] = [
-  { from:'hex', to:'nitr' }, { from:'hno3', to:'nitr' },
-  { from:'nitr', to:'wash' }, { from:'wash', to:'rdx' }, { from:'wash', to:'hmx' },
+const bachmannEq: Equipment[] = [
+  { id:'hex', he:'מאגר הקסאמין', en:'Hexamine Storage', desc_he:'הקסאמין (Urotropine) C₆H₁₂N₄. קוביות הצתה לקמפינג — חומר אזרחי לחלוטין', desc_en:'Hexamine (Urotropine) C₆H₁₂N₄. Camping fuel tablets — completely civilian material', color:'#3b82f6' },
+  { id:'hno3', he:'מאגר HNO₃ מרוכזת', en:'Conc. HNO₃ Storage', desc_he:'חומצה חנקתית >98% מתהליך אוסטוולד. הכל חוזר ל-HNO₃!', desc_en:'Concentrated nitric acid >98% from Ostwald. Everything traces back to HNO₃!', color:'#ef4444' },
+  { id:'nitr', he:'כור ניטרציה', en:'Nitrolysis Reactor', desc_he:'ניטרציה מבוקרת 45-75°C. + אנהידריד אצטי + אמוניום חנקתי. קירור מתמיד — פיצוץ אם הטמפ\' עולה!', desc_en:'Controlled nitrolysis 45-75°C. + acetic anhydride + NH₄NO₃. Constant cooling — explosion if temp rises!', color:'#dc2626', formula:'Hexamine + HNO₃ + NH₄NO₃ + Ac₂O → RDX', temp:'45-75°C' },
+  { id:'wash', he:'שטיפה וייבוש', en:'Washing & Drying', desc_he:'שטיפת גבישי RDX במים ואצטון. ייבוש בוואקום. בקרת איכות קפדנית', desc_en:'RDX crystal washing with water & acetone. Vacuum drying. Strict quality control', color:'#f97316' },
+  { id:'rdx', he:'RDX (הקסוגן)', en:'RDX (Hexogen)', desc_he:'חומר נפץ נהדף. שימושים: מילוי ראשי קרב + תוסף אנרגטי בדלק מוצק מתקדם (סג\'יל, ח\'ייבר שכן)', desc_en:'High explosive. Uses: warhead fill + energetic additive in advanced solid fuel (Sejjil, Kheibar Shekan)', color:'#f59e0b' },
+  { id:'hmx', he:'HMX (אוקטוגן)', en:'HMX (Octogen)', desc_he:'חומר נפץ חזק יותר מ-RDX. שימוש קריטי: עדשות נפץ גרעיניות (Implosion Lenses) — לב הנשק הגרעיני', desc_en:'More powerful than RDX. Critical use: nuclear implosion lenses — heart of a nuclear weapon', color:'#ef4444' },
 ];
 
-const allProcs = [
-  { id:'ostwald', nodes:ostwaldNodes, pipes:ostwaldPipes, label:{he:'⚗️ אוסטוולד — HNO₃',en:'⚗️ Ostwald — HNO₃'}, desc:{he:'חמצון קטליטי של אמוניה לייצור חומצה חנקתית — חומר הגלם הקריטי ביותר',en:'Catalytic oxidation of ammonia — the most critical feedstock'} },
-  { id:'raschig', nodes:raschigNodes, pipes:raschigPipes, label:{he:'🟣 רשיג — UDMH',en:'🟣 Raschig — UDMH'}, desc:{he:'ייצור דלק טילים נוזלי רעיל מחומרי גלם ביתיים',en:'Producing toxic liquid missile fuel from household chemicals'} },
-  { id:'bachmann', nodes:bachmannNodes, pipes:bachmannPipes, label:{he:'💣 בכמן — RDX/HMX',en:'💣 Bachmann — RDX/HMX'}, desc:{he:'ניטרציה מסוכנת לייצור חומרי נפץ לראשי קרב ועדשות גרעיניות',en:'Dangerous nitrolysis to produce warhead explosives & nuclear lenses'} },
+const procs = [
+  { id:'ostwald', eq:ostwaldEq, he:'אוסטוולד — HNO₃', en:'Ostwald — HNO₃', icon:'⚗️', desc_he:'חמצון קטליטי של אמוניה → חומצה חנקתית → IRFNA', desc_en:'Catalytic oxidation of ammonia → nitric acid → IRFNA' },
+  { id:'raschig', eq:raschigEq, he:'רשיג — UDMH', en:'Raschig — UDMH', icon:'🟣', desc_he:'אמוניה + כלוראמין + דימתילאמין → דלק טילים', desc_en:'Ammonia + chloramine + dimethylamine → missile fuel' },
+  { id:'bachmann', eq:bachmannEq, he:'בכמן — RDX/HMX', en:'Bachmann — RDX/HMX', icon:'💣', desc_he:'ניטרציה של הקסאמין → חומרי נפץ לראשי קרב ועדשות גרעיניות', desc_en:'Hexamine nitrolysis → explosives for warheads & nuclear lenses' },
 ];
 
-const equipShapes: Record<string, (x:number,y:number,color:string,active:boolean)=>React.ReactNode> = {
-  reactor: (x,y,c,a) => <><circle cx={x+6} cy={y+8} r="7" fill={a?c+'44':c+'18'} stroke={c} strokeWidth={a?'1.5':'0.6'} /><line x1={x+3} y1={y+4} x2={x+9} y2={y+4} stroke={c} strokeWidth="0.5" /><line x1={x+6} y1={y+1} x2={x+6} y2={y+4} stroke={c} strokeWidth="0.5" /></>,
-  tower: (x,y,c,a) => <><rect x={x+2} y={y} width="8" height="16" rx="2" fill={a?c+'44':c+'18'} stroke={c} strokeWidth={a?'1.5':'0.6'} />{[3,6,9,12].map(dy=><line key={dy} x1={x+3} y1={y+dy} x2={x+9} y2={y+dy} stroke={c+'80'} strokeWidth="0.3" />)}</>,
-  tank: (x,y,c,a) => <><rect x={x+1} y={y+2} width="10" height="12" rx="4" fill={a?c+'44':c+'18'} stroke={c} strokeWidth={a?'1.5':'0.6'} /><ellipse cx={x+6} cy={y+3} rx="5" ry="1.5" fill={c+'30'} stroke={c} strokeWidth="0.4" /></>,
-  hx: (x,y,c,a) => <><rect x={x+1} y={y+1} width="10" height="14" rx="1" fill={a?c+'44':c+'18'} stroke={c} strokeWidth={a?'1.5':'0.6'} />{[4,7,10].map(dy=><><line key={'a'+dy} x1={x+2} y1={y+dy} x2={x+10} y2={y+dy} stroke={c+'60'} strokeWidth="0.4" /><line key={'b'+dy} x1={x+2} y1={y+dy+1} x2={x+10} y2={y+dy+1} stroke={c+'40'} strokeWidth="0.3" /></>)}</>,
-  pump: (x,y,c,a) => <><circle cx={x+6} cy={y+8} r="5" fill={a?c+'44':c+'18'} stroke={c} strokeWidth={a?'1.5':'0.6'} /><polygon points={`${x+4},${y+6} ${x+8},${y+8} ${x+4},${y+10}`} fill={c+'60'} /></>,
-  product: (x,y,c,a) => <><rect x={x+1} y={y+2} width="10" height="12" rx="2" fill={a?c+'55':c+'25'} stroke={c} strokeWidth={a?'2':'0.8'} /><text x={x+6} y={y+9} textAnchor="middle" fill="#fff" fontSize="4" fontWeight="bold" className="pointer-events-none select-none">★</text></>,
-};
+function EquipmentIcon({ type, active, color }: { type: string; active: boolean; color: string }) {
+  const s = active ? 1.1 : 1;
+  const fill = active ? color + 'cc' : color + '40';
+  const stroke = active ? color : color + '80';
+  // Different SVG shapes for different equipment types
+  if (type.includes('כור') || type.includes('Reactor') || type.includes('Synthesis')) {
+    // Reactor vessel - cylinder with dome
+    return <svg viewBox="0 0 60 70" className="w-full h-full" style={{ transform: `scale(${s})`, transition: 'transform 0.3s' }}>
+      <ellipse cx="30" cy="15" rx="18" ry="8" fill={fill} stroke={stroke} strokeWidth="1.5" />
+      <rect x="12" y="15" width="36" height="40" fill={fill} stroke={stroke} strokeWidth="1.5" />
+      <ellipse cx="30" cy="55" rx="18" ry="6" fill={fill} stroke={stroke} strokeWidth="1.5" />
+      <line x1="30" y1="61" x2="30" y2="68" stroke={stroke} strokeWidth="2" />
+    </svg>;
+  }
+  if (type.includes('מגדל') || type.includes('Column') || type.includes('Tower') || type.includes('Absorption')) {
+    // Distillation column - tall cylinder with trays
+    return <svg viewBox="0 0 40 80" className="w-full h-full" style={{ transform: `scale(${s})`, transition: 'transform 0.3s' }}>
+      <rect x="8" y="5" width="24" height="65" rx="4" fill={fill} stroke={stroke} strokeWidth="1.5" />
+      {[15,25,35,45,55].map(y => <line key={y} x1="10" y1={y} x2="30" y2={y} stroke={stroke} strokeWidth="0.8" opacity="0.6" />)}
+      <circle cx="20" cy="75" r="4" fill={fill} stroke={stroke} strokeWidth="1" />
+    </svg>;
+  }
+  if (type.includes('מחליף') || type.includes('Heat')) {
+    // Heat exchanger - shell and tube
+    return <svg viewBox="0 0 60 50" className="w-full h-full" style={{ transform: `scale(${s})`, transition: 'transform 0.3s' }}>
+      <rect x="5" y="10" width="50" height="30" rx="8" fill={fill} stroke={stroke} strokeWidth="1.5" />
+      {[18,25,32].map(y => <line key={y} x1="10" y1={y} x2="50" y2={y} stroke={stroke} strokeWidth="0.8" strokeDasharray="3,2" />)}
+    </svg>;
+  }
+  // Default: storage tank
+  return <svg viewBox="0 0 50 60" className="w-full h-full" style={{ transform: `scale(${s})`, transition: 'transform 0.3s' }}>
+    <rect x="10" y="10" width="30" height="35" rx="3" fill={fill} stroke={stroke} strokeWidth="1.5" />
+    <ellipse cx="25" cy="10" rx="15" ry="5" fill={fill} stroke={stroke} strokeWidth="1.5" />
+    <rect x="20" y="45" width="10" height="10" fill={fill} stroke={stroke} strokeWidth="1" />
+  </svg>;
+}
 
 export default function ProcessDiagrams() {
   const { lang } = useLang();
   const h = lang === 'he';
   const [pi, setPi] = useState(0);
-  const [activeNode, setActiveNode] = useState<string|null>(null);
-  const proc = allProcs[pi];
-  const node = proc.nodes.find(n => n.id === activeNode);
+  const [ai, setAi] = useState<string|null>(null);
+  const proc = procs[pi];
+  const info = proc.eq.find(e => e.id === ai);
 
   return (
     <section id="processes" className="py-20 px-4 max-w-6xl mx-auto">
@@ -80,90 +91,75 @@ export default function ProcessDiagrams() {
         <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-l from-blue-300 to-blue-500 mb-2">
           {h ? 'תרשימי תהליכי ייצור כימיים' : 'Chemical Production Process Diagrams'}
         </h2>
-        <p className="text-slate-400 text-sm">{h ? 'לחצו על ציוד במפעל כדי לראות פרטים ומשוואות' : 'Click equipment in the plant for details & equations'}</p>
+        <p className="text-slate-400 text-sm">{h ? 'לחצו על ציוד כדי ללמוד עליו' : 'Click equipment to learn more'}</p>
       </motion.div>
 
       <div className="flex flex-wrap gap-3 justify-center mb-6">
-        {allProcs.map((p, i) => (
-          <button key={i} onClick={() => { setPi(i); setActiveNode(null); }}
-            className={`px-5 py-3 rounded-xl text-sm font-bold border transition-all ${pi === i ? 'bg-blue-900/60 text-blue-200 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.15)]' : 'bg-slate-800/50 text-slate-400 border-slate-700/30'}`}>
-            {h ? p.label.he : p.label.en}
+        {procs.map((p, i) => (
+          <button key={i} onClick={() => { setPi(i); setAi(null); }}
+            className={`px-5 py-3 rounded-xl text-sm font-bold border transition-all ${pi===i ? 'bg-blue-900/60 text-blue-200 border-blue-600/50 shadow-[0_0_20px_rgba(59,130,246,0.15)]' : 'bg-slate-800/50 text-slate-400 border-slate-700/30'}`}>
+            {p.icon} {h ? p.he : p.en}
           </button>
         ))}
       </div>
 
       <AnimatePresence mode="wait">
-        <motion.div key={pi} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-          <div className="rounded-2xl border border-slate-700/40 bg-gradient-to-b from-slate-900 to-slate-950 backdrop-blur-sm overflow-hidden">
-            <div className="p-3 border-b border-slate-700/30 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-red-500" /><div className="w-2 h-2 rounded-full bg-amber-500" /><div className="w-2 h-2 rounded-full bg-green-500" />
-              <span className="text-xs text-slate-500 mr-2">P&ID — {h ? proc.desc.he : proc.desc.en}</span>
+        <motion.div key={pi} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+          <div className="rounded-2xl border border-slate-700/50 bg-[#0c1425] overflow-hidden" style={{
+            backgroundImage: `linear-gradient(rgba(30,58,138,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(30,58,138,0.06) 1px, transparent 1px)`,
+            backgroundSize: '25px 25px'
+          }}>
+            <div className="p-3 border-b border-slate-700/30 text-center">
+              <span className="text-xs text-slate-500">{h ? proc.desc_he : proc.desc_en}</span>
             </div>
 
-            {/* Plant diagram */}
-            <div className="relative p-4" style={{ backgroundImage: 'linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px)', backgroundSize: '15px 15px' }}>
-              <svg viewBox="0 0 100 85" className="w-full" style={{ minHeight: 300 }}>
-                <defs>
-                  <marker id="pipeArrow" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto">
-                    <polygon points="0 0, 5 2, 0 4" fill="#60a5fa" />
-                  </marker>
-                </defs>
+            {/* Equipment flow - horizontal */}
+            <div className="p-6 overflow-x-auto">
+              <div className="flex items-center gap-1 min-w-[600px] justify-center">
+                {proc.eq.map((eq, i) => (
+                  <div key={eq.id} className="flex items-center">
+                    {/* Equipment */}
+                    <motion.div
+                      whileHover={{ scale: 1.08 }}
+                      onClick={() => setAi(ai === eq.id ? null : eq.id)}
+                      className={`cursor-pointer rounded-xl border-2 p-2 flex flex-col items-center transition-all w-20 md:w-24 ${ai === eq.id ? 'bg-slate-800/80 shadow-lg' : 'bg-slate-900/40 hover:bg-slate-800/40'}`}
+                      style={{ borderColor: ai === eq.id ? eq.color : 'transparent' }}>
+                      <div className="w-12 h-14 md:w-14 md:h-16 mb-1">
+                        <EquipmentIcon type={h ? eq.he : eq.en} active={ai === eq.id} color={eq.color} />
+                      </div>
+                      <span className="text-[9px] md:text-[10px] text-slate-400 text-center leading-tight font-medium" style={ai === eq.id ? { color: eq.color } : {}}>
+                        {(h ? eq.he : eq.en).split('—')[0].split('/')[0].trim().substring(0, 16)}
+                      </span>
+                      {eq.temp && <span className="text-[8px] text-amber-400/70 font-mono mt-0.5">{eq.temp}</span>}
+                    </motion.div>
 
-                {/* Pipes */}
-                {proc.pipes.map((pipe, i) => {
-                  const f = proc.nodes.find(n => n.id === pipe.from)!;
-                  const t = proc.nodes.find(n => n.id === pipe.to)!;
-                  const fx = f.x + 6, fy = f.y + 8, tx = t.x + 6, ty = t.y + 8;
-                  const mx = (fx + tx) / 2, my = (fy + ty) / 2;
-                  const highlighted = activeNode === pipe.from || activeNode === pipe.to;
-                  return (
-                    <g key={i}>
-                      <line x1={fx} y1={fy} x2={tx} y2={ty}
-                        stroke={highlighted ? '#60a5fa' : '#334155'} strokeWidth={highlighted ? '0.8' : '0.4'}
-                        markerEnd="url(#pipeArrow)" strokeDasharray={highlighted ? '' : '2,1'} />
-                      {pipe.label && <text x={mx} y={my - 1.5} textAnchor="middle" fill="#94a3b8" fontSize="2.3" className="select-none">{pipe.label}</text>}
-                    </g>
-                  );
-                })}
-
-                {/* Equipment */}
-                {proc.nodes.map(n => {
-                  const isActive = activeNode === n.id;
-                  const shape = equipShapes[n.type];
-                  return (
-                    <g key={n.id} className="cursor-pointer" onClick={() => setActiveNode(activeNode === n.id ? null : n.id)} onMouseEnter={() => setActiveNode(n.id)}>
-                      {shape && shape(n.x, n.y, n.color, isActive)}
-                      <text x={n.x + 6} y={n.y + 20} textAnchor="middle" fill={isActive ? '#fff' : '#94a3b8'} fontSize="2.2" fontWeight="bold" className="pointer-events-none select-none">
-                        {(h ? n.label : n.label_en).split('\n')[0].substring(0, 16)}
-                      </text>
-                      {(h ? n.label : n.label_en).split('\n')[1] && (
-                        <text x={n.x + 6} y={n.y + 23} textAnchor="middle" fill="#64748b" fontSize="2" className="pointer-events-none select-none">
-                          {(h ? n.label : n.label_en).split('\n')[1].substring(0, 18)}
-                        </text>
-                      )}
-                      {n.temp && <text x={n.x + 6} y={n.y - 1} textAnchor="middle" fill="#f59e0b" fontSize="2" fontWeight="bold" className="pointer-events-none select-none">{n.temp}</text>}
-                    </g>
-                  );
-                })}
-              </svg>
+                    {/* Arrow between equipment */}
+                    {i < proc.eq.length - 1 && (
+                      <div className="flex-shrink-0 px-1">
+                        <svg width="24" height="16" viewBox="0 0 24 16"><path d="M 0,8 L 18,8 M 14,4 L 20,8 L 14,12" fill="none" stroke="#3b82f680" strokeWidth="1.5" strokeLinecap="round" /></svg>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Info panel */}
             <AnimatePresence mode="wait">
-              {node ? (
-                <motion.div key={node.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                  className="border-t border-slate-700/30 p-5" style={{ backgroundColor: node.color + '08' }}>
-                  <div className="flex items-start gap-3">
-                    <div className="w-3 h-3 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: node.color }} />
-                    <div>
-                      <h4 className="font-black text-lg text-slate-100 mb-1">{(h ? node.label : node.label_en).replace('\n', ' ')}</h4>
-                      <p className="text-sm text-slate-300 leading-relaxed">{h ? node.detail : node.detail_en}</p>
-                    </div>
+              {info && (
+                <motion.div key={info.id} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+                  className="border-t border-slate-700/40">
+                  <div className="p-5" style={{ backgroundColor: info.color + '08' }}>
+                    <h4 className="font-black text-lg mb-1" style={{ color: info.color }}>
+                      {h ? info.he : info.en}
+                    </h4>
+                    {info.formula && (
+                      <div className="font-mono text-xs text-green-300 bg-slate-950/80 rounded-lg px-3 py-2 mb-2 border border-slate-700/50 inline-block" dir="ltr">
+                        {info.formula}
+                      </div>
+                    )}
+                    <p className="text-sm text-slate-300 leading-relaxed">{h ? info.desc_he : info.desc_en}</p>
                   </div>
-                </motion.div>
-              ) : (
-                <motion.div className="border-t border-slate-700/30 p-4 text-center text-sm text-slate-500">
-                  {h ? '👆 לחצו על ציוד במפעל — כור, מגדל, מיכל — לפרטים טכניים' : '👆 Click plant equipment — reactor, tower, tank — for technical details'}
                 </motion.div>
               )}
             </AnimatePresence>
