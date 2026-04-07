@@ -9,9 +9,9 @@ const P = {
   muted:"#64748b",border:"#e2e0d8",white:"#ffffff"
 };
 
-const sIDs=["home","timeline","facilities","diagram","arsenal","rangemap","propulsion","processes","flowdiagram","chemistry","hazmat","medical","strategic","infographic","gallery","glossary","sources"];
-const sHe=["ראשי","ציר זמן","מתקנים","אנטומיה","ארסנל","טווחים","הנעה","ייצור","זרימה","דלקים","חומ״ס","רפואי","אסטרטגי","אינפוגרפיקה","מצגת","מקרא","מקורות"];
-const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Ranges","Propulsion","Production","Flow","Fuels","HazMat","Medical","Strategic","Infographic","Slides","Glossary","Sources"];
+const sIDs=["home","timeline","facilities","diagram","arsenal","rangemap","propulsion","processes","flowdiagram","chemistry","hazmat","ergcards","medical","strategic","infographic","gallery","glossary","sources"];
+const sHe=["ראשי","ציר זמן","מתקנים","אנטומיה","ארסנל","טווחים","הנעה","ייצור","זרימה","דלקים","חומ״ס","ERG שטח","רפואי","אסטרטגי","אינפוגרפיקה","מצגת","מקרא","מקורות"];
+const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Ranges","Propulsion","Production","Flow","Fuels","HazMat","ERG Field","Medical","Strategic","Infographic","Slides","Glossary","Sources"];
 
 function ProgressBar(){const[p,setP]=useState(0);useEffect(()=>{const fn=()=>{const h=document.documentElement.scrollHeight-window.innerHeight;setP(h>0?(window.scrollY/h)*100:0);};window.addEventListener("scroll",fn,{passive:true});return()=>window.removeEventListener("scroll",fn);},[]);return<div style={{position:"fixed",top:0,left:0,right:0,zIndex:100,height:3,background:P.cream}}><div style={{height:"100%",width:`${p}%`,background:`linear-gradient(90deg,${P.gold},${P.gL})`,transition:"width 120ms"}}/></div>;}
 
@@ -246,7 +246,7 @@ const pr=[
   {t:"IRFNA — ERG Guide 157",c:P.red,it:he?[
     "🚧 בידוד: רדיוס מינימלי 50 מטר. אירוע אש: 800 מטר. תמיד במעלה הרוח!",
     "🧑‍🚀 מיגון: חליפת מגן רמה A (אטומה לגזים) + מנ״פ (מערכת נשימה עצמית) — ללא חלופה!",
-    "🧪 ספיכת שלולית: חול יבש או חומר ספיגה אינרטי (ורמיקוליט). לאסוף למכל אטום לסילוק",
+    "🧪 ספיחת שלולית: חול יבש או חומר ספיגה אינרטי (ורמיקוליט). לאסוף למכל אטום לסילוק",
     "💧 ענן אדים: ריסוס ערפל מים (לא סילון!) על ענן הגז — מוהל ומפזר את הגזים הרעילים",
     "⚗️ ניטרול: NaHCO₃ (סודה לשתיה) מדורג — לעולם לא בבת אחת! תגובה אקזותרמית",
     "🌡️ קירור: ערפל מים על מכלים חשופים למניעת לחץ יתר"
@@ -256,18 +256,89 @@ const pr=[
     "🧑‍🚀 מיגון: חליפת מגן רמה A (אטומה לגזים) + מנ״פ — ללא חלופה!",
     "⚠️ סכנה: UDMH חודר דרך עור שלם — נספג לדם ללא פצע נראה! כל חשיפה עורית = פינוי מיידי לאשפוז",
     "💧 כיבוי שריפה: ערפל מים + קצף AR-AFFF (עמיד לאלכוהול). לא מים בסילון!",
-    "🧪 ספיכה: חומר סופח + מים בכמות גדולה למיהול. איסוף לסילוק כפסולת מסוכנת",
+    "🧪 ספיחה: חומר סופח + מים בכמות גדולה למיהול. איסוף לסילוק כפסולת מסוכנת",
     "☠️ זהירות מתוצרי פירוק: NDMA (מסרטן) + פורמלדהיד + HCN (ציאניד). קרקע מזוהמת עד 6 שבועות!",
     "💊 חשוף ל-UDMH: ויטמין B6 (פירידוקסין) — נוגדן לעוויתות שנגרמות מ-UDMH"
   ]:["🚧 Isolate: 100m. Large spill: 300+m. Always upwind!","🧑‍🚀 PPE: Level A encapsulated suit + SCBA — no alternative!","⚠️ Danger: UDMH penetrates intact skin — absorbed into bloodstream without visible wound! Any skin exposure = immediate hospital","💧 Fire: water fog + AR-AFFF foam. Never water jet!","🧪 Absorb: absorbent + large volume water dilution. Collect as hazardous waste","☠️ Decomposition warning: NDMA (carcinogen) + formaldehyde + HCN. Soil contaminated 6 weeks!","💊 UDMH exposure: Vitamin B6 (Pyridoxine) — anti-convulsant for UDMH seizures"]},
 ];
-return<Sec id="hazmat" num="07" title={he?"מענה חומ״ס — ERG 2024":"HazMat Response — ERG 2024"} subtitle={he?"פרוטוקולי בידוד, מיגון, ספיכה וניטרול":"Isolation, PPE, absorption & neutralization protocols"}>
+return<Sec id="hazmat" num="07" title={he?"מענה חומ״ס — ERG 2024":"HazMat Response — ERG 2024"} subtitle={he?"פרוטוקולי בידוד, מיגון, ספיחה וניטרול":"Isolation, PPE, absorption & neutralization protocols"}>
   <div style={{display:"flex",flexDirection:"column",gap:12}}>
     {pr.map((p,i)=><div key={i} className="cm" style={{padding:20,borderRight:`3px solid ${p.c}`}}>
       <h4 className="sf" style={{fontWeight:800,fontSize:15,marginBottom:12}}>{p.t}</h4>
       {p.it.map((x,j)=><p key={j} style={{fontSize:13,color:P.steel,lineHeight:1.8,marginBottom:6}}>{x}</p>)}
     </div>)}
   </div>
+</Sec>;}
+
+/* ═══ ERG FIELD CARDS ═══ */
+function ERGCards({lang}:{lang:string}){const he=lang==="he";const[sel,setSel]=useState<string|null>(null);const[tab,setTab]=useState("act");
+const cards=[
+  {id:"irfna",name:"IRFNA",full:he?"חומצה חנקתית מעושנת אדומה מעוכבת":"Inhibited Red Fuming Nitric Acid",erg:"157",un:"2032",c:"#dc2626",
+   look:he?"נוזל כתום-אדום, אדים צהובים":"Orange-red liquid, yellow fumes",smell:he?"חנקני חריף":"Sharp nitric",
+   iso:{n:"50 מ׳",s:"150 מ׳",f:"800 מ׳"},
+   ppe:he?"חליפת מגן רמה A + מנ״פ":"Level A + SCBA",
+   act:he?["ספיחת שלולית: חול יבש / ורמיקוליט → מכל אטום","ענן אדים: ריסוס ערפל מים (לא סילון!) למיהול והפזרה","ניטרול: NaHCO₃ מדורג — לעולם לא בבת אחת! (אקזותרמי)","קירור מכלים: ערפל מים למניעת לחץ יתר","כלים ללא ניצוץ — מגיב עם מתכות"]:["Absorb pool: dry sand / vermiculite → sealed container","Vapor: water fog spray (NOT jet!) to dilute & disperse","Neutralize: NaHCO₃ gradually — never all at once! (exothermic)","Cool containers: water fog to prevent overpressure","Non-sparking tools — reacts with metals"],
+   med:he?["הפשטת בגדים (חיתוך!) → שקית אטומה","שטיפה בזרם מים 15+ דקות — עיניים קודם","חמצן 100%","⚠️ בצקת ריאות מושהית 24-48 שעות!","כל חשוף = אשפוז 48 שעות גם אם נראה תקין"]:["Remove clothes (cut!) → sealed bag","Flush 15+ min — eyes first","100% O₂","⚠️ Delayed pulmonary edema 24-48h!","All exposed = hospitalize 48h even if normal"],
+   warn:he?"⚡ מגע עם UDMH = הצתה ספונטנית!":"⚡ Contact with UDMH = spontaneous ignition!"},
+  {id:"udmh",name:"UDMH",full:he?"דימתילהידראזין בלתי סימטרי":"Unsymmetrical Dimethylhydrazine",erg:"131",un:"1163",c:"#7c3aed",
+   look:he?"שקוף, צהביב באוויר":"Clear, yellows in air",smell:he?"אמוניה + דגים":"Ammonia + fish",
+   iso:{n:"100 מ׳",s:"300 מ׳",f:"600 מ׳"},
+   ppe:he?"חליפת מגן רמה A + מנ״פ":"Level A + SCBA",
+   act:he?["ספיחה: חומר סופח + מים בכמות גדולה למיהול","כיבוי: ערפל מים + קצף AR-AFFF","איסוף כפסולת מסוכנת — קרקע מזוהמת עד 6 שבועות","☠️ תוצרי פירוק: NDMA (מסרטן) + פורמלדהיד + HCN","טווח דליקות: 2.5%-95% — כמעט כל ריכוז דליק!"]:["Absorb + large water volume dilution","Suppress: water fog + AR-AFFF foam","Collect as hazardous waste — soil contaminated 6 weeks","☠️ Decomposition: NDMA (carcinogen) + formaldehyde + HCN","Flammability: 2.5%-95% — almost any concentration burns!"],
+   med:he?["הפשטת בגדים (חיתוך!) — חודר עור שלם!","שטיפה 15+ דקות","⚠️ נספג לדם דרך עור ללא פצע נראה","💊 נוגדן: ויטמין B6 (פירידוקסין) 25 מ״ג/ק״ג IV","ניטור כבד (רעילות כבדית) + כליות"]:["Remove clothes (cut!) — penetrates intact skin!","Flush 15+ min","⚠️ Absorbed through skin without visible wound","💊 Antidote: Vitamin B6 (Pyridoxine) 25 mg/kg IV","Monitor liver (hepatotoxic) + kidneys"],
+   warn:he?"מסרטן IARC 2B | חודר עור שלם | דליק 2.5%-95%":"Carcinogen IARC 2B | Skin penetrant | Flam. 2.5%-95%"},
+  {id:"nto",name:"NTO (N₂O₄)",full:he?"חנקן טטראוקסיד":"Nitrogen Tetroxide",erg:"124",un:"1067",c:"#b45309",
+   look:he?"חום-אדום, אדים חומים כבדים":"Reddish-brown, heavy fumes",smell:he?"חנקני, דמוי כלור":"Nitric, chlorine-like",
+   iso:{n:"100 מ׳",s:"200 מ׳",f:"800 מ׳"},
+   ppe:he?"חליפת מגן רמה A + מנ״פ":"Level A + SCBA",
+   act:he?["⚠️ רותח ב-21°C — מתאדה בטמפ׳ החדר! כל דליפה = ענן גז מיידי","ספיחה: חול / ורמיקוליט → מכל אטום","ערפל מים על ענן הגז למיהול","ניטרול: NaHCO₃ מדורג","צפיפות אדים 3.17 — גז שוקע לשטח נמוך!"]:["⚠️ Boils at 21°C — evaporates at room temp! Any leak = instant gas cloud","Absorb: sand / vermiculite → sealed container","Water fog on gas cloud to dilute","Neutralize: NaHCO₃ gradually","Vapor density 3.17 — gas sinks to low ground!"],
+   med:he?["שטיפה 15+ דקות","חמצן 100%","⚠️ בצקת ריאות מושהית 24-48 שעות — כמו IRFNA!","מגיב עם מים ברקמות הגוף → יוצר HNO₃ פנימי","כל חשוף = אשפוז 48 שעות"]:["Flush 15+ min","100% O₂","⚠️ Delayed pulmonary edema 24-48h — same as IRFNA!","Reacts with body tissue water → creates internal HNO₃","All exposed = hospitalize 48h"],
+   warn:he?"קטלני בשאיפה! רותח 21°C = ענן גז מיידי":"Lethal by inhalation! BP 21°C = instant gas cloud"},
+];
+const card=sel?cards.find(c=>c.id===sel):null;
+return<Sec id="ergcards" num="07½" title={he?"כרטיסי ERG לשטח":"ERG Field Cards"} subtitle={he?"לחץ על חומר לפרוטוקול מלא — מותאם מובייל":"Tap a substance for full protocol — mobile optimized"} dark>
+  <div style={{display:"flex",gap:8,marginBottom:16,justifyContent:"center"}}>
+    {cards.map(c=><button key={c.id} onClick={()=>{setSel(c.id);setTab("act");}} style={{flex:1,maxWidth:120,padding:"12px 8px",borderRadius:12,border:sel===c.id?`2px solid ${c.c}`:`2px solid ${P.border}`,background:sel===c.id?`${c.c}15`:P.white,cursor:"pointer",textAlign:"center",transition:"all 0.2s"}}>
+      <div style={{fontSize:12,fontWeight:800,color:sel===c.id?c.c:P.muted}}>{c.name}</div>
+      <div style={{fontSize:9,color:P.muted,marginTop:2}}>ERG {c.erg} | UN {c.un}</div>
+    </button>)}
+  </div>
+  {card&&<div style={{background:P.ink,borderRadius:14,border:`1px solid ${card.c}40`,overflow:"hidden"}}>
+    {/* Header */}
+    <div style={{background:`${card.c}12`,padding:16,borderBottom:`1px solid ${card.c}25`}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+        <span style={{fontSize:20,fontWeight:900,color:card.c}}>{card.name}</span>
+        <div style={{display:"flex",gap:6}}>
+          <span className="mn" style={{padding:"3px 8px",borderRadius:5,fontSize:10,fontWeight:700,background:`${card.c}20`,color:card.c}}>ERG {card.erg}</span>
+          <span className="mn" style={{padding:"3px 8px",borderRadius:5,fontSize:10,fontWeight:700,background:`${P.white}10`,color:`${P.white}70`}}>UN {card.un}</span>
+        </div>
+      </div>
+      <div style={{fontSize:12,color:`${P.white}cc`}}>{card.full}</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:10}}>
+        <div style={{background:`${P.white}08`,padding:"7px 10px",borderRadius:6}}><div style={{fontSize:9,color:`${P.white}60`}}>{he?"מראה":"Look"}</div><div style={{fontSize:11,color:`${P.white}cc`}}>{card.look}</div></div>
+        <div style={{background:`${P.white}08`,padding:"7px 10px",borderRadius:6}}><div style={{fontSize:9,color:`${P.white}60`}}>{he?"ריח":"Odor"}</div><div style={{fontSize:11,color:`${P.white}cc`}}>{card.smell}</div></div>
+      </div>
+      <div style={{marginTop:10,padding:"8px 12px",background:"#ef444418",borderRadius:8,border:"1px solid #ef444430",fontSize:12,fontWeight:700,color:"#fca5a5",textAlign:"center"}}>🚨 {card.warn}</div>
+    </div>
+    {/* Isolation */}
+    <div style={{display:"flex",justifyContent:"space-around",padding:"12px",background:`${P.white}04`,borderBottom:`1px solid ${P.white}08`}}>
+      {[{l:he?"בידוד":"Isolate",v:card.iso.n,c:"#22c55e"},{l:he?"דליפה":"Spill",v:card.iso.s,c:"#f59e0b"},{l:he?"אש":"Fire",v:card.iso.f,c:"#ef4444"}].map(d=><div key={d.l} style={{textAlign:"center"}}><div className="mn" style={{fontSize:18,fontWeight:900,color:d.c}}>{d.v}</div><div style={{fontSize:9,color:`${P.white}60`}}>{d.l}</div></div>)}
+    </div>
+    {/* PPE */}
+    <div style={{padding:"10px 16px",background:"#7c3aed10",borderBottom:`1px solid ${P.white}08`,fontSize:12,fontWeight:700,color:"#c4b5fd",textAlign:"center"}}>🧑‍🚀 {card.ppe}</div>
+    {/* Tabs */}
+    <div style={{display:"flex",borderBottom:`1px solid ${P.white}08`}}>
+      {[{k:"act",l:he?"🧪 פעולה":"🧪 Action",c:"#22c55e"},{k:"med",l:he?"🏥 רפואי":"🏥 Medical",c:"#ef4444"}].map(t=><button key={t.k} onClick={()=>setTab(t.k)} style={{flex:1,padding:11,border:"none",background:tab===t.k?`${t.c}12`:"transparent",color:tab===t.k?t.c:`${P.white}40`,fontSize:13,fontWeight:tab===t.k?800:500,cursor:"pointer",borderBottom:tab===t.k?`2px solid ${t.c}`:"2px solid transparent",fontFamily:"'Heebo',sans-serif"}}>{t.l}</button>)}
+    </div>
+    {/* Content */}
+    <div style={{padding:16}}>
+      {(tab==="act"?card.act:card.med).map((item,i)=><div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"9px 0",borderBottom:i<(tab==="act"?card.act:card.med).length-1?`1px solid ${P.white}06`:"none"}}>
+        <div style={{width:22,height:22,borderRadius:"50%",background:tab==="act"?"#22c55e18":"#ef444418",color:tab==="act"?"#22c55e":"#ef4444",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,flexShrink:0}}>{i+1}</div>
+        <div style={{fontSize:13,color:`${P.white}dd`,lineHeight:1.7,paddingTop:1}}>{item}</div>
+      </div>)}
+    </div>
+  </div>}
+  {!card&&<div style={{textAlign:"center",padding:"40px 20px",color:P.muted}}><div style={{fontSize:32,marginBottom:8}}>☝️</div><div style={{fontSize:13}}>{he?"בחר חומר למעלה":"Select a substance above"}</div></div>}
 </Sec>;}
 
 /* ═══ MEDICAL — expanded ═══ */
@@ -740,4 +811,4 @@ function Footer({lang}:{lang:string}){const he=lang==="he";return<footer style={
 </footer>;}
 
 /* ═══ MAIN ═══ */
-export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><Facilities lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><Infographic lang={lang}/><Gallery lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
+export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><Facilities lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><ERGCards lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><Infographic lang={lang}/><Gallery lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
