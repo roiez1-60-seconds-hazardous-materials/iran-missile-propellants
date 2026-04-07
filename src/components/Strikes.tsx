@@ -8,7 +8,7 @@ const facilities = [
   { name:{he:"שאהרוד (Shahrud)",en:"Shahrud"}, desc:{he:"בית ייצור מנועים של משמרות המהפכה. מערבלים פלנטריים ובורות יציקה",en:"IRGC engine manufacturing. Planetary mixers and casting pits"}, status:{he:"הותקף מרץ 2026",en:"Struck March 2026"}, c:"red" },
   { name:{he:"אספהאן (Isfahan - ENTC)",en:"Isfahan (ENTC)"}, desc:{he:"המרת אורניום + כימיקלים דואליים (פלואורידים). מפעלי Seventh of Tir",en:"Uranium conversion + dual-use chemicals (fluorides). Seventh of Tir plants"}, status:{he:"נפגע יוני 2025",en:"Damaged June 2025"}, c:"amber" },
   { name:{he:"אסלויה (South Pars)",en:"Asaluyeh (South Pars)"}, desc:{he:"מתקן הפטרוכימיה הגדול ביותר. ייצור אמוניה + HNO₃. 85% מהייצוא הפטרוכימי",en:"Largest petrochemical facility. NH₃ + HNO₃ production. 85% of petrochemical exports"}, status:{he:"הותקף אפריל 2026",en:"Struck April 2026"}, c:"red" },
-  { name:{he:"שיראז + מאהשהר",en:"Shiraz + Mahshahr"}, desc:{he:"\"אחד האחרונים שנותרו\" (הודעת צה\"ל 7.4.26). ייצור חומצה חנקתית",en:"\"One of the last remaining\" (IDF statement 7.4.26). Nitric acid production"}, status:{he:"הותקף אפריל 2026",en:"Struck April 2026"}, c:"red" },
+  { name:{he:"שיראז + מאהשהר",en:"Shiraz + Mahshahr"}, desc:{he:"'אחד האחרונים שנותרו' (הודעת צה'ל 7.4.26). ייצור חומצה חנקתית",en:"'One of the last remaining' (IDF statement 7.4.26). Nitric acid production"}, status:{he:"הותקף אפריל 2026",en:"Struck April 2026"}, c:"red" },
 ];
 
 export default function Strikes() {
