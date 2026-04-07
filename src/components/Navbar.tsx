@@ -38,7 +38,7 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-2 cursor-pointer"
           >
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-amber-500/60 shadow-lg shadow-amber-500/20">
+            <div className="w-9 h-9 rounded-full overflow-hidden border flex-shrink-0 border-amber-500/40">
               <img
                 src="/images/logo-60sec.png"
                 alt="60 שניות של חומ״ס"
