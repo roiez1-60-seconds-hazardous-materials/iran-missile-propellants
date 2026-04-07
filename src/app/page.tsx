@@ -4,16 +4,17 @@ import ParticleBackground from '@/components/ParticleBackground';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Timeline from '@/components/Timeline';
+import MissileDiagram from '@/components/MissileDiagram';
+import Platforms from '@/components/Platforms';
 import Paradigm from '@/components/Paradigm';
 import ChemDanger from '@/components/ChemDanger';
 import Chain from '@/components/Chain';
-import Platforms from '@/components/Platforms';
-import Simulation from '@/components/Simulation';
+import NetworkGraph from '@/components/NetworkGraph';
 import Strikes from '@/components/Strikes';
 import HazMat from '@/components/HazMat';
 import EmergencyCard from '@/components/EmergencyCard';
-import Glossary from '@/components/Glossary';
 import Gallery from '@/components/Gallery';
+import Glossary from '@/components/Glossary';
 import Sources from '@/components/Sources';
 import Insights from '@/components/Insights';
 import Footer from '@/components/Footer';
@@ -35,15 +36,17 @@ export default function Home() {
         <Divider />
         <Timeline />
         <Divider />
+        <MissileDiagram />
+        <Divider />
+        <Platforms />
+        <Divider />
         <Paradigm />
         <Divider />
         <ChemDanger />
         <Divider />
         <Chain />
         <Divider />
-        <Platforms />
-        <Divider />
-        <Simulation />
+        <NetworkGraph />
         <Divider />
         <Strikes />
         <Divider />

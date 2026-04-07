@@ -21,7 +21,6 @@ export default function Footer() {
             : <>Developed by <strong className="text-slate-200">Roei Zukerman</strong> — HazMat & CBRN Expert</>}
         </p>
         <p className="text-sm text-slate-500">
-          {lang === 'he' ? 'כבאות והצלה לישראל' : 'Israel Fire and Rescue Services'}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
           <a href="mailto:roiez1@gmail.com" className="text-blue-400 hover:text-blue-300 transition-colors">

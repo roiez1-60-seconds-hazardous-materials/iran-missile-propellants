@@ -7,8 +7,8 @@ import { useLang } from '@/lib/LanguageContext';
 const WHATSAPP_LINK = 'https://chat.whatsapp.com/K4NzcZucmimKYFOXE3VVtD?mode=gi_t';
 
 const sections = [
-  'home','timeline','paradigm','chemistry','chain','network',
-  'platforms','response','hazmat','glossary','gallery'
+  'home','timeline','diagram','arsenal','propulsion','chemistry',
+  'processes','strategic','facilities','hazmat','glossary','gallery','sources'
 ];
 
 export default function Navbar() {

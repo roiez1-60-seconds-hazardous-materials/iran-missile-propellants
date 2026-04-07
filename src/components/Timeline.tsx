@@ -4,7 +4,7 @@ import { useLang } from '@/lib/LanguageContext';
 
 const events = [
   { year: '1984', he: 'איראן רוכשת 20 טילי Scud-B מלוב — תחילת תוכנית הטילים', en: 'Iran acquires 20 Scud-B missiles from Libya — missile program begins', icon: '📦' },
-  { year: '1988', he: 'מלחמת הערים: שיגור טילי Scud על עירק. חסן טהראני מוקדאם מוביל הנדסה הפוכה', en: 'War of the Cities: Scud launches at Iraq. Tehrani Moghaddam leads reverse engineering', icon: '💥' },
+  { year: '1988', he: 'מלחמת איראן-עירק: שיגור טילי Scud. חסן טהראני מוקדאם מוביל הנדסה הפוכה של טכנולוגיה סובייטית', en: 'Iran-Iraq War: Scud launches. Tehrani Moghaddam leads reverse engineering of Soviet technology', icon: '💥' },
   { year: '1998', he: 'שהאב-3 נחשף — טווח 1,300 ק״מ. מבוסס Nodong צפון-קוריאני. דלק IRFNA+TM-185', en: 'Shahab-3 unveiled — 1,300 km range. Based on North Korean Nodong. IRFNA+TM-185 fuel', icon: '🚀' },
   { year: '2004', he: 'שהאב-3B (גדר) — מיכלי דלק מורחבים, טווח 2,000 ק״מ. תוכנית מודרניזציה', en: 'Shahab-3B (Ghadr) — extended fuel tanks, 2,000 km range. Modernization program', icon: '⚙️' },
   { year: '2008', he: 'סג׳יל-1 נבחן — פריצת דרך בדלק מוצק דו-שלבי. AP+HTPB+Al. שיגור מהיר', en: 'Sejjil-1 tested — solid-fuel two-stage breakthrough. AP+HTPB+Al. Rapid launch capability', icon: '🔩' },

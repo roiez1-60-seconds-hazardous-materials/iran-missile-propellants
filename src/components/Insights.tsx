@@ -8,7 +8,6 @@ export default function Insights() {
   const cards = [
     { icon:'⚗️', t:h?'צוואר הבקבוק הכימי':'Chemical Chokepoint', d:h?'HNO₃ = מפתח ל-IRFNA + NTO + RDX/HMX + עדשות גרעיניות. השמדת מתקני אוסטוולד ובכמן = פגיעה סימולטנית בטילים נוזליים, מוצקים ובפרויקט הגרעיני.':'HNO₃ = key to IRFNA + NTO + RDX/HMX + nuclear lenses. Destroying Ostwald & Bachmann facilities = simultaneous impact on liquid, solid missiles & nuclear project.', c:'border-red-600/40 bg-red-950/20' },
     { icon:'🇨🇳', t:h?'תלות הרסנית בסין':'Destructive China Dependency', d:h?'יבוא מסיבי של נתרן פרכלורט מג\'והאי. הברחות בספינות דגל. פיצוץ נמל שהיד רג\'אי. סגירת מצר הורמוז הפכה מבעיה איראנית לגלובלית.':'Massive sodium perchlorate imports from Zhuhai. Flag vessel smuggling. Shahid Rajaee port explosion. Hormuz closure became a global problem.', c:'border-amber-600/40 bg-amber-950/20' },
-    { icon:'🇮🇱', t:h?'רלוונטיות לישראל':'Israel Relevance', d:h?'טילים נוזליים שפוגעים בישראל מכילים שרידי דלק רעיל. אירוע נאות חובב (29.3.26) הוכיח שהתרחיש ריאלי. מענה: חליפת מגן רמה A, היפרגולית, בצקת 48 שעות.':'Liquid missiles hitting Israel contain toxic fuel residue. Neot Hovav incident (29.3.26) proved the scenario is real. Response: Level A suit, hypergolic awareness, 48hr edema watch.', c:'border-blue-600/40 bg-blue-950/20' },
   ];
   return (
     <section id="insights" className="py-20 px-4 max-w-5xl mx-auto">
