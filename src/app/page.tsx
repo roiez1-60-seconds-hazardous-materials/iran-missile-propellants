@@ -9,9 +9,9 @@ const P = {
   muted:"#64748b",border:"#e2e0d8",white:"#ffffff"
 };
 
-const sIDs=["home","timeline","facilities","diagram","arsenal","rangemap","propulsion","processes","flowdiagram","chemistry","hazmat","ergcards","medical","strategic","infographic","gallery","glossary","sources"];
-const sHe=["ראשי","ציר זמן","מתקנים","אנטומיה","ארסנל","טווחים","הנעה","ייצור","זרימה","דלקים","חומ״ס","ERG שטח","רפואי","אסטרטגי","אינפוגרפיקה","מצגת","מקרא","מקורות"];
-const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Ranges","Propulsion","Production","Flow","Fuels","HazMat","ERG Field","Medical","Strategic","Infographic","Slides","Glossary","Sources"];
+const sIDs=["home","timeline","facilities","diagram","arsenal","compare","rangemap","propulsion","processes","flowdiagram","chemistry","hazmat","medical","strategic","infographic","gallery","glossary","sources"];
+const sHe=["ראשי","ציר זמן","מתקנים","אנטומיה","ארסנל","השוואה","טווחים","הנעה","ייצור","זרימה","דלקים","חומ״ס","רפואי","אסטרטגי","אינפוגרפיקה","מצגת","מקרא","מקורות"];
+const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Compare","Ranges","Propulsion","Production","Flow","Fuels","HazMat","Medical","Strategic","Infographic","Slides","Glossary","Sources"];
 
 function ProgressBar(){const[p,setP]=useState(0);useEffect(()=>{const fn=()=>{const h=document.documentElement.scrollHeight-window.innerHeight;setP(h>0?(window.scrollY/h)*100:0);};window.addEventListener("scroll",fn,{passive:true});return()=>window.removeEventListener("scroll",fn);},[]);return<div style={{position:"fixed",top:0,left:0,right:0,zIndex:100,height:3,background:P.cream}}><div style={{height:"100%",width:`${p}%`,background:`linear-gradient(90deg,${P.gold},${P.gL})`,transition:"width 120ms"}}/></div>;}
 
@@ -240,38 +240,8 @@ return<Sec id="chemistry" num="06" title={he?"תכונות פיסיקליות ו
   </div>
 </Sec>;}
 
-/* ═══ HAZMAT — positive instructions, after chemistry ═══ */
-function HazMat({lang}:{lang:string}){const he=lang==="he";
-const pr=[
-  {t:"IRFNA — ERG Guide 157",c:P.red,it:he?[
-    "🚧 בידוד: רדיוס מינימלי 50 מטר. אירוע אש: 800 מטר. תמיד במעלה הרוח!",
-    "🧑‍🚀 מיגון: חליפת מגן רמה A (אטומה לגזים) + מנ״פ (מערכת נשימה עצמית) — ללא חלופה!",
-    "🧪 ספיחת שלולית: חול יבש או חומר ספיגה אינרטי (ורמיקוליט). לאסוף למכל אטום לסילוק",
-    "💧 ענן אדים: ריסוס ערפל מים (לא סילון!) על ענן הגז — מוהל ומפזר את הגזים הרעילים",
-    "⚗️ ניטרול: NaHCO₃ (סודה לשתיה) מדורג — לעולם לא בבת אחת! תגובה אקזותרמית",
-    "🌡️ קירור: ערפל מים על מכלים חשופים למניעת לחץ יתר"
-  ]:["🚧 Isolate: 50m minimum. Fire: 800m. Always upwind!","🧑‍🚀 PPE: Level A encapsulated suit + SCBA — no alternative!","🧪 Pool: dry sand or inert absorbent (vermiculite). Collect in sealed container","💧 Vapor: water fog spray (not jet!) on gas cloud — dilutes and disperses","⚗️ Neutralize: NaHCO₃ gradually — never all at once! Exothermic reaction","🌡️ Cool: water fog on exposed containers to prevent overpressure"]},
-  {t:"UDMH — ERG Guide 131",c:P.purple,it:he?[
-    "🚧 בידוד: 100 מטר. דליפה גדולה: 300+ מטר. תמיד במעלה הרוח!",
-    "🧑‍🚀 מיגון: חליפת מגן רמה A (אטומה לגזים) + מנ״פ — ללא חלופה!",
-    "⚠️ סכנה: UDMH חודר דרך עור שלם — נספג לדם ללא פצע נראה! כל חשיפה עורית = פינוי מיידי לאשפוז",
-    "💧 כיבוי שריפה: ערפל מים + קצף AR-AFFF (עמיד לאלכוהול). לא מים בסילון!",
-    "🧪 ספיחה: חומר סופח + מים בכמות גדולה למיהול. איסוף לסילוק כפסולת מסוכנת",
-    "☠️ זהירות מתוצרי פירוק: NDMA (מסרטן) + פורמלדהיד + HCN (ציאניד). קרקע מזוהמת עד 6 שבועות!",
-    "💊 חשוף ל-UDMH: ויטמין B6 (פירידוקסין) — נוגדן לעוויתות שנגרמות מ-UDMH"
-  ]:["🚧 Isolate: 100m. Large spill: 300+m. Always upwind!","🧑‍🚀 PPE: Level A encapsulated suit + SCBA — no alternative!","⚠️ Danger: UDMH penetrates intact skin — absorbed into bloodstream without visible wound! Any skin exposure = immediate hospital","💧 Fire: water fog + AR-AFFF foam. Never water jet!","🧪 Absorb: absorbent + large volume water dilution. Collect as hazardous waste","☠️ Decomposition warning: NDMA (carcinogen) + formaldehyde + HCN. Soil contaminated 6 weeks!","💊 UDMH exposure: Vitamin B6 (Pyridoxine) — anti-convulsant for UDMH seizures"]},
-];
-return<Sec id="hazmat" num="07" title={he?"מענה חומ״ס — ERG 2024":"HazMat Response — ERG 2024"} subtitle={he?"פרוטוקולי בידוד, מיגון, ספיחה וניטרול":"Isolation, PPE, absorption & neutralization protocols"}>
-  <div style={{display:"flex",flexDirection:"column",gap:12}}>
-    {pr.map((p,i)=><div key={i} className="cm" style={{padding:20,borderRight:`3px solid ${p.c}`}}>
-      <h4 className="sf" style={{fontWeight:800,fontSize:15,marginBottom:12}}>{p.t}</h4>
-      {p.it.map((x,j)=><p key={j} style={{fontSize:13,color:P.steel,lineHeight:1.8,marginBottom:6}}>{x}</p>)}
-    </div>)}
-  </div>
-</Sec>;}
-
-/* ═══ ERG FIELD CARDS ═══ */
-function ERGCards({lang}:{lang:string}){const he=lang==="he";const[sel,setSel]=useState<string|null>(null);const[tab,setTab]=useState("act");
+/* ═══ HAZMAT + ERG — UNIFIED ═══ */
+function HazMat({lang}:{lang:string}){const he=lang==="he";const[sel,setSel]=useState<string|null>(null);const[tab,setTab]=useState("act");
 const cards=[
   {id:"irfna",name:"IRFNA",full:he?"חומצה חנקתית מעושנת אדומה מעוכבת":"Inhibited Red Fuming Nitric Acid",erg:"157",un:"2032",c:"#dc2626",
    look:he?"נוזל כתום-אדום, אדים צהובים":"Orange-red liquid, yellow fumes",smell:he?"חנקני חריף":"Sharp nitric",
@@ -296,7 +266,7 @@ const cards=[
    warn:he?"קטלני בשאיפה! רותח 21°C = ענן גז מיידי":"Lethal by inhalation! BP 21°C = instant gas cloud"},
 ];
 const card=sel?cards.find(c=>c.id===sel):null;
-return<Sec id="ergcards" num="07½" title={he?"כרטיסי ERG לשטח":"ERG Field Cards"} subtitle={he?"לחץ על חומר לפרוטוקול מלא — מותאם מובייל":"Tap a substance for full protocol — mobile optimized"} dark>
+return<Sec id="hazmat" num="07" title={he?"מענה חומ״ס — כרטיסי שטח ERG 2024":"HazMat Response — ERG 2024 Field Cards"} subtitle={he?"בידוד, מיגון, ספיחה, ניטרול ורפואי — לחץ על חומר לפרוטוקול":"Isolation, PPE, absorption, neutralization & medical — tap for protocol"} dark>
   <div style={{display:"flex",gap:8,marginBottom:16,justifyContent:"center"}}>
     {cards.map(c=><button key={c.id} onClick={()=>{setSel(c.id);setTab("act");}} style={{flex:1,maxWidth:120,padding:"12px 8px",borderRadius:12,border:sel===c.id?`2px solid ${c.c}`:`2px solid ${P.border}`,background:sel===c.id?`${c.c}15`:P.white,cursor:"pointer",textAlign:"center",transition:"all 0.2s"}}>
       <div style={{fontSize:12,fontWeight:800,color:sel===c.id?c.c:P.muted}}>{c.name}</div>
@@ -480,6 +450,54 @@ return<Sec id="glossary" num="13" title={he?"מקרא מונחים":"Glossary"} 
   <div style={{display:"flex",flexDirection:"column",gap:8}}>{filtered.map((tm,i)=>{const[bg,c]=catC[tm.c]||[P.cream,P.muted];return<div key={i} className="cm" style={{padding:14}}><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{fontWeight:800,color:P.blue,fontSize:14}}>{tm.t}</span><span style={{fontSize:9,fontWeight:700,padding:"1px 6px",borderRadius:3,background:bg,color:c}}>{cats.find(x=>x.k===tm.c)?.l}</span></div><p style={{fontSize:12,color:P.steel,lineHeight:1.7}}>{tm.d}</p></div>;})}</div>
 </Sec>;}
 
+
+/* ═══ MISSILE COMPARISON ═══ */
+function MissileCompare({lang}:{lang:string}){const he=lang==="he";const[a,setA]=useState("");const[b,setB]=useState("");
+const ms=[
+  {n:"שהאב-1",ne:"Shahab-1",r:330,w:1000,f:"IRFNA+TM-185",cep:2500,t:"נוזלי",te:"Liquid",spd:"Mach 5",stg:1,len:"11.2"},
+  {n:"שהאב-3",ne:"Shahab-3",r:1300,w:1000,f:"IRFNA+TM-185",cep:1500,t:"נוזלי",te:"Liquid",spd:"Mach 7",stg:1,len:"16"},
+  {n:"קיאם-1",ne:"Qiam-1",r:800,w:700,f:"IRFNA+UDMH*",cep:500,t:"נוזלי",te:"Liquid",spd:"Mach 6",stg:1,len:"11.5"},
+  {n:"גדר-1",ne:"Ghadr-1",r:1800,w:750,f:"IRFNA+TM-185",cep:300,t:"נוזלי",te:"Liquid",spd:"Mach 8",stg:1,len:"16.5"},
+  {n:"עמאד",ne:"Emad",r:1700,w:750,f:"IRFNA+TM-185",cep:500,t:"נוזלי",te:"Liquid",spd:"Mach 7",stg:1,len:"16"},
+  {n:"ח׳ורמשהר",ne:"Khorramshahr",r:2000,w:1500,f:"NTO+UDMH",cep:30,t:"נוזלי",te:"Liquid",spd:"Mach 10",stg:1,len:"13"},
+  {n:"פאתח-110",ne:"Fateh-110",r:300,w:500,f:"AP+HTPB+Al",cep:100,t:"מוצק",te:"Solid",spd:"Mach 4",stg:1,len:"8.9"},
+  {n:"זולפקאר",ne:"Zolfaghar",r:700,w:600,f:"AP+HTPB+Al",cep:100,t:"מוצק",te:"Solid",spd:"Mach 5",stg:1,len:"10.3"},
+  {n:"ח׳ייבר שכן",ne:"Kheibar Shekan",r:1450,w:500,f:"AP+HTPB+Al+RDX*",cep:30,t:"מוצק",te:"Solid",spd:"Mach 8",stg:1,len:"13"},
+  {n:"סג׳יל-2",ne:"Sejjil-2",r:2000,w:750,f:"AP+HTPB",cep:50,t:"מוצק",te:"Solid",spd:"Mach 12",stg:2,len:"17.6"},
+  {n:"פתאח-1",ne:"Fattah-1",r:1400,w:500,f:"AP+HTPB+Al",cep:-1,t:"מוצק",te:"Solid",spd:"Mach 13*",stg:1,len:"12"},
+];
+const mA=ms.find(m=>m.ne===a);const mB=ms.find(m=>m.ne===b);
+const rows=he?[["טווח (ק״מ)","r"],["ראש קרב (ק״ג)","w"],["דלק","f"],["CEP (מ׳)","cep"],["הנעה","t"],["מהירות","spd"],["שלבים","stg"],["אורך (מ׳)","len"]]:
+                [["Range (km)","r"],["Warhead (kg)","w"],["Fuel","f"],["CEP (m)","cep"],["Propulsion","te"],["Speed","spd"],["Stages","stg"],["Length (m)","len"]];
+const better=(key:string,va:any,vb:any)=>{if(key==="cep")return va<vb&&va>0?"a":vb<va&&vb>0?"b":"";if(key==="r"||key==="w"||key==="spd")return String(va)>String(vb)?"a":"b";return"";};
+return<Sec id="compare" num="03¾" title={he?"השוואת טילים":"Missile Comparison"} subtitle={he?"בחר שני טילים להשוואה זה-מול-זה":"Select two missiles to compare side by side"}>
+  <div style={{display:"flex",gap:12,marginBottom:16,flexWrap:"wrap"}}>
+    <select value={a} onChange={e=>setA(e.target.value)} style={{flex:1,minWidth:140,padding:"10px 14px",borderRadius:8,border:`1px solid ${P.border}`,fontSize:13,fontFamily:"Heebo",background:P.white}}>
+      <option value="">{he?"— טיל ראשון —":"— First missile —"}</option>
+      {ms.filter(m=>m.ne!==b).map(m=><option key={m.ne} value={m.ne}>{he?m.n:m.ne}</option>)}
+    </select>
+    <div style={{display:"flex",alignItems:"center",fontSize:18,color:P.gold,fontWeight:900}}>⚔️</div>
+    <select value={b} onChange={e=>setB(e.target.value)} style={{flex:1,minWidth:140,padding:"10px 14px",borderRadius:8,border:`1px solid ${P.border}`,fontSize:13,fontFamily:"Heebo",background:P.white}}>
+      <option value="">{he?"— טיל שני —":"— Second missile —"}</option>
+      {ms.filter(m=>m.ne!==a).map(m=><option key={m.ne} value={m.ne}>{he?m.n:m.ne}</option>)}
+    </select>
+  </div>
+  {mA&&mB&&<div className="cm" style={{overflow:"hidden"}}>
+    {/* Header */}
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",borderBottom:`2px solid ${P.gold}30`}}>
+      <div style={{padding:"14px",textAlign:"center",background:P.blueS,borderLeft:`1px solid ${P.border}30`}}><div className="sf" style={{fontSize:16,fontWeight:800,color:P.blue}}>{he?mA.n:mA.ne}</div><div style={{fontSize:10,color:P.muted}}>{he?mA.t:mA.te}</div></div>
+      <div style={{padding:"14px",textAlign:"center",background:P.amberS}}><div className="sf" style={{fontSize:16,fontWeight:800,color:P.amber}}>{he?mB.n:mB.ne}</div><div style={{fontSize:10,color:P.muted}}>{he?mB.t:mB.te}</div></div>
+    </div>
+    {/* Rows */}
+    {rows.map(([label,key],i)=>{const va=(mA as any)[key];const vb=(mB as any)[key];const w=better(key,va,vb);
+    return<div key={i} style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",borderBottom:`1px solid ${P.border}30`,alignItems:"center"}}>
+      <div style={{padding:"10px 14px",textAlign:"center",fontSize:14,fontWeight:w==="a"?800:400,color:w==="a"?P.blue:P.steel}}>{va===-1?"?":va}</div>
+      <div style={{padding:"8px 12px",fontSize:11,fontWeight:700,color:P.muted,background:`${P.gold}08`,whiteSpace:"nowrap"}}>{label}</div>
+      <div style={{padding:"10px 14px",textAlign:"center",fontSize:14,fontWeight:w==="b"?800:400,color:w==="b"?P.amber:P.steel}}>{vb===-1?"?":vb}</div>
+    </div>;})}
+  </div>}
+  {(!mA||!mB)&&<div style={{textAlign:"center",padding:"30px",color:P.muted}}><div style={{fontSize:28,marginBottom:8}}>⚔️</div><div style={{fontSize:13}}>{he?"בחר שני טילים מהרשימות":"Select two missiles from the dropdowns"}</div></div>}
+</Sec>;}
 
 /* ═══ REAL MAPBOX RANGE MAP ═══ */
 function RangeMap({lang}:{lang:string}){
@@ -811,4 +829,4 @@ function Footer({lang}:{lang:string}){const he=lang==="he";return<footer style={
 </footer>;}
 
 /* ═══ MAIN ═══ */
-export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><Facilities lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><ERGCards lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><Infographic lang={lang}/><Gallery lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
+export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><Facilities lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><MissileCompare lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><Infographic lang={lang}/><Gallery lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
