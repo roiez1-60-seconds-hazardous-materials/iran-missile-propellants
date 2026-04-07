@@ -88,7 +88,7 @@ export default function ChemDanger() {
 
       <AnimatePresence mode="wait">
         <motion.div key={active} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
-          <div className="rounded-2xl border border-slate-700/50 bg-slate-800/70 backdrop-blur-sm p-6">
+          <div className="rounded-2xl bg-slate-800/40 backdrop-blur-sm p-6">
             <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
               <h3 className="text-xl font-black text-slate-100">{chem.icon} {g(chem.name)}</h3>
               <div className="flex gap-2">
@@ -100,7 +100,7 @@ export default function ChemDanger() {
               <div>
                 <h4 className="text-sm font-bold text-blue-300 mb-3">{h ? 'מאפיינים פיסיקליים' : 'Physical Properties'}</h4>
                 {chem.props.map((p, i) => (
-                  <div key={i} className="flex justify-between py-2 border-b border-slate-700/30 last:border-0 gap-3">
+                  <div key={i} className="flex justify-between py-2 border-b border-slate-800/20 last:border-0 gap-3">
                     <span className="text-slate-400 text-sm">{g(p.k)}</span>
                     <span className="text-sm text-slate-100 font-semibold text-left" dir="ltr">{g(p.v)}</span>
                   </div>
@@ -109,7 +109,7 @@ export default function ChemDanger() {
               <div>
                 <h4 className="text-sm font-bold text-red-300 mb-3">⚠️ {h ? 'סיכונים ורעילות' : 'Hazards & Toxicity'}</h4>
                 {chem.dangers.map((d, i) => (
-                  <div key={i} className="flex justify-between py-2 border-b border-slate-700/30 last:border-0 gap-3 bg-red-950/10 -mx-2 px-2 rounded">
+                  <div key={i} className="flex justify-between py-2 border-b border-slate-800/20 last:border-0 gap-3 bg-red-950/10 -mx-2 px-2 rounded">
                     <span className="text-slate-400 text-sm">{g(d.k)}</span>
                     <span className="text-sm text-red-300 font-semibold text-left" dir="ltr">{g(d.v)}</span>
                   </div>

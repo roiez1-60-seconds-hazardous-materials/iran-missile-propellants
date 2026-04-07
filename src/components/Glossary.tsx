@@ -99,7 +99,7 @@ export default function Glossary() {
       <div className="space-y-3">
         {filtered.map((tm, i) => (
           <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className="rounded-2xl border border-slate-700/40 bg-slate-800/50 backdrop-blur-sm p-5 hover:border-blue-500/20 transition-all">
+            className="rounded-2xl bg-slate-800/30 backdrop-blur-sm p-5 hover:border-blue-500/20 transition-all">
             <div className="flex items-start justify-between gap-4 mb-2">
               <span className="font-black text-blue-300 text-base">{tm.t}</span>
               <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border flex-shrink-0 ${

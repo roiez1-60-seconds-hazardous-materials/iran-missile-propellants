@@ -39,7 +39,7 @@ export default function Sources() {
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-l from-blue-300 to-blue-500 mb-2">{t('sources.title')}</h2>
       </motion.div>
-      <div className="rounded-2xl border border-slate-700/50 bg-slate-800/70 backdrop-blur-sm overflow-hidden divide-y divide-slate-700/20">
+      <div className="rounded-2xl bg-slate-800/30 overflow-hidden divide-y divide-slate-800/20">
         {sources.map((s, i) => (
           <motion.a key={i} href={s.u} target="_blank" rel="noopener noreferrer"
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}

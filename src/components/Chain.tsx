@@ -119,7 +119,7 @@ export default function ProcessDiagrams() {
 
       <AnimatePresence mode="wait">
         <motion.div key={pi} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-          <div className="rounded-3xl border border-slate-700/40 bg-gradient-to-b from-[#0c1425] to-[#0a0f1e] p-4 md:p-6 overflow-hidden">
+          <div className="rounded-3xl bg-gradient-to-b from-[#0c1425] to-[#0a0f1e] p-4 md:p-6 overflow-hidden">
             <p className="text-sm text-slate-400 text-center mb-4">{h ? proc.descHe : proc.descEn}</p>
 
             {/* P&ID SVG */}

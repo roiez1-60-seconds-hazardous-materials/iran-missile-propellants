@@ -71,7 +71,7 @@ export default function MissileDiagram() {
         ))}
       </div>
 
-      <div className="rounded-3xl border border-slate-700/40 bg-gradient-to-b from-[#0c1425] to-[#0a0f1e] p-6 md:p-10 overflow-hidden">
+      <div className="rounded-3xl bg-gradient-to-b from-[#0c1425] to-[#0a0f1e] p-6 md:p-10 overflow-hidden">
         <svg viewBox="0 0 200 70" className="w-full" preserveAspectRatio="xMidYMid meet" style={{ filter:'drop-shadow(0 4px 15px rgba(0,0,0,0.5))' }}>
           <defs>
             <pattern id="bp" width="10" height="10" patternUnits="userSpaceOnUse">

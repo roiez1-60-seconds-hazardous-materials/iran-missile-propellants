@@ -39,16 +39,16 @@ export default function Platforms() {
         ))}
       </div>
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="rounded-2xl border border-slate-700/50 bg-slate-800/70 backdrop-blur-sm overflow-hidden">
+        className="rounded-2xl bg-slate-900/40 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="border-b-2 border-slate-600/50 bg-slate-900/50">
+            <thead><tr className="bg-slate-900/30">
               {[h?'שם':'Name',h?'טווח (ק״מ)':'Range (km)',h?'ראש קרב (ק״ג)':'Warhead (kg)',h?'הנעה':'Propulsion',h?'דלק / מחמצן':'Fuel / Oxidizer','CEP (m)',h?'מצב':'Status',h?'הערות':'Notes'].map(hd => (
                 <th key={hd} className="py-3 px-3 text-right text-xs font-bold text-slate-400 whitespace-nowrap">{hd}</th>
               ))}
             </tr></thead>
             <tbody>{fm.map((m,i) => (
-              <tr key={i} className={`border-b border-slate-700/30 hover:bg-slate-700/20 transition-colors ${m.t==='l'?'bg-blue-950/5':'bg-amber-950/5'}`}>
+              <tr key={i} className={`hover:bg-slate-800/40 transition-colors ${m.t==='l'?'bg-blue-950/5':'bg-amber-950/5'}`}>
                 <td className="py-2.5 px-3 font-bold text-slate-100 whitespace-nowrap">{h?m.n:m.ne}</td>
                 <td className="py-2.5 px-3 text-slate-300 font-mono text-xs" dir="ltr">{m.r}</td>
                 <td className="py-2.5 px-3 text-slate-300 font-mono text-xs" dir="ltr">{m.w}</td>
