@@ -307,18 +307,18 @@ return<Sec id="medical" num="08" title={he?"פרוטוקול רפואי":"Medica
 
 /* ═══ STRATEGIC — expanded explanation ═══ */
 function Strategic({lang}:{lang:string}){const he=lang==="he";
-return<Sec id="strategic" num="09" title={he?"למה HNO₃ הוא חומר מפתח בייצור טילים?":"Why is HNO₃ a Key Material in Missile Production?"} dark sidebar={<SB color="red" title={he?"🔑 המשמעות":"🔑 Significance"}><p>{he?"פגיעה במתקן אחד לייצור חומצה חנקתית משתקת בו-זמנית ארבע יכולות נשק שונות. לאיראן אין חומר גלם אחר עם השפעה כה רחבה.":"Hitting a single nitric acid plant simultaneously paralyzes four different weapon capabilities. Iran has no other raw material with such broad impact."}</p></SB>}>
-  <div className="cm" style={{padding:24,marginBottom:20,background:P.white}}>
+return<Sec id="strategic" num="09" title={he?"למה HNO₃ הוא חומר מפתח בייצור טילים?":"Why is HNO₃ a Key Material in Missile Production?"} sidebar={<SB color="red" title={he?"🔑 המשמעות":"🔑 Significance"}><p>{he?"פגיעה במתקן אחד לייצור חומצה חנקתית משתקת בו-זמנית ארבע יכולות נשק שונות. לאיראן אין חומר גלם אחר עם השפעה כה רחבה.":"Hitting a single nitric acid plant simultaneously paralyzes four different weapon capabilities. Iran has no other raw material with such broad impact."}</p></SB>}>
+  <div style={{padding:24,marginBottom:20,background:"#ffffff",borderRadius:10,border:"1px solid #e5e5e5"}}>
     <p style={{fontSize:15,color:"#000000",lineHeight:2,marginBottom:20,fontWeight:600}}>{he?"חומצה חנקתית (HNO₃) מיוצרת בתהליך אוסטוולד מאמוניה. זהו חומר הגלם הבסיסי ביותר בשרשרת הנשק האיראנית. ממנו מייצרים ארבעה מוצרים קריטיים שונים — ולכן פגיעה במתקן ייצור אחד של חומצה חנקתית משתקת ארבע מערכות נשק בו-זמנית:":"Nitric acid (HNO₃) is produced via the Ostwald process from ammonia. It is the most fundamental precursor in Iran's weapons chain. Four different critical products are derived from it — which is why hitting a single nitric acid production facility paralyzes four weapon systems simultaneously:"}</p>
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:12}}>
       {[{ic:"💧",t:he?"מחמצן IRFNA":"IRFNA Oxidizer",d:he?"HNO₃ + N₂O₄ + HF → IRFNA. דלק טילים נוזליים: שהאב, גדר, קיאם, עמאד":"HNO₃ + N₂O₄ + HF → IRFNA. Liquid missiles: Shahab, Ghadr, Qiam, Emad",bg:P.blueS,c:P.blue},
         {ic:"🧊",t:he?"מחמצן NTO":"NTO Oxidizer",d:he?"מ-HNO₃ מופק N₂O₄ — מחמצן לטיל ח׳ורמשהר (המדויק ביותר)":"N₂O₄ derived from HNO₃ — oxidizer for Khorramshahr (most accurate)",bg:P.purpleS,c:P.purple},
         {ic:"💣",t:he?"חומרי נפץ":"Explosives",d:he?"HNO₃ + הקסאמין → RDX/HMX (תהליך בכמן). משמשים בראשי קרב ובדלק מוצק":"HNO₃ + hexamine → RDX/HMX (Bachmann). Used in warheads and solid fuel",bg:P.amberS,c:P.amber},
         {ic:"☢️",t:he?"עדשות גרעיניות":"Nuclear Lenses",d:he?"HMX משמש בעדשות קריסה (Implosion Lenses) — מרכיב קריטי בנשק גרעיני":"HMX used in Implosion Lenses — critical nuclear weapon component",bg:P.redS,c:P.red},
-      ].map((x,i)=><div key={i} className="cm" style={{padding:16,background:x.bg,textAlign:"center"}}>
+      ].map((x,i)=><div key={i} style={{padding:16,background:"#ffffff",textAlign:"center",borderRadius:10,border:`2px solid ${x.c}30`,boxShadow:"0 2px 8px rgba(0,0,0,0.05)"}}>
         <div style={{fontSize:28,marginBottom:6}}>{x.ic}</div>
-        <div style={{fontSize:12,fontWeight:800,color:x.c,marginBottom:6}}>{x.t}</div>
-        <div style={{fontSize:11,color:"#1a1a1a",lineHeight:1.6,fontWeight:500}}>{x.d}</div>
+        <div style={{fontSize:13,fontWeight:800,color:x.c,marginBottom:8}}>{x.t}</div>
+        <div style={{fontSize:12,color:"#333333",lineHeight:1.7,fontWeight:500}}>{x.d}</div>
       </div>)}
     </div>
   </div>
