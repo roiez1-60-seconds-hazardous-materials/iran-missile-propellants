@@ -670,7 +670,7 @@ const RxnLabel=({x,y,text}:{x:number;y:number;text:string})=>(
 
 const diagrams=[
   {name:he?"אוסטוולד — HNO₃":"Ostwald — HNO₃",ic:"⚗️",
-   render:()=><svg viewBox="0 0 520 420" style={{width:"100%"}}>
+   render:()=><svg viewBox="0 0 620 420" style={{width:"100%"}}>
     <defs><marker id="pah" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
     <Tank x={10} y={20} label={he?"אמוניה NH₃":"Ammonia NH₃"} color="#3b82f6"/>
     <Tank x={10} y={100} label={he?"אוויר O₂+N₂":"Air O₂+N₂"} color="#64748b"/>
@@ -702,7 +702,7 @@ const diagrams=[
     <Reactor x={355} y={260} label="IRFNA" params={he?"מחמצן לטילים":"Missile Oxidizer"} rxn="HNO₃ + N₂O₄ + HF"/>
   </svg>},
   {name:he?"רשיג — UDMH":"Raschig — UDMH",ic:"🟣",
-   render:()=><svg viewBox="0 0 520 420" style={{width:"100%"}}>
+   render:()=><svg viewBox="0 0 620 420" style={{width:"100%"}}>
     <defs><marker id="pah" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
     <Tank x={10} y={20} label={he?"אמוניה NH₃":"Ammonia NH₃"} color="#3b82f6"/>
     <Tank x={10} y={150} label={he?"היפוכלוריט NaOCl":"Hypochlorite NaOCl"} color="#64748b"/>
@@ -733,7 +733,7 @@ const diagrams=[
     <text x={435} y={312} textAnchor="middle" fill="#9333ea" fontSize="6">{he?"דלק טילים":"Missile Fuel"}</text>
   </svg>},
   {name:he?"בכמן — RDX/HMX":"Bachmann — RDX/HMX",ic:"💣",
-   render:()=><svg viewBox="0 0 520 420" style={{width:"100%"}}>
+   render:()=><svg viewBox="0 0 620 420" style={{width:"100%"}}>
     <defs><marker id="pah" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
     <Tank x={10} y={20} label={he?"הקסאמין":"Hexamine"} color="#3b82f6"/>
     <text x={35} y={75} textAnchor="middle" fill="#3b82f6" fontSize="5.5" fontFamily="monospace">C₆H₁₂N₄</text>
