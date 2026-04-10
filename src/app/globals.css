@@ -74,3 +74,4 @@ section { scroll-margin-top:56px; }
 /* Responsive */
 @media(max-width:768px) { .hd-links { display:none !important; } .mob-btn { display:flex !important; } .lang-btn { display:inline-block !important; } }
 @media(min-width:769px) { .mob-btn { display:none !important; } .mob-menu { display:none !important; } .lang-btn { display:none !important; } }
+.ta{background:rgba(200,164,78,0.15)!important;color:#c8a44e!important;border:1px solid rgba(200,164,78,0.3)!important;} .ti{background:rgba(255,255,255,0.05)!important;color:#64748b!important;border:1px solid rgba(255,255,255,0.08)!important;}
