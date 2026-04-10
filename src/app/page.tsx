@@ -7,7 +7,7 @@ export default function Hub() {
   const [mounted, setMounted] = useState(false);
   const he = lang === 'he';
 
-  useEffect(() => { setMounted(true); fetch('/api/views').then(r => r.json()).then(d => setViews(d.views)).catch(() => {}); }, []);
+  useEffect(() => { setMounted(true); fetch('https://api.counterapi.dev/v1/iran-missiles-60sec/visits/up',{cache:'no-store'}).then(r=>r.json()).then(d=>setViews(d.count||0)).catch(() => {}); }, []);
 
   const modules = [
     {
