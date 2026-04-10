@@ -53,7 +53,7 @@ export default function Hub() {
           <div style={{ display: 'inline-block', border: '1px solid rgba(200,164,78,0.3)', padding: '3px 18px', borderRadius: 2, color: '#c8a44e', fontSize: 10, fontWeight: 700, letterSpacing: '0.3em', marginBottom: 16, fontFamily: 'monospace' }}>[ {he ? 'לא מסווג' : 'UNCLASSIFIED'} ]</div>
           <h1 style={{ fontSize: 'clamp(26px, 5vw, 44px)', fontWeight: 900, color: '#ffffff', lineHeight: 1.2, marginBottom: 8, fontFamily: "'Playfair Display', Georgia, serif" }}>{he ? '60 שניות של חומ״ס' : '60 Seconds HazMat'}</h1>
           <h2 style={{ fontSize: 'clamp(13px, 2.5vw, 18px)', fontWeight: 400, color: 'rgba(200,164,78,0.8)', marginBottom: 8, fontFamily: "'Playfair Display', Georgia, serif" }}>{he ? 'איומי הנשק של איראן: טילים, דלקים ונשק כימי' : "Iran's Weapon Threats: Missiles, Propellants & Chemical Weapons"}</h2>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', maxWidth: 400, margin: '0 auto 8px', lineHeight: 1.7 }}>{he ? 'רועי צוקרמן — מומחה לחומ״ס וטב״ק' : 'Roei Zukerman — HazMat & CBRN Expert'}</p>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', maxWidth: 400, margin: '0 auto 8px', lineHeight: 1.7 }}>{he ? 'רועי צוקרמן — מומחה לחומ״ס וטב״ק' : 'Roie Zukerman — HazMat & CBRN Expert'}</p>
           <div style={{ width: 60, height: 2, background: 'linear-gradient(90deg, #c8a44e, #e8d5a0)', margin: '0 auto', boxShadow: '0 0 10px rgba(200,164,78,0.3)' }} />
         </div>
 
@@ -92,10 +92,10 @@ export default function Hub() {
         <div style={{ textAlign: 'center', padding: '20px 0 40px', borderTop: '1px solid rgba(200,164,78,0.1)' }}>
           {views !== null && <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 12 }}><span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>👁️</span><span style={{ fontSize: 13, fontWeight: 700, color: '#c8a44e', fontFamily: 'monospace' }}>{views.toLocaleString()}</span><span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>{he ? 'צפיות' : 'views'}</span></div>}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 10 }}><img src="/images/logo-60sec.png" alt="" style={{ width: 24, height: 24, borderRadius: 4 }} /><span style={{ fontSize: 12, fontWeight: 700, color: '#c8a44e' }}>60 {he ? 'שניות חומ״ס' : 'Seconds HazMat'}</span></div>
-          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}><b style={{ color: 'rgba(255,255,255,0.6)' }}>{he ? 'רועי צוקרמן' : 'Roei Zukerman'}</b> — {he ? 'מומחה לחומ״ס וטב״ק' : 'HazMat & CBRN Expert'}</p>
+          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}><b style={{ color: 'rgba(255,255,255,0.6)' }}>{he ? 'רועי צוקרמן' : 'Roie Zukerman'}</b> — {he ? 'מומחה לחומ״ס וטב״ק' : 'HazMat & CBRN Expert'}</p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 12 }}><a href="mailto:roiez1@gmail.com" style={{ fontSize: 11, color: '#c8a44e', textDecoration: 'none' }}>✉️ roiez1@gmail.com</a><a href="https://chat.whatsapp.com/K4NzcZucmimKYFOXE3VVtD?mode=gi_t" target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: '#22c55e', textDecoration: 'none' }}>💬 WhatsApp</a></div>
           <div style={{ maxWidth: 350, margin: '0 auto', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', borderRadius: 8, border: '1px solid rgba(255,255,255,0.06)' }}>
-            <p style={{ fontSize: 9, color: '#c8a44e', fontWeight: 700, marginBottom: 3 }}>© 2026 {he ? 'רועי צוקרמן — מומחה לחומ״ס וטב״ק' : 'Roei Zukerman — HazMat & CBRN Expert'}</p>
+            <p style={{ fontSize: 9, color: '#c8a44e', fontWeight: 700, marginBottom: 3 }}>© 2026 {he ? 'רועי צוקרמן — מומחה לחומ״ס וטב״ק' : 'Roie Zukerman — HazMat & CBRN Expert'}</p>
             <p style={{ fontSize: 8, color: 'rgba(255,255,255,0.3)', lineHeight: 1.5 }}>{he ? 'כל הזכויות שמורות. מבוסס על מקורות פתוחים בלבד. למטרות מקצועיות והדרכתיות. אין להשתמש ללא אישור בכתב.' : 'All rights reserved. Open sources only. Professional & educational use. Written permission required.'}</p>
           </div>
         </div>
