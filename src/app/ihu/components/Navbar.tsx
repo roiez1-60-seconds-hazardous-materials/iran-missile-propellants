@@ -29,11 +29,13 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#0d0d1a]/80 border-b border-blue-500/20"
       >
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo 60sec + WhatsApp link */}
-          <motion.a
-            href={WHATSAPP_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
+          {/* Home + Logo */}
+          <div className="flex items-center gap-2">
+            <a href="/" className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-base">🏠</a>
+            <motion.a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
             whileHover={{ scale: 1.1, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-2 cursor-pointer"
@@ -58,6 +60,7 @@ export default function Navbar() {
               60 שניות חומ״ס
             </motion.span>
           </motion.a>
+          </div>
 
           {/* Center title */}
           <motion.div
