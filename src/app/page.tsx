@@ -52,7 +52,7 @@ export default function Hub() {
         <div style={{ textAlign: 'center', padding: '40px 0 20px' }}>
           <div style={{ display: 'inline-block', border: '1px solid rgba(200,164,78,0.3)', padding: '3px 18px', borderRadius: 2, color: '#c8a44e', fontSize: 10, fontWeight: 700, letterSpacing: '0.3em', marginBottom: 16, fontFamily: 'monospace' }}>[ {he ? 'לא מסווג' : 'UNCLASSIFIED'} ]</div>
           <h1 style={{ fontSize: 'clamp(26px, 5vw, 44px)', fontWeight: 900, color: '#ffffff', lineHeight: 1.2, marginBottom: 8, fontFamily: "'Playfair Display', Georgia, serif" }}>{he ? '60 שניות של חומ״ס' : '60 Seconds HazMat'}</h1>
-          <h2 style={{ fontSize: 'clamp(13px, 2.5vw, 18px)', fontWeight: 400, color: 'rgba(200,164,78,0.8)', marginBottom: 8, fontFamily: "'Playfair Display', Georgia, serif" }}>{he ? 'מערך מודיעין מקצועי' : 'Professional Intelligence Hub'}</h2>
+          <h2 style={{ fontSize: 'clamp(13px, 2.5vw, 18px)', fontWeight: 400, color: 'rgba(200,164,78,0.8)', marginBottom: 8, fontFamily: "'Playfair Display', Georgia, serif" }}>{he ? 'איומי הנשק של איראן: טילים, דלקים ונשק כימי' : "Iran's Weapon Threats: Missiles, Propellants & Chemical Weapons"}</h2>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', maxWidth: 400, margin: '0 auto 8px', lineHeight: 1.7 }}>{he ? 'רועי צוקרמן — מומחה לחומ״ס וטב״ק' : 'Roei Zukerman — HazMat & CBRN Expert'}</p>
           <div style={{ width: 60, height: 2, background: 'linear-gradient(90deg, #c8a44e, #e8d5a0)', margin: '0 auto', boxShadow: '0 0 10px rgba(200,164,78,0.3)' }} />
         </div>
