@@ -30,7 +30,12 @@ export default function IHUPage() {
         </a>
         {/* Left: EN + hamburger */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button onClick={() => setLang(l => l === 'he' ? 'en' : 'he')} style={{
+          <button onClick={() => setLang(l => {
+            const next = l === 'he' ? 'en' : 'he';
+            const iframe = document.querySelector('iframe');
+            if (iframe?.contentWindow) iframe.contentWindow.postMessage({type:'setLang',lang:next},'*');
+            return next;
+          })} style={{
             padding: '5px 14px', fontSize: 11, fontWeight: 800,
             background: '#0c1222', color: '#c8a44e',
             border: 'none', borderRadius: 4, cursor: 'pointer',
@@ -68,7 +73,7 @@ export default function IHUPage() {
       {/* IHU app — hide its navbar by offsetting MORE */}
       <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
         <iframe
-          src="https://ihu-chemical-weapons.vercel.app/"
+          src={`https://ihu-chemical-weapons.vercel.app/?lang=${lang}`}
           style={{
             width: '100%', height: 'calc(100% + 80px)',
             border: 'none', position: 'absolute',
