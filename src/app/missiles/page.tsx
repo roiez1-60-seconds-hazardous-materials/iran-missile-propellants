@@ -313,14 +313,14 @@ const ch=[
 ];const c=ch[tab];
 return<Sec id="chemistry" num="11" title={he?"תכונות פיסיקליות וכימיות של הדלקים":"Fuel Physical & Chemical Properties"} subtitle={he?"מקורות: PubChem, NIOSH, CAMEO":"Sources: PubChem, NIOSH, CAMEO"} sidebar={<><SB color="red" title={he?"⚠️ בצקת ריאות מושהית":"⚠️ Delayed Pulmonary Edema"}><p>{he?"סיכון ייחודי לנפגעי IRFNA ו-NTO: הנפגע עשוי להרגיש בסדר מיד לאחר החשיפה, אך 24-48 שעות מאוחר יותר — הצפת ריאות פתאומית וכשל נשימתי קטלני.":"Unique risk for IRFNA & NTO victims: may feel fine immediately after exposure, but 24-48 hours later — sudden lung flooding and fatal respiratory failure."}</p><p style={{fontWeight:700,marginTop:6}}>{he?"כל חשוף חייב אשפוז מיידי למעקב!":"Every exposed person must be immediately hospitalized for observation!"}</p></SB></>}>
   <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>{ch.map((x,i)=><button key={i} onClick={()=>setTab(i)} className={tab===i?"ta":"ti"} style={{padding:"8px 18px",borderRadius:6,fontSize:13,fontWeight:700,cursor:"pointer"}}>{x.id}</button>)}</div>
-  <div className="cm" style={{padding:24}}>
+  <div className="cm" style={{padding:24,overflow:"hidden"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,flexWrap:"wrap",gap:8}}>
       <h3 className="sf" style={{fontSize:18,fontWeight:800}}>{c.id} — {c.nm}</h3>
       {c.erg!=="—"&&<span className="mn" style={{padding:"4px 12px",borderRadius:4,fontSize:11,fontWeight:700,background:P.blueS,color:P.blue}}>ERG Guide {c.erg}</span>}
     </div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:20}}>
-      <div><h4 style={{fontSize:10,fontWeight:800,color:P.muted,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>{he?"תכונות פיסיקליות":"PHYSICAL PROPERTIES"}</h4>{c.ps.map((p,i)=><div key={i} style={{padding:"8px 0",borderBottom:`1px solid ${P.border}40`,fontSize:13,display:"flex",justifyContent:"space-between",gap:8}}><span style={{color:P.muted,flexShrink:0}}>{p[0]}:</span><span style={{fontWeight:500,textAlign:"left",wordBreak:"break-word",minWidth:0}} dir="ltr">{p[1]}</span></div>)}</div>
-      <div><h4 style={{fontSize:10,fontWeight:800,color:P.red,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>⚠️ {he?"סיכונים":"HAZARDS"}</h4>{c.ds.map((d,i)=><div key={i} style={{padding:"8px",background:`${P.red}06`,borderRadius:4,marginBottom:6,fontSize:12,color:P.red,fontWeight:500,lineHeight:1.6,wordBreak:"break-word"}}>{d[0]}</div>)}</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:20}}>
+      <div style={{overflow:"hidden"}}><h4 style={{fontSize:10,fontWeight:800,color:P.muted,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>{he?"תכונות פיסיקליות":"PHYSICAL PROPERTIES"}</h4>{c.ps.map((p,i)=><div key={i} style={{padding:"8px 0",borderBottom:`1px solid ${P.border}40`,fontSize:13,display:"flex",justifyContent:"space-between",gap:8}}><span style={{color:P.muted,flexShrink:0}}>{p[0]}:</span><span style={{fontWeight:500,textAlign:"left",overflowWrap:"anywhere",minWidth:0}} dir="ltr">{p[1]}</span></div>)}</div>
+      <div style={{overflow:"hidden"}}><h4 style={{fontSize:10,fontWeight:800,color:P.red,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>⚠️ {he?"סיכונים":"HAZARDS"}</h4>{c.ds.map((d,i)=><div key={i} style={{padding:"8px",background:`${P.red}06`,borderRadius:4,marginBottom:6,fontSize:12,color:P.red,fontWeight:500,lineHeight:1.6,overflowWrap:"anywhere"}}>{d[0]}</div>)}</div>
     </div>
   </div>
 </Sec>;}
