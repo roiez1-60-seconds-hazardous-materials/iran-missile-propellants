@@ -319,8 +319,8 @@ return<Sec id="chemistry" num="11" title={he?"תכונות פיסיקליות ו
       {c.erg!=="—"&&<span className="mn" style={{padding:"4px 12px",borderRadius:4,fontSize:11,fontWeight:700,background:P.blueS,color:P.blue}}>ERG Guide {c.erg}</span>}
     </div>
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:20}}>
-      <div><h4 style={{fontSize:10,fontWeight:800,color:P.muted,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>{he?"תכונות פיסיקליות":"PHYSICAL PROPERTIES"}</h4>{c.ps.map((p,i)=><div key={i} style={{padding:"8px 0",borderBottom:`1px solid ${P.border}40`,fontSize:13,display:"flex",justifyContent:"space-between",gap:8}}><span style={{color:P.muted,flexShrink:0}}>{p[0]}:</span><span style={{fontWeight:500,textAlign:"left"}} dir="ltr">{p[1]}</span></div>)}</div>
-      <div><h4 style={{fontSize:10,fontWeight:800,color:P.red,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>⚠️ {he?"סיכונים":"HAZARDS"}</h4>{c.ds.map((d,i)=><div key={i} style={{padding:"8px",background:`${P.red}06`,borderRadius:4,marginBottom:6,fontSize:12,color:P.red,fontWeight:500,lineHeight:1.6}}>{d[0]}</div>)}</div>
+      <div><h4 style={{fontSize:10,fontWeight:800,color:P.muted,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>{he?"תכונות פיסיקליות":"PHYSICAL PROPERTIES"}</h4>{c.ps.map((p,i)=><div key={i} style={{padding:"8px 0",borderBottom:`1px solid ${P.border}40`,fontSize:13,display:"flex",justifyContent:"space-between",gap:8}}><span style={{color:P.muted,flexShrink:0}}>{p[0]}:</span><span style={{fontWeight:500,textAlign:"left",wordBreak:"break-word",minWidth:0}} dir="ltr">{p[1]}</span></div>)}</div>
+      <div><h4 style={{fontSize:10,fontWeight:800,color:P.red,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>⚠️ {he?"סיכונים":"HAZARDS"}</h4>{c.ds.map((d,i)=><div key={i} style={{padding:"8px",background:`${P.red}06`,borderRadius:4,marginBottom:6,fontSize:12,color:P.red,fontWeight:500,lineHeight:1.6,wordBreak:"break-word"}}>{d[0]}</div>)}</div>
     </div>
   </div>
 </Sec>;}
@@ -358,7 +358,7 @@ return<Sec id="hazmat" num="12" title={he?"מענה חומ״ס — כרטיסי 
       <div style={{fontSize:9,color:P.muted,marginTop:2}}>ERG {c.erg} | UN {c.un}</div>
     </button>)}
   </div>
-  {card&&<div style={{background:P.ink,borderRadius:14,border:`1px solid ${card.c}40`,overflow:"hidden"}}>
+  {card&&<div style={{background:P.ink,borderRadius:14,border:`1px solid ${card.c}40`,overflow:"hidden",maxWidth:"100%"}}>
     {/* Header */}
     <div style={{background:`${card.c}12`,padding:16,borderBottom:`1px solid ${card.c}25`}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
