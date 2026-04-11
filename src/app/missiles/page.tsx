@@ -11,7 +11,7 @@ const P = {
 
 const sIDs=["home","timeline","facilities","diagram","arsenal","compare","rangemap","propulsion","processes","flowdiagram","molecular","chemistry","hazmat","medical","strategic","supplychain","infographic","gallery","glossary","sources"];
 const sHe=["ראשי","ציר זמן","מתקנים","אנטומיה","ארסנל","השוואה","טווחים","הנעה","ייצור","זרימה","מולקולות","דלקים","חומ״ס","רפואי","אסטרטגי","שרשרת","אינפוגרפיקה","מצגת","מקרא","מקורות"];
-const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Compare","Ranges","Propulsion","Production","Flow","Molecules","Fuels","HazMat","Medical","Strategic","Supply Chain","Slides","Glossary","Sources"];
+const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Compare","Ranges","Propulsion","Production","Flow","Molecules","Fuels","HazMat","Medical","Strategic","Supply Chain","Infographic","Slides","Glossary","Sources"];
 
 function ProgressBar(){const[p,setP]=useState(0);useEffect(()=>{const fn=()=>{const h=document.documentElement.scrollHeight-window.innerHeight;setP(h>0?(window.scrollY/h)*100:0);};window.addEventListener("scroll",fn,{passive:true});return()=>window.removeEventListener("scroll",fn);},[]);return<div style={{position:"fixed",top:0,left:0,right:0,zIndex:100,height:3,background:P.cream}}><div style={{height:"100%",width:`${p}%`,background:`linear-gradient(90deg,${P.gold},${P.gL})`,transition:"width 120ms"}}/></div>;}
 
