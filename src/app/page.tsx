@@ -14,7 +14,7 @@ export default function Hub() {
       id: 'missiles',icon: '🚀',
       title: he ? 'מערך ייצור הטילים והדלקים של איראן' : "Iran's Missile & Propellant Production",
       subtitle: he ? 'תיק מודיעין טכנולוגי-טקטי' : 'Tech-Tactical Intelligence Dossier',
-      stats: he ? '19 סעיפים • 13 טילים • 6 מתקנים • ERG שטח' : '19 sections • 13 missiles • 6 facilities • ERG',
+      stats: he ? '18 סעיפים • 13 טילים • 6 מתקנים • ERG שטח' : '18 sections • 13 missiles • 6 facilities • ERG',
       href: '/missiles',
       gradient: 'linear-gradient(135deg, #0c1222 0%, #162040 50%, #1e3a5f 100%)',
       accent: '#c8a44e',

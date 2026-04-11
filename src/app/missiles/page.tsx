@@ -9,9 +9,9 @@ const P = {
   muted:"#64748b",border:"#e2e0d8",white:"#ffffff"
 };
 
-const sIDs=["home","timeline","facilities","diagram","arsenal","compare","rangemap","propulsion","processes","flowdiagram","molecular","chemistry","hazmat","medical","strategic","supplychain","infographic","gallery","glossary","sources"];
-const sHe=["ראשי","ציר זמן","מתקנים","אנטומיה","ארסנל","השוואה","טווחים","הנעה","ייצור","זרימה","מולקולות","דלקים","חומ״ס","רפואי","אסטרטגי","שרשרת","אינפוגרפיקה","מצגת","מקרא","מקורות"];
-const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Compare","Ranges","Propulsion","Production","Flow","Molecules","Fuels","HazMat","Medical","Strategic","Supply Chain","Infographic","Slides","Glossary","Sources"];
+const sIDs=["home","timeline","facilities","diagram","arsenal","compare","rangemap","propulsion","processes","flowdiagram","molecular","chemistry","hazmat","medical","strategic","supplychain","gallery","glossary","sources"];
+const sHe=["ראשי","ציר זמן","מתקנים","אנטומיה","ארסנל","השוואה","טווחים","הנעה","ייצור","זרימה","מולקולות","דלקים","חומ״ס","רפואי","אסטרטגי","שרשרת","מצגת","מקרא","מקורות"];
+const sEn=["Home","Timeline","Facilities","Anatomy","Arsenal","Compare","Ranges","Propulsion","Production","Flow","Molecules","Fuels","HazMat","Medical","Strategic","Supply Chain","Slides","Glossary","Sources"];
 
 function ProgressBar(){const[p,setP]=useState(0);useEffect(()=>{const fn=()=>{const h=document.documentElement.scrollHeight-window.innerHeight;setP(h>0?(window.scrollY/h)*100:0);};window.addEventListener("scroll",fn,{passive:true});return()=>window.removeEventListener("scroll",fn);},[]);return<div style={{position:"fixed",top:0,left:0,right:0,zIndex:100,height:3,background:P.cream}}><div style={{height:"100%",width:`${p}%`,background:`linear-gradient(90deg,${P.gold},${P.gL})`,transition:"width 120ms"}}/></div>;}
 
@@ -529,7 +529,7 @@ const terms=[
 const cats=[{k:'all',l:he?'הכל':'All'},{k:'chem',l:he?'כימיה':'Chem'},{k:'mil',l:he?'צבאי':'Military'},{k:'haz',l:he?'חומ״ס':'HazMat'}];
 const catC:Record<string,[string,string]>={chem:[P.greenS,P.green],mil:[P.blueS,P.blue],haz:[P.redS,P.red]};
 const filtered=terms.filter(tm=>(cat==='all'||tm.c===cat)&&(search===''||tm.t.toLowerCase().includes(search.toLowerCase())||tm.d.toLowerCase().includes(search.toLowerCase())));
-return<Sec id="glossary" num="18" title={he?"מקרא מונחים":"Glossary"} subtitle={`${terms.length} ${he?'מונחים מורחבים':'expanded terms'}`}>
+return<Sec id="glossary" num="17" title={he?"מקרא מונחים":"Glossary"} subtitle={`${terms.length} ${he?'מונחים מורחבים':'expanded terms'}`}>
   <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>{cats.map(c=><button key={c.k} onClick={()=>setCat(c.k)} className={cat===c.k?"ta":"ti"} style={{padding:"5px 12px",borderRadius:5,fontSize:11,fontWeight:700,cursor:"pointer"}}>{c.l}</button>)}</div>
   <input value={search} onChange={e=>setSearch(e.target.value)} placeholder={he?"🔍 חיפוש מונח...":"🔍 Search..."} style={{width:"100%",padding:"10px 14px",borderRadius:8,background:P.white,border:`1px solid ${P.border}`,fontSize:13,marginBottom:16,outline:"none"}}/>
   <div style={{display:"flex",flexDirection:"column",gap:8}}>{filtered.map((tm,i)=>{const[bg,c]=catC[tm.c]||[P.cream,P.muted];return<div key={i} className="cm" style={{padding:14}}><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{fontWeight:800,color:P.blue,fontSize:14}}>{tm.t}</span><span style={{fontSize:9,fontWeight:700,padding:"1px 6px",borderRadius:3,background:bg,color:c}}>{cats.find(x=>x.k===tm.c)?.l}</span></div><p style={{fontSize:12,color:P.steel,lineHeight:1.7}}>{tm.d}</p></div>;})}</div>
@@ -863,19 +863,13 @@ return<Sec id="flowdiagram" num="09" title={he?"תרשים זרימת ייצור
 </Sec>;}
 
 /* ═══ INFOGRAPHIC ═══ */
-function Infographic({lang}:{lang:string}){const he=lang==="he";const[zoom,setZoom]=useState(false);
-return<Sec id="infographic" num="16" title={he?"אינפוגרפיקה":"Infographic"} subtitle={he?"טכנולוגיית ייצור טילים בליסטיים":"Ballistic Missile Production Technology"} dark>
-  <div className="cm" style={{padding:8,cursor:"pointer",overflow:"hidden"}} onClick={()=>setZoom(!zoom)}>
-    <img src="/images/infographic.png" alt={he?"אינפוגרפיקה":"Infographic"} style={{width:"100%",borderRadius:6,transition:"transform 0.3s",transform:zoom?"scale(1.8)":"scale(1)",transformOrigin:"top center"}}/>
-  </div>
-  <p style={{fontSize:11,color:P.muted,marginTop:8,textAlign:"center"}}>{he?"💡 לחצו על התמונה להגדלה / הקטנה":"💡 Click to zoom in/out"}</p>
-</Sec>;}
+function Infographic({lang}:{lang:string}){return null;}
 
 /* ═══ PRESENTATION GALLERY ═══ */
 function Gallery({lang}:{lang:string}){const he=lang==="he";const[cur,setCur]=useState(0);const[fs,setFs]=useState(false);
 const slides=Array.from({length:13},(_,i)=>`/images/slide-${String(i+1).padStart(2,'0')}.jpg`);
 const prev=()=>setCur(c=>Math.max(0,c-1));const next=()=>setCur(c=>Math.min(12,c+1));
-return<Sec id="gallery" num="17" title={he?"מצגת מודיעינית":"Intelligence Presentation"} subtitle={`13 ${he?"שקפים":"slides"}`}>
+return<Sec id="gallery" num="16" title={he?"מצגת מודיעינית":"Intelligence Presentation"} subtitle={`3 ${he?"שקפים":"slides"}`}>
   {/* Main slide */}
   <div className="cm" style={{overflow:"hidden",position:"relative"}}>
     <img src={slides[cur]} alt={`Slide ${cur+1}`} style={{width:"100%",display:"block",cursor:"pointer"}} onClick={()=>setFs(true)}/>
@@ -898,7 +892,7 @@ return<Sec id="gallery" num="17" title={he?"מצגת מודיעינית":"Intell
 </Sec>;}
 
 /* ═══ SOURCES ═══ */
-function Sources({lang}:{lang:string}){const he=lang==="he";const sr=[{n:"CSIS Missile Defense Project",c:he?"מחקרי":"Research"},{n:"Iran Watch — Missile Arsenal",c:he?"מחקרי":"Research"},{n:"USIP — Ballistic Missile Program",c:he?"ממשלתי":"Govt"},{n:"NIOSH/CDC — UDMH Pocket Guide",c:he?"ממשלתי":"Govt"},{n:"PubChem — Chemical Properties",c:he?"ממשלתי":"Govt"},{n:"NOAA CAMEO — IRFNA & NTO",c:he?"ממשלתי":"Govt"},{n:"ERG 2024 — PHMSA/DOT",c:he?"ממשלתי":"Govt"},{n:"NCBI — AEGL Dimethylhydrazine",c:he?"אקדמי":"Academic"},{n:"PMC — Delayed Pulmonary Edema",c:he?"אקדמי":"Academic"},{n:"Alma Center — Iran Missiles",c:he?"מחקרי":"Research"},{n:"IISS Military Balance",c:he?"מחקרי":"Research"},{n:"Critical Threats — Israeli Strikes",c:he?"מחקרי":"Research"}];const cc:Record<string,[string,string]>={[he?"ממשלתי":"Govt"]:[P.greenS,P.green],[he?"מחקרי":"Research"]:[P.blueS,P.blue],[he?"אקדמי":"Academic"]:[P.purpleS,P.purple]};return<Sec id="sources" num="19" title={he?"מקורות":"Sources"}>{sr.map((s,i)=>{const[bg,c]=cc[s.c]||[P.cream,P.muted];return<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:`1px solid ${P.border}30`}}><span style={{color:P.gold}}>🔗</span><span style={{flex:1,fontSize:13,color:P.steel}}>{s.n}</span><span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:3,background:bg,color:c}}>{s.c}</span></div>;})}</Sec>;}
+function Sources({lang}:{lang:string}){const he=lang==="he";const sr=[{n:"CSIS Missile Defense Project",c:he?"מחקרי":"Research"},{n:"Iran Watch — Missile Arsenal",c:he?"מחקרי":"Research"},{n:"USIP — Ballistic Missile Program",c:he?"ממשלתי":"Govt"},{n:"NIOSH/CDC — UDMH Pocket Guide",c:he?"ממשלתי":"Govt"},{n:"PubChem — Chemical Properties",c:he?"ממשלתי":"Govt"},{n:"NOAA CAMEO — IRFNA & NTO",c:he?"ממשלתי":"Govt"},{n:"ERG 2024 — PHMSA/DOT",c:he?"ממשלתי":"Govt"},{n:"NCBI — AEGL Dimethylhydrazine",c:he?"אקדמי":"Academic"},{n:"PMC — Delayed Pulmonary Edema",c:he?"אקדמי":"Academic"},{n:"Alma Center — Iran Missiles",c:he?"מחקרי":"Research"},{n:"IISS Military Balance",c:he?"מחקרי":"Research"},{n:"Critical Threats — Israeli Strikes",c:he?"מחקרי":"Research"}];const cc:Record<string,[string,string]>={[he?"ממשלתי":"Govt"]:[P.greenS,P.green],[he?"מחקרי":"Research"]:[P.blueS,P.blue],[he?"אקדמי":"Academic"]:[P.purpleS,P.purple]};return<Sec id="sources" num="18" title={he?"מקורות":"Sources"}>{sr.map((s,i)=>{const[bg,c]=cc[s.c]||[P.cream,P.muted];return<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:`1px solid ${P.border}30`}}><span style={{color:P.gold}}>🔗</span><span style={{flex:1,fontSize:13,color:P.steel}}>{s.n}</span><span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:3,background:bg,color:c}}>{s.c}</span></div>;})}</Sec>;}
 
 /* ═══ VIEW COUNTER ═══ */
 function ViewCounter({lang}:{lang:string}){const he=lang==="he";const[v,setV]=useState<number|null>(null);useEffect(()=>{fetch('https://api.counterapi.dev/v1/iran-missiles-60sec/visits/up',{cache:'no-store'}).then(r=>r.json()).then(d=>setV(d.count||0)).catch(()=>{});},[]);if(v===null)return null;return<div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:10}}><span style={{fontSize:11,color:`#ffffff60`}}>👁️</span><span className="mn" style={{fontSize:12,fontWeight:700,color:P.gold}}>{v.toLocaleString()}</span><span style={{fontSize:10,color:`#ffffff50`}}>{he?"צפיות":"views"}</span></div>;}
@@ -918,4 +912,4 @@ function Footer({lang}:{lang:string}){const he=lang==="he";return<footer style={
 </footer>;}
 
 /* ═══ MAIN ═══ */
-export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><Facilities lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><MissileCompare lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><MolecularAnim lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><SupplyChain lang={lang}/><Infographic lang={lang}/><Gallery lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
+export default function Home(){const[lang,setLang]=useState("he");return<div dir={lang==="he"?"rtl":"ltr"}><ProgressBar/><Nav lang={lang} toggle={()=>setLang(l=>l==="he"?"en":"he")}/><Hero lang={lang}/><Timeline lang={lang}/><Facilities lang={lang}/><MissileDiagram lang={lang}/><Arsenal lang={lang}/><MissileCompare lang={lang}/><RangeMap lang={lang}/><Propulsion lang={lang}/><Processes lang={lang}/><FlowDiagram lang={lang}/><MolecularAnim lang={lang}/><Chemistry lang={lang}/><HazMat lang={lang}/><Medical lang={lang}/><Strategic lang={lang}/><SupplyChain lang={lang}/><Gallery lang={lang}/><Glossary lang={lang}/><Sources lang={lang}/><Footer lang={lang}/></div>;}
