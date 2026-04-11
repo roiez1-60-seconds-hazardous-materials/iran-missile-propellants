@@ -877,10 +877,10 @@ const slides=Array.from({length:13},(_,i)=>`/images/slide-${String(i+1).padStart
 const prev=()=>setCur(c=>Math.max(0,c-1));const next=()=>setCur(c=>Math.min(12,c+1));
 return<Sec id="gallery" num="17" title={he?"מצגת מודיעינית":"Intelligence Presentation"} subtitle={`13 ${he?"שקפים":"slides"}`}>
   {/* Main slide */}
-  <div className="cm" style={{overflow:"hidden",position:"relative"}}>
+  <div className="cm" dir="ltr" style={{overflow:"hidden",position:"relative"}}>
     <img src={slides[cur]} alt={`Slide ${cur+1}`} style={{width:"100%",display:"block",cursor:"pointer"}} onClick={()=>setFs(true)}/>
-    <button onClick={prev} disabled={cur===0} style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",width:36,height:36,borderRadius:"50%",background:"rgba(255,255,255,0.85)",border:"none",fontSize:18,cursor:"pointer",opacity:cur===0?0.3:1,boxShadow:"0 2px 8px rgba(0,0,0,0.15)"}}>›</button>
-    <button onClick={next} disabled={cur===12} style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",width:36,height:36,borderRadius:"50%",background:"rgba(255,255,255,0.85)",border:"none",fontSize:18,cursor:"pointer",opacity:cur===12?0.3:1,boxShadow:"0 2px 8px rgba(0,0,0,0.15)"}}>‹</button>
+    <button onClick={next} disabled={cur===12} style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",width:36,height:36,borderRadius:"50%",background:"rgba(255,255,255,0.85)",border:"none",fontSize:18,cursor:"pointer",opacity:cur===12?0.3:1,boxShadow:"0 2px 8px rgba(0,0,0,0.15)"}}>›</button>
+    <button onClick={prev} disabled={cur===0} style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",width:36,height:36,borderRadius:"50%",background:"rgba(255,255,255,0.85)",border:"none",fontSize:18,cursor:"pointer",opacity:cur===0?0.3:1,boxShadow:"0 2px 8px rgba(0,0,0,0.15)"}}>‹</button>
     <div style={{position:"absolute",bottom:8,left:"50%",transform:"translateX(-50%)",background:"rgba(0,0,0,0.6)",color:"#fff",padding:"3px 10px",borderRadius:12,fontSize:11,fontFamily:"monospace"}}>{cur+1} / 13</div>
   </div>
   {/* Thumbnails */}
@@ -890,8 +890,8 @@ return<Sec id="gallery" num="17" title={he?"מצגת מודיעינית":"Intell
   {/* Fullscreen overlay */}
   {fs&&<div onClick={()=>setFs(false)} style={{position:"fixed",inset:0,zIndex:200,background:"rgba(0,0,0,0.95)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
     <img src={slides[cur]} alt="" style={{maxWidth:"95vw",maxHeight:"90vh",objectFit:"contain"}}/>
-    <button onClick={(e)=>{e.stopPropagation();prev();}} style={{position:"absolute",right:16,top:"50%",transform:"translateY(-50%)",width:44,height:44,borderRadius:"50%",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:22,cursor:"pointer"}}>›</button>
-    <button onClick={(e)=>{e.stopPropagation();next();}} style={{position:"absolute",left:16,top:"50%",transform:"translateY(-50%)",width:44,height:44,borderRadius:"50%",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:22,cursor:"pointer"}}>‹</button>
+    <button onClick={(e)=>{e.stopPropagation();next();}} style={{position:"absolute",right:16,top:"50%",transform:"translateY(-50%)",width:44,height:44,borderRadius:"50%",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:22,cursor:"pointer"}}>›</button>
+    <button onClick={(e)=>{e.stopPropagation();prev();}} style={{position:"absolute",left:16,top:"50%",transform:"translateY(-50%)",width:44,height:44,borderRadius:"50%",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:22,cursor:"pointer"}}>‹</button>
     <button onClick={()=>setFs(false)} style={{position:"absolute",top:16,right:16,width:40,height:40,borderRadius:"50%",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:20,cursor:"pointer"}}>✕</button>
     <div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",color:"#fff",fontSize:13,fontFamily:"monospace"}}>{cur+1} / 13</div>
   </div>}
