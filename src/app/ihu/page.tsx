@@ -3,7 +3,13 @@ import { useState } from 'react';
 
 export default function IHUPage() {
   const [loading, setLoading] = useState(true);
-  const [lang, setLang] = useState('he');
+  const [lang, setLang] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search).get('lang');
+      if (p === 'en' || p === 'he') return p;
+    }
+    return 'he';
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const he = lang === 'he';
   
